@@ -119,14 +119,14 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private CameraBridgeViewBase mOpenCvCameraView;
 	//gps
 	private LocListener gpsListener = new LocListener();
-	private Size mSize0;
-	private Size mSizeRgba;
-	private Size mSizeRgbaInner;
+	//	private Size mSize0;
+//	private Size mSizeRgba;
+//	private Size mSizeRgbaInner;
 	private Mat mCameraFeed;
 	private Mat mThreshold;
 	private Mat cropped;
-	private Scalar mColorsRGB[];
-	private Scalar mColorsHue[];
+	//	private Scalar mColorsRGB[];
+//	private Scalar mColorsHue[];
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
 		@Override
@@ -371,8 +371,13 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //		    TODO was dropping erode/dilate a bad idea (it saved LOTS of cpu time)
 		erode(mThreshold, mThreshold, erodeElement);
 
+
 		if(extraErrode) erode(mThreshold, mThreshold, erodeElement);
+
+
 		dilate(mThreshold, mThreshold, dilateElement);
+
+
 		if(extraDilates) {
 			dilate(mThreshold, mThreshold, dilateElement);
 			dilate(mThreshold, mThreshold, dilateElement);
@@ -402,68 +407,81 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			if((area > minAreaofDetectableObject) && (area < maxAreaofDetectableObject)) {
 				//Cut out the image segment where the object (possible circle) is into its own Mat (smaller image)
 				boundRect = setContourRect(contours, k);
-				cropped = new Mat(mCameraFeed, boundRect).clone();
-				Mat croppedT = new Mat(mThreshold, boundRect).clone();
-				if(doFancyDisplay)
-					copyMakeBorder(cropped, cropped, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
-				copyMakeBorder(croppedT, croppedT, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
-				if(doDebug) {
-					Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);
-					Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);                        //cropped.copyTo(roi);
+				double aSquare;
+
+				if(boundRect.height > boundRect.width) {
+					aSquare = ((double) boundRect.height / (double) boundRect.width);
+				} else {
+					aSquare = ((double) boundRect.width / (double) boundRect.height);
 				}
 
-				//put HOUGH in here so that is only gets called if rectangle is the correct size range
-				Mat circles = new Mat();
-				HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, (int) (cropped.rows() / 4), cropped.rows() / 2);
-
-				if(circles.cols() > 0) {
-					//TODO do I need to loop through ALL circles as the 1st circle will set foundCircle
-					int x = 0;
-					//for ( ; x < circles.cols(); x++)
-					{
-						double vCircle[] = circles.get(0, x);
-
-						if(vCircle == null)
-							break;
-
-						if(doDebug) {
-							Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
-							int radius = (int) Math.round(vCircle[2]);
-
-							// draw the found circle
-							Core.circle(cropped, pt, radius, new Scalar(0, 255, 0), 5);
-							//    Core.circle(cropped, pt, 3, new Scalar(0,0,255), 2);
-						}
-						if(doFancyDisplay) cropped.copyTo(cropped2);
-						foundCircle = true;
-
-						if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
-						{
-							LockedOut = true;
-							// This code plays the default beep
-							try {
-								Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-								Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-								r.play();
-							} catch(Exception e) {
-								e.printStackTrace();
-							}
-							// write Lat/Long to file
+				if(aSquare < 1.1 && aSquare > 0.9) {
 
 
-							//http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%2090&pitch=0&sensor=false&location=-33.7165435,150.961225
-							//toWR.generateNoteOnSD(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon()))));
-
-							pakWritetoInternal(String.valueOf(gpsListener.getBearing()).concat(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon())))));
-
-
-							// see private Runnable timedTask = new Runnable() above
-							handler.postDelayed(timedTask, 2000);
-
-						}
-
-
+					cropped = new Mat(mCameraFeed, boundRect).clone();
+					Mat croppedT = new Mat(mThreshold, boundRect).clone();
+					if(doFancyDisplay)
+						copyMakeBorder(cropped, cropped, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
+					copyMakeBorder(croppedT, croppedT, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
+					if(doDebug) {
+						Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);
+						Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);                        //cropped.copyTo(roi);
 					}
+
+					//put HOUGH in here so that is only gets called if rectangle is the correct size range
+					Mat circles = new Mat();
+					HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, (int) (cropped.rows() / 4), cropped.rows() / 2);
+
+					if(circles.cols() > 0) {
+						//TODO do I need to loop through ALL circles as the 1st circle will set foundCircle
+						int x = 0;
+						//for ( ; x < circles.cols(); x++)
+						{
+							double vCircle[] = circles.get(0, x);
+
+							if(vCircle == null)
+								break;
+
+							if(doDebug) {
+								Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
+								int radius = (int) Math.round(vCircle[2]);
+
+								// draw the found circle
+								Core.circle(cropped, pt, radius, new Scalar(0, 255, 0), 5);
+								//    Core.circle(cropped, pt, 3, new Scalar(0,0,255), 2);
+							}
+							if(doFancyDisplay) cropped.copyTo(cropped2);
+							foundCircle = true;
+
+							if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
+							{
+								LockedOut = true;
+								// This code plays the default beep
+								try {
+									Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+									Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+									r.play();
+								} catch(Exception e) {
+									e.printStackTrace();
+								}
+								// write Lat/Long to file
+
+
+								//http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%2090&pitch=0&sensor=false&location=-33.7165435,150.961225
+								//toWR.generateNoteOnSD(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon()))));
+
+								pakWritetoInternal(String.valueOf(gpsListener.getBearing()).concat(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon())))));
+
+
+								// see private Runnable timedTask = new Runnable() above
+								handler.postDelayed(timedTask, 2000);
+
+							}
+
+
+						}
+					}
+
 				}
 			}
 		}
@@ -534,7 +552,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	// Dooh
 
 	private void pakWritetoInternal(String myData) {
-		FileOutputStream fos = null;
+		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(myInternalFile, true);
 			fos.write(myData.concat("\n\r").getBytes());
@@ -547,7 +565,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 	private void pakStartInternalFile() {
-		FileOutputStream fos = null;
+		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(myInternalFile);
 			fos.write("Start\n\r".getBytes());
@@ -560,7 +578,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 	private String pakReadInternal() {
-		FileInputStream fis = null;
+		FileInputStream fis;
 		String myData = null;
 		try {
 			fis = new FileInputStream(myInternalFile);

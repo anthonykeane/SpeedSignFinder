@@ -47,12 +47,9 @@
     <!--Use your Smartphone to improve mapping data for speed sign location in your area-->
 
 
-
     <!--*New in 0.0.6*-->
     <!--Added a detector for traffic light changing from Red to Green,-->
     <!--Menu > Green Light to enable when parked at a traffic light and the phone will alert when the light changes. (Don't use this feature if your region prohibits touching your phone while driving)-->
-
-
 
 
 </resources>
