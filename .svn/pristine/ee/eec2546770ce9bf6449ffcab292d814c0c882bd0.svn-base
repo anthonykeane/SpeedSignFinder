@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../sdk/java/java.iml" filepath="$PROJECT_DIR$/../../sdk/java/java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/speedsignfinder.iml" filepath="$PROJECT_DIR$/speedsignfinder.iml" />
+    </modules>
+  </component>
+</project>
+

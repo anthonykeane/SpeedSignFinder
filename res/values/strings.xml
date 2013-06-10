@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Speed Sign Finder</string>
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="fancy">Fancy Display</string>
+    <string name="thres">Threshold</string>
+    <string name="debug">Debug</string>
+    <string name="erode">Erode</string>
+    <string name="dilate">Dilate x2</string>
+    <string name="email">Email Data</string>
+
+    <string name="emailAddress">speedsignfinder@anthonykeane.com</string>
+    <string name="emailSubject">Speed Sign Finder</string>
+
+    <string name="android:versionName">Speed Sign Finder</string>
+
+    <string name="LatLongFile.txt">LatLongFile</string>
+    <string name="LayLongStorage">LayLongStorage</string>
+    <string name="lightGreen">Light Green</string>
+
+
+    <!--This is an ALPHA, it WILL crash.-->
+
+
+    <!--*Background*:-->
+    <!--Most public (government) agencies are under resourced and the task of continuously maintaining spacial (map) data is given low priority. It is very expensive to send an employee out to survey the world, so it just isn't done. That is a good thing as the money (your tax dollars) is spent on better causes, fixing roads, building bridges etc.-->
+
+    <!--Unfortunately this means that you, a member of the public LOSE OUT, as without good data, decisions as to where to put the bridge or which road to fix, are basically just guesstimates.-->
+
+    <!--There is a win/win option. As you and I are already driving out and about with our sophisticated survey equipment, our smart phone, we can do the data capture as a side-effect of our normal day.-->
+
+    <!--*The App: what is does*:-->
+    <!--This app scans the road ahead as you drive (too/from work for example), once it detects a speed sign it logs its location, that's it,-->
+
+    <!--You then have the *choice* to email the data as text so that it can be aggregated in a Google Fusion Table and made available to the community.-->
+
+    <!--ONLY LATITUDE, LONGITUDE AND  BEARING ARE SENT IN THE EMAIL (as you hit send you can examine the content before you send it.-->
+
+    <!--This is an implementation of OpenCV,-->
+
+    <!--For Best Results:-->
+    <!--Mount the smartphone on your vehicle dash aim the camera to the passenger side and down so as to avoid the sky washing out the image. Try to get as many clear frames of the speed signs on the roadside.-->
+
+
+    <!--Use your Smartphone to improve mapping data for speed sign location in your area-->
+
+
+
+    <!--*New in 0.0.6*-->
+    <!--Added a detector for traffic light changing from Red to Green,-->
+    <!--Menu > Green Light to enable when parked at a traffic light and the phone will alert when the light changes. (Don't use this feature if your region prohibits touching your phone while driving)-->
+
+
+
+
+</resources>

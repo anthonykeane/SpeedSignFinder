@@ -1,0 +1,1088 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+  </component>
+  <component name="AndroidConfiguredLogFilters">
+    <filters>
+      <filter>
+        <option name="logMessagePattern" value="" />
+        <option name="logTagPattern" value="" />
+        <option name="name" value="PAK SignFind" />
+        <option name="packageNamePattern" value="" />
+        <option name="pid" value="" />
+      </filter>
+    </filters>
+  </component>
+  <component name="AndroidLayoutPreviewToolWindow">
+    <option name="state">
+      <GlobalState />
+    </option>
+  </component>
+  <component name="AndroidLayouts">
+    <shared>
+      <config>
+        <target>android-17</target>
+      </config>
+    </shared>
+    <layouts>
+      <layout url="file://$PROJECT_DIR$/res/layout/image_manipulations_surface_view.xml">
+        <config>
+          <device>AVD_for_Samsung_S3</device>
+          <state>Landscape</state>
+          <theme>@android:style/Theme.NoTitleBar.Fullscreen</theme>
+        </config>
+      </layout>
+    </layouts>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
+  </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="418" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="447" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="456" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="463" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="478" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="493" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="513" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="505" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="516" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="531" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" line="537" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" readonly="true" id="64531f7e-2756-4467-8e5a-8c9dbf10d097" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/pakWRData.java" afterPath="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/pakWRData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" afterPath="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
+    <ignored path="image-manipulations.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="true" />
+  <component name="Commander">
+    <leftPanel url="file://$PROJECT_DIR$" />
+    <rightPanel />
+    <splitter proportion="0.5" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/LocListener.java" line="51" class="com.anthonykeane.speedsignfinder.LocListener" package="com.anthonykeane.speedsignfinder">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <breakpoint_rules />
+    <ui_properties />
+  </component>
+  <component name="ErrorTreeViewConfiguration">
+    <option name="autoscrollToSource" value="true" />
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="image-manipulations" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="speedsignfinderActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="324" column="0" selection-start="10429" selection-end="10429" vertical-scroll-proportion="0.9627329" vertical-offset="4975" max-vertical-offset="10897">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#8250#8275#0" expanded="true" />
+                <element signature="e#8323#8348#0" expanded="true" />
+                <element signature="e#8527#8552#0" expanded="true" />
+                <element signature="e#8600#8625#0" expanded="true" />
+                <element signature="e#8790#8815#0" expanded="true" />
+                <element signature="e#8863#8888#0" expanded="true" />
+                <element signature="e#9054#9079#0" expanded="true" />
+                <element signature="e#9127#9152#0" expanded="true" />
+                <element signature="e#9325#9351#0" expanded="true" />
+                <element signature="e#9399#9425#0" expanded="true" />
+                <element signature="e#10007#10039#0" expanded="true" />
+                <element signature="e#10084#10116#0" expanded="true" />
+                <element signature="e#14334#14346#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LocListener.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/LocListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="34" column="35" selection-start="680" selection-end="690" vertical-scroll-proportion="0.0" vertical-offset="338" max-vertical-offset="1105">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pakWRData.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/pakWRData.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="180" column="0" selection-start="5151" selection-end="5151" vertical-scroll-proportion="0.0" vertical-offset="2660" max-vertical-offset="3740">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WriteSDCard.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/WriteSDCard.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="13" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2006">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="37" selection-start="595" selection-end="595" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="867">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="48" selection-start="228" selection-end="245" vertical-scroll-proportion="0.0" vertical-offset="25" max-vertical-offset="1020">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="KEY_STORE_PATH" value="C:\Users\Keanea\Documents\android\pakProjects\keystoreFile" />
+    <option name="KEY_ALIAS" value="anthonykeanekey" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/org/opencv/samples/speedsignfinder/speedsignfinderView.java" />
+        <option value="$PROJECT_DIR$/project.properties" />
+        <option value="$PROJECT_DIR$/../../sdk/java/gen/org/opencv/BuildConfig.java" />
+        <option value="$PROJECT_DIR$/src/org/opencv/samples/speedsignfinder/LocListener.java" />
+        <option value="$PROJECT_DIR$/res/Menu/activity_my_doople.xml" />
+        <option value="$PROJECT_DIR$/res/Menu/activity_main.xml" />
+        <option value="$PROJECT_DIR$/src/org/opencv/samples/speedsignfinder/speedsignfinderActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/LocListener.java" />
+        <option value="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderView.java" />
+        <option value="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/WriteSDCard.java" />
+        <option value="$PROJECT_DIR$/res/menu/menu.xml" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/pakWRData.java" />
+        <option value="$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1176" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpeedSignFinder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpeedSignFinder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="speensignfinder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpeedSignFinder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="speensignfinder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="speedsignfinder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="ExportedApkPath" value="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder\speedsignfinder.apk" />
+    <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="preferences.externalResources" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="ExportedModule" value="speedsignfinder" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="4df7543d5212cf69" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="AndroidRunProguardForReleaseBuild" value="false" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="22" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.anthonykeane.speedsignfinder" />
+      <recent name="org.opencv.samples.imagemanipulations" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder\res" />
+      <recent name="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder\res\Menu" />
+      <recent name="C:\opencv245\OpenCV-2.4.5-android-sdk\samples\image-manipulations\src\org\opencv\samples\imagemanipulations" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Android Application.speedsignfinder">
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="GriffonRunConfigurationType" factoryName="Griffon">
+      <module name="" />
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="depsClasspath" value="true" />
+      <setting name="passParentEnv" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="speedsignfinder" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="speedsignfinder" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <RunnerSettings RunnerId="AndroidDebugRunner" />
+      <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Android Application.speedsignfinder" />
+    </list>
+    <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SliceManager">
+    <option name="analysisUIOptions">
+      <AnalysisUIOptions />
+    </option>
+  </component>
+  <component name="SliceToolwindowSettings">
+    <option name="autoScroll" value="true" />
+    <option name="preview" value="true" />
+  </component>
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="true" SSL_PROTOCOLS="all">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <configuration useDefault="true">C:\Users\Keanea\AppData\Roaming\Subversion</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder" />
+          <option name="myCopyRoot" value="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder\.idea" />
+          <option name="myCopyRoot" value="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder\.idea" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder" />
+          <option name="myCopyRoot" value="C:\Users\Keanea\Documents\android\pakProjects\speensignfinder" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="64531f7e-2756-4467-8e5a-8c9dbf10d097" name="Default" comment="" />
+      <created>1369826904146</created>
+      <updated>1370212789205</updated>
+      <workItem from="1369826905458" duration="8266000" />
+      <workItem from="1369836782842" duration="356000" />
+      <workItem from="1369837570803" duration="134000" />
+      <workItem from="1369920354632" duration="2744000" />
+      <workItem from="1369997115575" duration="70000" />
+      <workItem from="1370005126584" duration="25959000" />
+      <workItem from="1370071416943" duration="3987000" />
+      <workItem from="1370075446736" duration="33000" />
+      <workItem from="1370076865702" duration="6794000" />
+      <workItem from="1370120891981" duration="18367000" />
+      <workItem from="1370165700985" duration="4045000" />
+      <workItem from="1370212789667" duration="3481000" />
+      <workItem from="1370234488322" duration="856000" />
+      <workItem from="1370235408452" duration="288000" />
+      <workItem from="1370235796846" duration="11589000" />
+      <workItem from="1370292417481" duration="17264000" />
+      <workItem from="1370338955572" duration="1993000" />
+      <workItem from="1370395625242" duration="6269000" />
+      <workItem from="1370407964885" duration="879000" />
+      <workItem from="1370409172384" duration="13983000" />
+      <workItem from="1370468380743" duration="31597000" />
+      <workItem from="1370563657987" duration="5643000" />
+      <workItem from="1370573972716" duration="11251000" />
+      <workItem from="1370590397907" duration="513000" />
+      <workItem from="1370590960074" duration="355000" />
+      <workItem from="1370592638791" duration="170000" />
+      <workItem from="1370594534129" duration="1080000" />
+      <workItem from="1370595636763" duration="126000" />
+      <workItem from="1370595783738" duration="32000" />
+      <workItem from="1370595885276" duration="98000" />
+      <workItem from="1370595995846" duration="540000" />
+      <workItem from="1370596564877" duration="1256000" />
+      <workItem from="1370599154694" duration="3707000" />
+      <workItem from="1370607937062" duration="1019000" />
+      <workItem from="1370609240333" duration="972000" />
+    </task>
+    <task id="LOCAL-00001">
+      <created>1369920431155</created>
+      <updated>1369920431155</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Broken">
+      <created>1370038428346</created>
+      <updated>1370038428346</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Can see bounding box around RED 155-180, there are a few TODOs">
+      <created>1370069763107</created>
+      <updated>1370069763107</updated>
+    </task>
+    <task id="LOCAL-00004" summary="All appears to be working up to putting the found Sign (red circle object ) Need to do GPS then export thumbnail and coords">
+      <created>1370164644121</created>
+      <updated>1370164644121</updated>
+    </task>
+    <task id="LOCAL-00005" summary="junk">
+      <created>1370212753640</created>
+      <updated>1370212789102</updated>
+      <workItem from="1370212758660" duration="31000" />
+    </task>
+    <task id="LOCAL-00006" summary="BROKEN again cannot get just cropped2 in the top left">
+      <created>1370297024121</created>
+      <updated>1370297024121</updated>
+    </task>
+    <task id="LOCAL-00007" summary="working to a point">
+      <created>1370427478127</created>
+      <updated>1370427478127</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Still working to a point, been playing with cpu time dropped a couple of erode and dilate operations which saves lots of time (may gave broken field operation)">
+      <created>1370437298107</created>
+      <updated>1370437298107</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added BEEP every time a circle is found in a frame and also added a timer via &quot;Handler&quot; for timer to lockout to stop the BEEP happening too often.">
+      <created>1370478901130</created>
+      <updated>1370478901130</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Still working to a point, been playing with cpu time dropped a couple of erode and dilate operations which saves lots of time (may gave broken field operation)">
+      <created>1370478942106</created>
+      <updated>1370478942106</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Production Version: 1.0 only plays sound when sign logged.">
+      <created>1370563507108</created>
+      <updated>1370563507108</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Rough in of a MENU">
+      <created>1370574445124</created>
+      <updated>1370574445124</updated>
+    </task>
+    <task id="LOCAL-00013" summary="MENU ok, did sone tab clean ups">
+      <created>1370577862107</created>
+      <updated>1370577862107</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added getBearing and getAccuracy">
+      <created>1370642625123</created>
+      <updated>1370642625123</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Xml Menu WIP">
+      <created>1370670507107</created>
+      <updated>1370670507107</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Xml Menu WIP">
+      <created>1370686119107</created>
+      <updated>1370686119107</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Xml Menu Working 2">
+      <created>1370686162108</created>
+      <updated>1370686162108</updated>
+    </task>
+    <task id="LOCAL-00018" summary="WORKING again">
+      <created>1370686681121</created>
+      <updated>1370686681121</updated>
+    </task>
+    <task id="LOCAL-00019" summary="WORKING again">
+      <created>1370686696108</created>
+      <updated>1370686696108</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370701398110</created>
+      <updated>1370701398110</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370701431114</created>
+      <updated>1370701431114</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370701441108</created>
+      <updated>1370701441108</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370701882052</created>
+      <updated>1370701882052</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370701902965</created>
+      <updated>1370701902965</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370701914929</created>
+      <updated>1370701914929</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370701924220</created>
+      <updated>1370701924220</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370702260108</created>
+      <updated>1370702260108</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Refactored to have com.anthonykeane.speedsignfinder">
+      <created>1370702309108</created>
+      <updated>1370702309108</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Added Email intent - next add saved data">
+      <created>1370761536193</created>
+      <updated>1370761536193</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="185747000" />
+  </component>
+  <component name="TodoView" selected-index="1">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22145145" sideWeight="0.6162905" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46319923" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16221985" sideWeight="0.6162905" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40570846" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40570846" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31599608" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875368" sideWeight="0.5981857" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32875368" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16808964" sideWeight="0.5368008" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924226" sideWeight="0.85083413" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15208112" sideWeight="0.63199216" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36800784" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Analyze Dataflow from" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32973504" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32959402" sideWeight="0.686948" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.313052" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3994112" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="UpdateCopyrightCheckinHandler">
+    <option name="UPDATE_COPYRIGHT" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORIZONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
+    <option name="LIMIT_HISTORY" value="true" />
+    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
+    <option name="UPDATE_FILTER_SCOPE_NAME" />
+    <option name="USE_COMMIT_MESSAGE_MARGIN" value="false" />
+    <option name="COMMIT_MESSAGE_MARGIN_SIZE" value="72" />
+    <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Email intent - next add saved data" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="UPDATE_FILTER_BY_SCOPE" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="Broken" />
+    <MESSAGE value="Can see bounding box around RED 155-180, there are a few TODOs" />
+    <MESSAGE value="All appears to be working up to putting the found Sign (red circle object ) Need to do GPS then export thumbnail and coords" />
+    <MESSAGE value="BROKEN again cannot get just cropped2 in the top left" />
+    <MESSAGE value="working to a point" />
+    <MESSAGE value="Added BEEP every time a circle is found in a frame and also added a timer via &quot;Handler&quot; for timer to lockout to stop the BEEP happening too often." />
+    <MESSAGE value="Still working to a point, been playing with cpu time dropped a couple of erode and dilate operations which saves lots of time (may gave broken field operation)" />
+    <MESSAGE value="Production Version: 1.0 only plays sound when sign logged." />
+    <MESSAGE value="Rough in of a MENU" />
+    <MESSAGE value="MENU ok, did sone tab clean ups" />
+    <MESSAGE value="renaded to speedsignfinder" />
+    <MESSAGE value="Renamed SpeedSignFinder, did some reformatting" />
+    <MESSAGE value="Added getBearing and getAccuracy" />
+    <MESSAGE value="Xml Menu WIP" />
+    <MESSAGE value="Xml Menu Working 2" />
+    <MESSAGE value="WORKING again" />
+    <MESSAGE value="Refactored to have com.anthonykeane.speedsignfinder" />
+    <MESSAGE value="Added Email intent - next add saved data" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/res/menu/menu.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="40" selection-start="645" selection-end="645" vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="493" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="435" column="0" selection-start="22937" selection-end="22937" vertical-scroll-proportion="0.03353057" vertical-offset="7378" max-vertical-offset="20604" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/com/anthonykeane/speedsignfinder/BuildConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="520">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../sdk/java/gen/org/opencv/BuildConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="8" selection-start="88" selection-end="88" vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="221" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/drawable/icon.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gen/com/anthonykeane/speedsignfinder/Manifest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="19" selection-start="190" selection-end="190" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/speedsignfinder.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="0" selection-start="964" selection-end="964" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/image_manipulations_surface_view.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="476" selection-end="476" vertical-scroll-proportion="-8.84" vertical-offset="0" max-vertical-offset="323" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="17" selection-start="334" selection-end="340" vertical-scroll-proportion="0.01711984" vertical-offset="170" max-vertical-offset="1479">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="48" selection-start="228" selection-end="245" vertical-scroll-proportion="0.0" vertical-offset="25" max-vertical-offset="1020">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="37" selection-start="595" selection-end="595" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="867">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Program Files/Android/android-sdk/sources/android-16/android/content/ContextWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8381">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/WriteSDCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2006">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/pakWRData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="180" column="0" selection-start="5151" selection-end="5151" vertical-scroll-proportion="0.0" vertical-offset="2660" max-vertical-offset="3740">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/LocListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="35" selection-start="680" selection-end="690" vertical-scroll-proportion="0.0" vertical-offset="338" max-vertical-offset="1105">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/anthonykeane/speedsignfinder/speedsignfinderActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="324" column="0" selection-start="10429" selection-end="10429" vertical-scroll-proportion="0.9627329" vertical-offset="4975" max-vertical-offset="10897">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8250#8275#0" expanded="true" />
+            <element signature="e#8323#8348#0" expanded="true" />
+            <element signature="e#8527#8552#0" expanded="true" />
+            <element signature="e#8600#8625#0" expanded="true" />
+            <element signature="e#8790#8815#0" expanded="true" />
+            <element signature="e#8863#8888#0" expanded="true" />
+            <element signature="e#9054#9079#0" expanded="true" />
+            <element signature="e#9127#9152#0" expanded="true" />
+            <element signature="e#9325#9351#0" expanded="true" />
+            <element signature="e#9399#9425#0" expanded="true" />
+            <element signature="e#10007#10039#0" expanded="true" />
+            <element signature="e#10084#10116#0" expanded="true" />
+            <element signature="e#14334#14346#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>src</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>java</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>Android 4.1.2 Platform</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+
