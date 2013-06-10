@@ -1,0 +1,18 @@
+#Ignore OS specific files
+desktop.ini
+.DS_Store
+
+#Ignore project files
+/.idea/*
+/.settings/*
+/.classpath
+/.project
+
+#Ignore compiled files
+/gen/*
+/out/*
+*.apk
+
+#Ignore repo files
+/.svn/*
+/.git/*
