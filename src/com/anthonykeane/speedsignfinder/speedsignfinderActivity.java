@@ -1,23 +1,28 @@
 package com.anthonykeane.speedsignfinder;
 
 
-import android.app.ActionBar;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -66,61 +71,50 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //	Button b1;
 
 
-	//Internal Storage
-	File myInternalFile;
-
-
 	//Valid size of detected Object
 	public static final int CROPPED_BORDER = 20;
 	public static final int maxSizeofDetectableObject = 200;
 	public static final int minSizeofDetectableObject = 30;
 	public static final double maxAreaofDetectableObject = maxSizeofDetectableObject * maxSizeofDetectableObject;
 	public static final double minAreaofDetectableObject = minSizeofDetectableObject * minSizeofDetectableObject;
-
-
 	//default capture width and height
 	//oops too big for SII
 	public static final int FRAME_WIDTH = 1280;
 	public static final int FRAME_HEIGHT = 720;
-//  public static final int FRAME_WIDTH =   320;
-//  public static final int FRAME_HEIGHT =  240;
-//	public static final int FRAME_WIDTH =   800;
-//	public static final int FRAME_HEIGHT =  600;
-
-
 	//TODO Need to merge upp and lower RED : Lower is 0-25 Upper is 155-180
 //	public static final int H_MIN =         155;
 //	public static final int H_MAX =         180;
 	public static final int H_MIN = 0;
+	//  public static final int FRAME_WIDTH =   320;
+//  public static final int FRAME_HEIGHT =  240;
+//	public static final int FRAME_WIDTH =   800;
+//	public static final int FRAME_HEIGHT =  600;
 	public static final int H_MAX = 15;
 	public static final int S_MIN = 100;
 	public static final int S_MAX = 256;
 	public static final int V_MIN = 100;
 	public static final int V_MAX = 256;
 	public static final int H_NOR = 15;
-
-
 	private static final String TAG = "OCVSpeedSignFinder::Activity";
+	private static boolean hashDefineTrue = false;
 
 
 	//MENU
-
-	private static boolean hashDefineTrue = false;
 	private static boolean doDebug = true;
 	private static boolean doFancyDisplay = true;
 	private static boolean extraErrode = true;
 	private static boolean extraDilates = true;
+	private static boolean alertOnGreenLight = false;
 
 	// end MENU
-
-	private static boolean alertOnGreenLight = false;
-	private double lastFullArea = 0;
-
-
 	public Mat cropped2;
 	public boolean foundCircle;
 	public boolean LockedOut;
+	private boolean hasMenuKey;
 
+	//Internal Storage
+	File myInternalFile;
+	private double lastFullArea = 0;
 	private Handler handler = new Handler();
 	private CameraBridgeViewBase mOpenCvCameraView;
 	//gps
@@ -134,8 +128,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private Mat cropped;
 	//	private Scalar mColorsRGB[];
 //	private Scalar mColorsHue[];
-
-
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
 		@Override
@@ -153,7 +145,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			}
 		}
 	};
-
 	//This code is to create a delay after playing a foundCircle sound so that is doesn't play 10's at once.
 	//This is what is called once the delay expires after the INTENT called in the Hough block
 	private Runnable timedTask = new Runnable() {
@@ -165,10 +156,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		}
 	};
 
-
-	public speedsignfinderActivity() {
-		//Log.i(TAG, "Instantiated new " + this.getClass());
-	}
 
 	public static Rect setContourRect(List<MatOfPoint> contours, int k) {
 		Rect boundRect = new Rect();
@@ -195,35 +182,45 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //		};
 //	}
 
-
-	public void onOptionsMenuClosed(Menu iDontUse) {
-
-		ActionBar actionBar = getActionBar();
-		if(actionBar != null) {
-			actionBar.hide();
-		}
-
-	}
-
+//	public void onOptionsMenuClosed(Menu iDontUse) {
+//
+//		ActionBar actionBar = getActionBar();
+//		if(actionBar != null) {
+//			actionBar.hide();
+//		}
+//
+//	}
 
 	/**
 	 * Called when the activity is first created.
 	 */
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.i(TAG, "called onCreate");
 		super.onCreate(savedInstanceState);
+
+		hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey();
+
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		setContentView(R.layout.camera_image_surface_view);
 
-		//add overflow DotDotDot
-		//getOverflowMenu(); //didn't work
 
-		ActionBar actionBar = getActionBar();
-		actionBar.hide();
+		if(hasMenuKey) {
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+			setContentView(R.layout.camera_image_surface_view);
+		} else {
+			//Make actionBar translucent (1)
+			getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+			setContentView(R.layout.camera_image_surface_view);
+			// Make actionBar translucent (2)
+			getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(128, 0, 0, 0)));
+		}
 
-//		actionBar.setDisplayShowHomeEnabled(false);
-//		actionBar.setDisplayShowTitleEnabled(false);
+//		ActionBar actionBar = getActionBar();
+//		if(actionBar != null) {
+//			actionBar.hide();
+//		}
 
 
 //		// uncommemt in camera_image_view.xml before uncommenting this
@@ -253,21 +250,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		LockedOut = false;
 	}
 
-//	Didn't work
-//    private void getOverflowMenu() {
-//
-//		try {
-//			ViewConfiguration config = ViewConfiguration.get(this);
-//			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-//			if(menuKeyField != null) {
-//				menuKeyField.setAccessible(true);
-//				menuKeyField.setBoolean(config, false);
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
 
 	//TODO fix this. trying to catch an anywhere touch
 	// this is to open the menu for buttonless devices
@@ -276,19 +258,15 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		// MotionEvent object holds X-Y values
 		if(event.getAction() == MotionEvent.ACTION_DOWN) {
 			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
-			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
-			ActionBar actionBar = getActionBar();
-
-			if(actionBar != null) {
-				actionBar.show();
-			}
+//			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
+//			ActionBar actionBar = getActionBar();
+//			if(actionBar != null) {actionBar.show();}
 			openOptionsMenu();
 
 		}
 
 		return super.onTouchEvent(event);
 	}
-
 
 	@Override
 	public void onPause() {
@@ -298,10 +276,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		//Create an instance called gpsListener of the class I added called LocListener which is an implements ( is extra to) android.location.LocationListener
 		//Stop the GPS listener
 		locManager.removeUpdates(gpsListener);
-		ActionBar actionBar = getActionBar();
-		if(actionBar != null) {
-			actionBar.hide();
-		}
+//		ActionBar actionBar = getActionBar();
+//		if(actionBar != null) {actionBar.hide();}
 
 	}
 
@@ -323,7 +299,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		locManager = null;
 	}
 
-
 	//MENU CODE START
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -335,6 +310,16 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Log.i(TAG, "called onOptionsItemSelected; selected item: " + item);
+		PackageInfo pinfo = null;
+		try {
+			pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+		} catch(PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		//int versionNumber = pinfo.versionCode;
+		//String versionName = pinfo.versionName;
+
+
 		switch(item.getItemId()) {
 //			case R.id.fancy:
 //				doFancyDisplay = !doFancyDisplay;
@@ -366,37 +351,22 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //				item.setTitle(getString(R.string.dilate).concat(" ").concat(String.valueOf(extraDilates)));
 //				return true;
 
-			case R.id.lightgreen:
+			case R.id.showversion:
 				alertOnGreenLight = true;
-				Toast.makeText(speedsignfinderActivity.this, getString(R.string.lightGreen), Toast.LENGTH_SHORT).show();
+				Toast.makeText(speedsignfinderActivity.this, (pinfo != null ? pinfo.versionName : null), Toast.LENGTH_SHORT).show();
 				return true;
 
-			case R.id.CloseMe:
-
-				ActionBar actionBar = getActionBar();
-				if(actionBar != null) {
-					actionBar.hide();
-				}
-
+			case R.id.lightgreen:
+				Toast.makeText(speedsignfinderActivity.this, getString(R.string.lightGreen), Toast.LENGTH_SHORT).show();
 				return true;
 
 			case R.id.email:
 				//TODO add intent to send email
 				// This code plays the default beep
 
-				PackageInfo pinfo = null;
-				try {
-					pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-				} catch(PackageManager.NameNotFoundException e) {
-					e.printStackTrace();
-				}
-				//int versionNumber = pinfo.versionCode;
-				//String versionName = pinfo.versionName;
-
-
 				Intent intent = new Intent(Intent.ACTION_SEND);
 				intent.setType("text/html");
-				intent.putExtra(Intent.EXTRA_EMAIL, getString(R.string.emailAddress));
+				intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.emailAddress)});
 				intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject).concat(" ").concat(pinfo != null ? pinfo.versionName : null));
 				intent.putExtra(Intent.EXTRA_TEXT, pakReadInternal());
 				startActivity(Intent.createChooser(intent, "Send Email"));
@@ -419,9 +389,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
-
-	//MENU CODE END
+	}    //MENU CODE END
 
 
 	public void onCameraViewStarted(int width, int height) {
@@ -519,7 +487,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 					aSquare = ((double) boundRect.width / (double) boundRect.height);
 				}
 
-				if(aSquare < 1.1 && aSquare > 0.9) {
+				if(aSquare < 1.2 && aSquare > 0.8) {
 
 
 					cropped = new Mat(mCameraFeed, boundRect).clone();
@@ -611,15 +579,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		lastFullArea = fullArea;
 		if(doFancyDisplay) {
 			if(cropped2.cols() > 0)
-				//TODO do I need foundCircle anymore
-
-
-/*
-	TODO stuff
-	@DATA
-
-*/
-
+			//TODO do I need foundCircle anymore
 			//if (foundCircle)
 			{
 				cropped2.copyTo(mCameraFeed.submat(new Rect(0, 0, cropped2.width(), cropped2.height())));
@@ -668,7 +628,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 	}
 
-
 	private void pakStartInternalFile() {
 		FileOutputStream fos;
 		try {
@@ -680,7 +639,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		}
 
 	}
-
 
 	private String pakReadInternal() {
 		FileInputStream fis;

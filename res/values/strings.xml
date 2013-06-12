@@ -20,7 +20,7 @@
     <string name="LayLongStorage">LayLongStorage</string>
     <string name="lightGreen">Light Green</string>
     <string name="bMenu">TouchMe</string>
-    <string name="bCloseMe">Close Me</string>
+    <string name="bShowVersion">Show Version</string>
 
     <!--This is an ALPHA, it WILL crash.-->
 

@@ -21,8 +21,14 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/camera_image_view"
-
             />
 
-
 </LinearLayout>
+
+
+        <!--android:layout_width="1280dp"-->
+        <!--android:layout_height="720dp"-->
+        <!--android:id="@+id/camera_image_view"-->
+        <!--android:layout_gravity="center_vertical|clip_horizontal|clip_vertical"-->
+        <!--android:layout_marginLeft="-330dp"/>-->
+
