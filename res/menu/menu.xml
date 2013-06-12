@@ -25,4 +25,9 @@
             android:id="@+id/lightgreen"
             android:title="@string/lightGreen"/>
 
+    <item
+            android:id="@+id/CloseMe"
+            android:title="@string/bCloseMe"/>
+
+
 </menu>

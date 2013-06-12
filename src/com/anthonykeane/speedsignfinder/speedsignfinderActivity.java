@@ -1,6 +1,7 @@
 package com.anthonykeane.speedsignfinder;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -16,6 +17,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -59,6 +61,10 @@ import static org.opencv.imgproc.Imgproc.getStructuringElement;
 
 
 public class speedsignfinderActivity extends Activity implements CvCameraViewListener2 {
+
+//	// uncommemt in camera_image_view.xml before uncommenting this
+//	Button b1;
+
 
 	//Internal Storage
 	File myInternalFile;
@@ -119,6 +125,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private CameraBridgeViewBase mOpenCvCameraView;
 	//gps
 	private LocListener gpsListener = new LocListener();
+	private LocationManager locManager;
 	//	private Size mSize0;
 //	private Size mSizeRgba;
 //	private Size mSizeRgbaInner;
@@ -127,6 +134,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private Mat cropped;
 	//	private Scalar mColorsRGB[];
 //	private Scalar mColorsHue[];
+
+
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
 		@Override
@@ -158,7 +167,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 	public speedsignfinderActivity() {
-		Log.i(TAG, "Instantiated new " + this.getClass());
+		//Log.i(TAG, "Instantiated new " + this.getClass());
 	}
 
 	public static Rect setContourRect(List<MatOfPoint> contours, int k) {
@@ -175,6 +184,28 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		return boundRect;
 	}
 
+//   // uncommemt in camera_image_view.xml before uncommenting this/
+//	View.OnClickListener myhandler1;
+//	{
+//		myhandler1 = new View.OnClickListener() {
+//			public void onClick(View v) {
+//				Toast.makeText(speedsignfinderActivity.this, getString(R.string.thres), Toast.LENGTH_SHORT).show();
+//				// it was the 1st button
+//			}
+//		};
+//	}
+
+
+	public void onOptionsMenuClosed(Menu iDontUse) {
+
+		ActionBar actionBar = getActionBar();
+		if(actionBar != null) {
+			actionBar.hide();
+		}
+
+	}
+
+
 	/**
 	 * Called when the activity is first created.
 	 */
@@ -183,7 +214,22 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		Log.i(TAG, "called onCreate");
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		setContentView(R.layout.image_manipulations_surface_view);
+		setContentView(R.layout.camera_image_surface_view);
+
+		//add overflow DotDotDot
+		//getOverflowMenu(); //didn't work
+
+		ActionBar actionBar = getActionBar();
+		actionBar.hide();
+
+//		actionBar.setDisplayShowHomeEnabled(false);
+//		actionBar.setDisplayShowTitleEnabled(false);
+
+
+//		// uncommemt in camera_image_view.xml before uncommenting this
+//		b1 = (Button) findViewById(R.id.button);
+//		b1.setOnClickListener(myhandler1);
+//
 
 
 		// Write to File (internal)
@@ -192,13 +238,14 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		myInternalFile = new File(directory, getString(R.string.LayLongStorage));
 
 
-		// set up GPS
-		LocationManager locManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		// Turn on teh GPS.     set up GPS
+		locManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		//Create an instance called gpsListener of the class I added called LocListener which is an implements ( is extra to) android.location.LocationListener
+		//Start the GPS listener
 		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
 
 
-		mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.image_manipulations_activity_surface_view);
+		mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.camera_image_view);
 		mOpenCvCameraView.setCvCameraViewListener(this);
 		//confirm size
 		mOpenCvCameraView.setMaxFrameSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -206,25 +253,74 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		LockedOut = false;
 	}
 
+//	Didn't work
+//    private void getOverflowMenu() {
+//
+//		try {
+//			ViewConfiguration config = ViewConfiguration.get(this);
+//			Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+//			if(menuKeyField != null) {
+//				menuKeyField.setAccessible(true);
+//				menuKeyField.setBoolean(config, false);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+
+	//TODO fix this. trying to catch an anywhere touch
+	// this is to open the menu for buttonless devices
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// MotionEvent object holds X-Y values
+		if(event.getAction() == MotionEvent.ACTION_DOWN) {
+			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
+			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
+			ActionBar actionBar = getActionBar();
+
+			if(actionBar != null) {
+				actionBar.show();
+			}
+			openOptionsMenu();
+
+		}
+
+		return super.onTouchEvent(event);
+	}
+
+
 	@Override
 	public void onPause() {
 		super.onPause();
 		if(mOpenCvCameraView != null)
 			mOpenCvCameraView.disableView();
-		//locationManager.removeUpdates(this);
+		//Create an instance called gpsListener of the class I added called LocListener which is an implements ( is extra to) android.location.LocationListener
+		//Stop the GPS listener
+		locManager.removeUpdates(gpsListener);
+		ActionBar actionBar = getActionBar();
+		if(actionBar != null) {
+			actionBar.hide();
+		}
+
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
-		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, this);
+		//Start the GPS listener
+		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
 	}
 
 	public void onDestroy() {
 		super.onDestroy();
 		if(mOpenCvCameraView != null)
 			mOpenCvCameraView.disableView();
+		//Stop the GPS listener
+		locManager.removeUpdates(gpsListener);
+		// Turn Off the GPS
+		locManager = null;
 	}
 
 
@@ -235,7 +331,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		getMenuInflater().inflate(R.menu.menu, menu);  //gets the menu entries from menu.xml
 		return true;
 	}
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -274,6 +369,15 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			case R.id.lightgreen:
 				alertOnGreenLight = true;
 				Toast.makeText(speedsignfinderActivity.this, getString(R.string.lightGreen), Toast.LENGTH_SHORT).show();
+				return true;
+
+			case R.id.CloseMe:
+
+				ActionBar actionBar = getActionBar();
+				if(actionBar != null) {
+					actionBar.hide();
+				}
+
 				return true;
 
 			case R.id.email:
@@ -488,8 +592,9 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		// fullArea is the number of pixels in the Threshold image
 		// this will alert if red reduces.
 		String myConcatedString;
-		myConcatedString = String.valueOf(lastFullArea).concat(",").concat(String.valueOf(fullArea));
-		Core.putText(mCameraFeed, myConcatedString, new Point(50, 250), 1, 2, new Scalar(0, 0, 255), 2);
+		//myConcatedString = String.valueOf(lastFullArea).concat(",").concat(String.valueOf(fullArea));
+		myConcatedString = String.valueOf((lastFullArea * 0.9) / (fullArea));
+		Core.putText(mCameraFeed, myConcatedString, new Point(0, 25), 1, 1, new Scalar(128, 0, 0), 1);
 
 		if((lastFullArea * 0.9) > fullArea && alertOnGreenLight) {
 			try {

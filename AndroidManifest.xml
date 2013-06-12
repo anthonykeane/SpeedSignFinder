@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.anthonykeane.speedsignfinder"
-          android:versionCode="108"
-          android:versionName="Baby Canary 0.0.8">
+          android:versionCode="112"
+          android:versionName="0.0.12 ALPHA">
 
 
     <uses-permission android:name="android.permission.ACCESS_GPS"/>
@@ -17,8 +17,7 @@
             android:required="true"/>
     <uses-feature
             android:name="android.hardware.camera.autofocus"
-            android:required="true"/>
-
+            android:required="false"/>
 
     <!--<supports-screens-->
     <!--android:resizeable="true"-->
@@ -27,15 +26,19 @@
     <!--android:largeScreens="true"-->
     <!--android:anyDensity="true"/>-->
     <uses-sdk
-            android:minSdkVersion="10"
+            android:minSdkVersion="14"
             android:targetSdkVersion="17"/>
+
 
     <application
             android:label="@string/app_name"
-            android:icon="@drawable/icon"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:icon="@drawable/ic_launcher"
             android:hardwareAccelerated="true"
+            android:uiOptions="splitActionBarWhenNarrow"
             >
+
+        <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
+
 
         <activity
                 android:name="com.anthonykeane.speedsignfinder.speedsignfinderActivity"
@@ -47,6 +50,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        android:uiOptions="splitActionBarWhenNarrow"
+
     </application>
 
 
