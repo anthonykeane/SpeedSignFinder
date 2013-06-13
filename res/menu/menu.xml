@@ -5,9 +5,6 @@
     <!--<item-->
     <!--android:id="@+id/fancy"-->
     <!--android:title="@string/fancy"/>-->
-    <item
-            android:id="@+id/thres"
-            android:title="@string/thres"/>
     <!--<item-->
     <!--android:id="@+id/debug"-->
     <!--android:title="@string/debug"/>-->
@@ -19,15 +16,24 @@
     <!--android:title="@string/dilate"/>-->
     <item
             android:id="@+id/email"
-            android:title="@string/email"/>
-
+            android:title="@string/email"
+            android:icon="@drawable/ic_menu_compose"
+            android:showAsAction="ifRoom|withText"/>
     <item
             android:id="@+id/lightgreen"
-            android:title="@string/lightGreen"/>
+            android:title="@string/lightGreen"
+            android:icon="@drawable/traffic_light"
+            android:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/thres"
+            android:title="@string/thres"
+            android:icon="@drawable/ic_menu_manage"
+            android:showAsAction="ifRoom|withText"/>
 
     <item
             android:id="@+id/showversion"
-            android:title="@string/bShowVersion"/>
-
+            android:title="@string/bShowVersion"
+            android:icon="@drawable/ic_menu_info_details"
+            android:showAsAction="ifRoom"/>
 
 </menu>

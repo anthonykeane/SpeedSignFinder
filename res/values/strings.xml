@@ -22,6 +22,25 @@
     <string name="bMenu">TouchMe</string>
     <string name="bShowVersion">Show Version</string>
 
+
+    <!--Build HTML link to StreetView-->
+    <!--<!DOCTYPE html><html><head><title></title><img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=200" alt="GUIDGUIDGUIDGUID"></a></head><body>-->
+    <!--_________________________________________|__________________________________________________________________________________________________________|           |_|              |_______|  |_____|                |_____|___________|-->
+    <!--                 ^                                                                      ^                                                                 ^      ^       ^           ^         ^           ^          ^        ^      -->
+    <!--              wwwHead                                                              wwwMiddle1                                                                    ,               wwwMiddle2 wwwMiddle3            wwwMiddle4 wwwTail  -->
+    <!--                                                                                                                                                         Lat            Lon                               GUID                        -->
+
+    <!--</body></html>-->
+    <string name="wwwHead">
+        <![CDATA[<!DOCTYPE html><html><head><title></title></head><body>]]></string>
+    <string name="wwwMiddle1">
+        <![CDATA[  <img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=]]></string>
+    <string name="wwwMiddle2"><![CDATA[&heading=]]></string>
+    <string name="wwwMiddle3"><![CDATA[0 alt=\"]]></string>
+    <string name="wwwMiddle4"><![CDATA[\"></a>]]></string>
+    <string name="wwwTail"><![CDATA[</body></html>]]></string>
+
+
     <!--This is an ALPHA, it WILL crash.-->
 
 

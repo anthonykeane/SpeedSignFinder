@@ -53,6 +53,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.anthonykeane.speedsignfinder.LocListener.getBearing_45;
+import static com.anthonykeane.speedsignfinder.LocListener.getLat;
+import static com.anthonykeane.speedsignfinder.LocListener.getLon;
+import static java.util.UUID.randomUUID;
 import static org.opencv.imgproc.Imgproc.BORDER_CONSTANT;
 import static org.opencv.imgproc.Imgproc.COLOR_RGB2HSV;
 import static org.opencv.imgproc.Imgproc.CV_HOUGH_GRADIENT;
@@ -234,7 +238,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		File directory = contextWrapper.getDir(getString(R.string.LatLongFile_txt), Context.MODE_PRIVATE);
 		myInternalFile = new File(directory, getString(R.string.LayLongStorage));
 
-
 		// Turn on teh GPS.     set up GPS
 		locManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		//Create an instance called gpsListener of the class I added called LocListener which is an implements ( is extra to) android.location.LocationListener
@@ -257,7 +260,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public boolean onTouchEvent(MotionEvent event) {
 		// MotionEvent object holds X-Y values
 		if(event.getAction() == MotionEvent.ACTION_DOWN) {
-			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
+//			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
 //			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
 //			ActionBar actionBar = getActionBar();
 //			if(actionBar != null) {actionBar.show();}
@@ -284,6 +287,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	@Override
 	public void onResume() {
 		super.onResume();
+
 		OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
 		//Start the GPS listener
 		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
@@ -329,7 +333,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 			case R.id.thres:
 				hashDefineTrue = !hashDefineTrue;
-				Toast.makeText(speedsignfinderActivity.this, getString(R.string.thres), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(speedsignfinderActivity.this, getString(R.string.thres), Toast.LENGTH_SHORT).show();
 				item.setTitle(getString(R.string.thres).concat(" ").concat(String.valueOf(hashDefineTrue)));
 				return true;
 
@@ -352,11 +356,11 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //				return true;
 
 			case R.id.showversion:
-				alertOnGreenLight = true;
 				Toast.makeText(speedsignfinderActivity.this, (pinfo != null ? pinfo.versionName : null), Toast.LENGTH_SHORT).show();
 				return true;
 
 			case R.id.lightgreen:
+				alertOnGreenLight = true;
 				Toast.makeText(speedsignfinderActivity.this, getString(R.string.lightGreen), Toast.LENGTH_SHORT).show();
 				return true;
 
@@ -385,6 +389,19 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				regex replace expression  =                $1getString(R.string.$2)$3$4
 				Toast.makeText(speedsignfinderActivity.this, getString(R.string.dilate), Toast.LENGTH_SHORT).show();
 				---------------------------------------------                   ++++++ -----------------------------
+
+
+				Find        ^(.*)tion=(.*)&heading=(.*)></a>
+
+				Replace     <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;sll=41.866699,-103.650731&amp;sspn=0.000978,0.002064&amp;t=h&amp;ie=UTF8&amp;hq=&amp;spn=0.139225,0.264187&amp;z=13&amp;layer=c&amp;cbll=$2&amp;cbp=12,$3,,0,20&amp;output=svembed"></iframe>
+
+
+
+
+
+
+
+
 */
 			default:
 				return super.onOptionsItemSelected(item);
@@ -502,7 +519,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 					//put HOUGH in here so that is only gets called if rectangle is the correct size range
 					Mat circles = new Mat();
-					HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, (int) (cropped.rows() / 4), cropped.rows() / 2);
+					HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, cropped.rows() / 4, cropped.rows() / 2);
 
 					if(circles.cols() > 0) {
 						//TODO do I need to loop through ALL circles as the 1st circle will set foundCircle
@@ -541,8 +558,21 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 								//http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%2090&pitch=0&sensor=false&location=-33.7165435,150.961225
 								//toWR.generateNoteOnSD(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon()))));
+								String whatToWrite;
 
-								pakWritetoInternal(String.valueOf(gpsListener.getBearing()).concat(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon())))));
+								//<a href="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%20200&pitch=0&sensor=false&location=-33.69816467,150.9637255125">IMAGE CLICK</a>
+								// http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=50
+
+								whatToWrite = (getString(R.string.wwwMiddle1));
+								whatToWrite = whatToWrite.concat(String.valueOf(getLat()));
+								whatToWrite = whatToWrite.concat(",");
+								whatToWrite = whatToWrite.concat(String.valueOf(getLon()));
+								whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle2));
+								whatToWrite = whatToWrite.concat(String.valueOf(getBearing_45()));
+								whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle3));
+								whatToWrite = whatToWrite.concat(randomUUID().toString());
+								whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle4));
+								pakWritetoInternal(whatToWrite);
 
 
 								// see private Runnable timedTask = new Runnable() above
@@ -616,11 +646,13 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 	// Dooh
 
-	private void pakWritetoInternal(String myData) {
+	private void pakWritetoInternal(String whatToWrite) {
+		whatToWrite = whatToWrite.concat(getString(R.string.wwwTail));
 		FileOutputStream fos;
 		try {
+			// Note APPEND  true                       ----
 			fos = new FileOutputStream(myInternalFile, true);
-			fos.write(myData.concat("\n\r").getBytes());
+			fos.write(whatToWrite.getBytes());
 			fos.close();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -631,6 +663,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private void pakStartInternalFile() {
 		FileOutputStream fos;
 		try {
+			// Note OVER WRIGTH                         ----
 			fos = new FileOutputStream(myInternalFile);
 			fos.write("Start\n\r".getBytes());
 			fos.close();
@@ -642,7 +675,10 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 	private String pakReadInternal() {
 		FileInputStream fis;
-		String myData = null;
+
+		String myData = getString(R.string.wwwTail);
+
+
 		try {
 			fis = new FileInputStream(myInternalFile);
 		} catch(FileNotFoundException e) {
@@ -667,6 +703,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			return "No Data";
 
 		}
+
+		myData = myData.concat(getString(R.string.wwwHead));
 
 		return myData;
 	}
