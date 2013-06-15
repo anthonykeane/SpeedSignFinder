@@ -53,9 +53,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.anthonykeane.speedsignfinder.LocListener.getBearing_45;
-import static com.anthonykeane.speedsignfinder.LocListener.getLat;
-import static com.anthonykeane.speedsignfinder.LocListener.getLon;
 import static java.util.UUID.randomUUID;
 import static org.opencv.imgproc.Imgproc.BORDER_CONSTANT;
 import static org.opencv.imgproc.Imgproc.COLOR_RGB2HSV;
@@ -68,11 +65,17 @@ import static org.opencv.imgproc.Imgproc.dilate;
 import static org.opencv.imgproc.Imgproc.erode;
 import static org.opencv.imgproc.Imgproc.getStructuringElement;
 
+//import java.util.Queue;
+
 
 public class speedsignfinderActivity extends Activity implements CvCameraViewListener2 {
 
 //	// uncommemt in camera_image_view.xml before uncommenting this
 //	Button b1;
+
+	//GPS delay stuff
+	public static final int delayBetweenGPS_Records = 250;  //every 500mS log Geo date in Queue.
+	public ArrayList<String> aPAKqueue = new ArrayList<String>();
 
 
 	//Valid size of detected Object
@@ -115,6 +118,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public boolean foundCircle;
 	public boolean LockedOut;
 	private boolean hasMenuKey;
+
 
 	//Internal Storage
 	File myInternalFile;
@@ -159,6 +163,67 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //			handler.postDelayed(timedTask, 2000);   //not doing repeating so not needed
 		}
 	};
+
+
+	//This timer is to push the Gro data (lat,long etc) into a Queue every x milliseconds.
+	//such that the geo data can be read back, delayed, when a sign is found,
+	private Runnable timedGPSqueue;
+
+	{
+		timedGPSqueue = new Runnable() {
+
+			@Override
+			public void run() {
+
+				//http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%2090&pitch=0&sensor=false&location=-33.7165435,150.961225
+				//toWR.generateNoteOnSD(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon()))));
+				String whatToWrite;
+
+			/*
+			<a href="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%20200&pitch=0&sensor=false&location=-33.69816467,150.9637255125">IMAGE CLICK</a>
+			http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=50
+			Write new entry
+			*/
+
+				whatToWrite = (getString(R.string.wwwMiddle1));
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getLat()));
+				whatToWrite = whatToWrite.concat(",");
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getLon()));
+				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle2));
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getBearing_45()));
+				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle3));
+				whatToWrite = whatToWrite.concat(randomUUID().toString());
+				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle4));
+				boolean GPSqueueIO = aPAKqueue.add(whatToWrite);
+
+			/*
+
+			Don't get lost here there is multiple entries in the queue at this point.
+			above writes the lat,long of write now. Below reads the same data but from several
+			milliseconds ago, how long ago is determined my the numbers of entries in the queue
+			times delayBetweenGPS_Record.
+
+			So if delayBetweenGPS_Records = 200mS
+			and we write 6x aPAKqueue.add("dummy") in onCreate()
+			Then the delay is 6x200mS = 1.2 seconds back in time
+			*/
+
+
+				whatToWrite = aPAKqueue.get(0);
+				aPAKqueue.remove(0);
+
+
+				// read oldest object value and remove that object from queue
+				if(foundCircle) {
+					foundCircle = false;
+					pakWritetoInternal(whatToWrite);
+				}
+
+
+				handler.postDelayed(timedGPSqueue, delayBetweenGPS_Records);   //repeating so needed
+			}
+		};
+	}
 
 
 	public static Rect setContourRect(List<MatOfPoint> contours, int k) {
@@ -207,6 +272,18 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey();
 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
+		// TODO Setup GPS Queue.
+
+
+		aPAKqueue.add("1");
+		aPAKqueue.add("2");
+		aPAKqueue.add("3");
+		aPAKqueue.add("4");
+		aPAKqueue.add("5");
+
+		handler.postDelayed(timedGPSqueue, delayBetweenGPS_Records);   //Start timer
 
 
 		if(hasMenuKey) {
@@ -540,7 +617,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 								//    Core.circle(cropped, pt, 3, new Scalar(0,0,255), 2);
 							}
 							if(doFancyDisplay) cropped.copyTo(cropped2);
-							foundCircle = true;
 
 							if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
 							{
@@ -556,23 +632,16 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 								// write Lat/Long to file
 
 
-								//http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%2090&pitch=0&sensor=false&location=-33.7165435,150.961225
-								//toWR.generateNoteOnSD(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon()))));
-								String whatToWrite;
+								/*
+								TODO Moving this create and write string. Need to Create this string in the GPS timer and write to the GPSqueue
+								then read the GPSqueue here and write it to the file,
+								effectivaly this writes the GPS coords of the position some large number of Milliseconds ago.
+								this componsates for the delay caused by the data processing.
+								I put this in a queue as apposed to just logging the goe data before processing and then writing after processing.
+								because this allows me to control how far back to in time is specified
+								*/
 
-								//<a href="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%20200&pitch=0&sensor=false&location=-33.69816467,150.9637255125">IMAGE CLICK</a>
-								// http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=50
-
-								whatToWrite = (getString(R.string.wwwMiddle1));
-								whatToWrite = whatToWrite.concat(String.valueOf(getLat()));
-								whatToWrite = whatToWrite.concat(",");
-								whatToWrite = whatToWrite.concat(String.valueOf(getLon()));
-								whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle2));
-								whatToWrite = whatToWrite.concat(String.valueOf(getBearing_45()));
-								whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle3));
-								whatToWrite = whatToWrite.concat(randomUUID().toString());
-								whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle4));
-								pakWritetoInternal(whatToWrite);
+								foundCircle = true; // this tells GPS timer to write to file
 
 
 								// see private Runnable timedTask = new Runnable() above
