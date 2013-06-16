@@ -14,6 +14,12 @@
     <!--<item-->
     <!--android:id="@+id/dilate"-->
     <!--android:title="@string/dilate"/>-->
+
+    <item
+            android:id="@+id/popup"
+            android:title="@string/popup"/>
+
+
     <item
             android:id="@+id/email"
             android:title="@string/email"

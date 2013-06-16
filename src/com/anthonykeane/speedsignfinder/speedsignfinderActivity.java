@@ -3,6 +3,7 @@ package com.anthonykeane.speedsignfinder;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -74,11 +76,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //	Button b1;
 
 	//GPS delay stuff
-	public static final int delayBetweenGPS_Records = 250;  //every 500mS log Geo date in Queue.
+	public static final int delayBetweenGPS_Records = 100;  //every 500mS log Geo date in Queue.
 	public ArrayList<String> aPAKqueue = new ArrayList<String>();
 
 
 	//Valid size of detected Object
+	public static final int lockOutDelay = 3000; // 3 seconds
 	public static final int CROPPED_BORDER = 20;
 	public static final int maxSizeofDetectableObject = 200;
 	public static final int minSizeofDetectableObject = 30;
@@ -92,50 +95,54 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //	public static final int H_MIN =         155;
 //	public static final int H_MAX =         180;
 	public static final int H_MIN = 0;
-	//  public static final int FRAME_WIDTH =   320;
-//  public static final int FRAME_HEIGHT =  240;
-//	public static final int FRAME_WIDTH =   800;
-//	public static final int FRAME_HEIGHT =  600;
 	public static final int H_MAX = 15;
-	public static final int S_MIN = 100;
+	public static int S_MIN = 100;
 	public static final int S_MAX = 256;
 	public static final int V_MIN = 100;
 	public static final int V_MAX = 256;
 	public static final int H_NOR = 15;
 	private static final String TAG = "OCVSpeedSignFinder::Activity";
 	private static boolean hashDefineTrue = false;
+//  public static final int FRAME_WIDTH =   320;
+//  public static final int FRAME_HEIGHT =  240;
+//	public static final int FRAME_WIDTH =   800;
+//	public static final int FRAME_HEIGHT =  600;
 
 
-	//MENU
 	private static boolean doDebug = true;
 	private static boolean doFancyDisplay = true;
 	private static boolean extraErrode = true;
 	private static boolean extraDilates = true;
 	private static boolean alertOnGreenLight = false;
 
-	// end MENU
 	public Mat cropped2;
-	public boolean foundCircle;
-	public boolean LockedOut;
-	private boolean hasMenuKey;
+	public boolean foundCircle;                 // Used to trigger writing GPS to file.(indirectly)
+	public boolean LockedOut;                   // Caught a sign so take it easy for a while
+	private boolean hasMenuKey;                 // Needed to build correct android menu
 
+	File myInternalFile;                        // used to R/W internal file.
 
-	//Internal Storage
-	File myInternalFile;
-	private double lastFullArea = 0;
-	private Handler handler = new Handler();
-	private CameraBridgeViewBase mOpenCvCameraView;
-	//gps
-	private LocListener gpsListener = new LocListener();
-	private LocationManager locManager;
-	//	private Size mSize0;
-//	private Size mSizeRgba;
-//	private Size mSizeRgbaInner;
+	private double lastFullArea = 0;            // used for Green Light detection
+
+	private Handler handler = new Handler();    // used for timers
+
+	private CameraBridgeViewBase mOpenCvCameraView; //used by openCV
 	private Mat mCameraFeed;
 	private Mat mThreshold;
 	private Mat cropped;
+
+	private LocListener gpsListener = new LocListener();    // used by GPS
+	private LocationManager locManager;                     // used by GPS
+
+	//	private Size mSize0;
+//	private Size mSizeRgba;
+//	private Size mSizeRgbaInner;
+
 	//	private Scalar mColorsRGB[];
 //	private Scalar mColorsHue[];
+
+
+	/** Loads OpenCV */
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
 		@Override
@@ -153,8 +160,10 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			}
 		}
 	};
-	//This code is to create a delay after playing a foundCircle sound so that is doesn't play 10's at once.
-	//This is what is called once the delay expires after the INTENT called in the Hough block
+
+
+	/** This code is to create a delay after playing a foundCircle sound so that is doesn't play 10's at once.
+	 This is what is called once the delay expires after the INTENT called in the Hough block */
 	private Runnable timedTask = new Runnable() {
 
 		@Override
@@ -165,51 +174,48 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	};
 
 
-	//This timer is to push the Gro data (lat,long etc) into a Queue every x milliseconds.
-	//such that the geo data can be read back, delayed, when a sign is found,
+	/**
+	 This timer is to push the Gro data (lat,long etc) into a Queue every x milliseconds.
+	 such that the geo data can be read back, delayed, when a sign is found,
+	 */
 	private Runnable timedGPSqueue;
-
 	{
 		timedGPSqueue = new Runnable() {
-
 			@Override
 			public void run() {
-
 				//http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%2090&pitch=0&sensor=false&location=-33.7165435,150.961225
 				//toWR.generateNoteOnSD(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon()))));
 				String whatToWrite;
-
-			/*
-			<a href="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%20200&pitch=0&sensor=false&location=-33.69816467,150.9637255125">IMAGE CLICK</a>
-			http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=50
-			Write new entry
-			*/
-
-				whatToWrite = (getString(R.string.wwwMiddle1));
-				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getLat()));
+				/*
+				<a href="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%20200&pitch=0&sensor=false&location=-33.69816467,150.9637255125">IMAGE CLICK</a>
+				http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=50
+				Write new entry
+				*/
+				whatToWrite = String.valueOf(LocListener.getLat());
 				whatToWrite = whatToWrite.concat(",");
 				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getLon()));
 				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle2));
 				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getBearing_45()));
+				boolean GPSqueueIO = aPAKqueue.add(whatToWrite);
+				if(!GPSqueueIO) Log.i(TAG, "timedGPSqueue  aPAKqueue.add(whatToWrite) failed");
+				/*
+				Don't get lost here there is multiple entries in the queue at this point.
+				above writes the lat,long of write now. Below reads the same data but from several
+				milliseconds ago, how long ago is determined my the numbers of entries in the queue
+				times delayBetweenGPS_Record.
+
+				So if delayBetweenGPS_Records = 200mS
+				and we write 6x aPAKqueue.add("dummy") in onCreate()
+				Then the delay is 6x200mS = 1.2 seconds back in time
+				*/
+				whatToWrite = (getString(R.string.wwwMiddle1));
+				// the get(0) is in here
+				whatToWrite = whatToWrite.concat(aPAKqueue.get(0)); // remember this is the lat,long, wwwMiddle2 and  bearing. see lines just above
 				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle3));
 				whatToWrite = whatToWrite.concat(randomUUID().toString());
+				whatToWrite = whatToWrite.concat(" - ");
+				whatToWrite = whatToWrite.concat(String.valueOf(S_MIN));
 				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle4));
-				boolean GPSqueueIO = aPAKqueue.add(whatToWrite);
-
-			/*
-
-			Don't get lost here there is multiple entries in the queue at this point.
-			above writes the lat,long of write now. Below reads the same data but from several
-			milliseconds ago, how long ago is determined my the numbers of entries in the queue
-			times delayBetweenGPS_Record.
-
-			So if delayBetweenGPS_Records = 200mS
-			and we write 6x aPAKqueue.add("dummy") in onCreate()
-			Then the delay is 6x200mS = 1.2 seconds back in time
-			*/
-
-
-				whatToWrite = aPAKqueue.get(0);
 				aPAKqueue.remove(0);
 
 
@@ -274,14 +280,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
-		// TODO Setup GPS Queue.
+		// Setup GPS Queue.
+		// push 2 entries into the queue for a (2 x delayBetweenGPS_Records) delay
+		for(int x = 0; x < 2; x++) {
+			aPAKqueue.add("Dummy Data for Queue ".concat(String.valueOf(x)));
+		}
 
-
-		aPAKqueue.add("1");
-		aPAKqueue.add("2");
-		aPAKqueue.add("3");
-		aPAKqueue.add("4");
-		aPAKqueue.add("5");
 
 		handler.postDelayed(timedGPSqueue, delayBetweenGPS_Records);   //Start timer
 
@@ -295,7 +299,11 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 			setContentView(R.layout.camera_image_surface_view);
 			// Make actionBar translucent (2)
-			getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(128, 0, 0, 0)));
+			try {
+				getActionBar().setBackgroundDrawable(new ColorDrawable(Color.argb(128, 0, 0, 0)));
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 //		ActionBar actionBar = getActionBar();
@@ -331,7 +339,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	}
 
 
-	//TODO fix this. trying to catch an anywhere touch
+	//TODO Use this to select a blob in the traffic light cade it catches an anywhere touch
 	// this is to open the menu for buttonless devices
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -414,6 +422,66 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				item.setTitle(getString(R.string.thres).concat(" ").concat(String.valueOf(hashDefineTrue)));
 				return true;
 
+
+			case R.id.popup:
+				hashDefineTrue = true;
+
+
+				final Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+				dialog.setContentView(R.layout.threshold_dialog);
+
+				dialog.setCancelable(true);
+				//there are a lot of settings, for dialog, check them all out!
+				dialog.show();
+
+				SeekBar seekbar = (SeekBar) dialog.findViewById(R.id.size_seekbar);
+				seekbar.setProgress(100);
+				//	Toast.makeText(speedsignfinderActivity.this,"hellp PB1", Toast.LENGTH_SHORT).show();
+				//final TextView tv_dialog_size = (TextView) dialog.findViewById(R.id.set_size_help_text);
+
+				seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+					@Override
+					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+						S_MIN = progress;
+					}
+
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+					}
+
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						Toast.makeText(speedsignfinderActivity.this, "S_MIN = ".concat(String.valueOf(S_MIN)), Toast.LENGTH_SHORT).show();
+
+					}
+				});
+
+				//
+				//			SeekBar seekbar2 = (SeekBar) dialog.findViewById(R.id.size_seekbar2);
+				//			//	Toast.makeText(speedsignfinderActivity.this,"hellp PB2", Toast.LENGTH_SHORT).show();
+				//			//	final TextView tv_dialog_size2 = (TextView) dialog.findViewById(R.id.set_size_help_text);
+				//
+				//				seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+				//					@Override
+				//					public void onProgressChanged(SeekBar seekBar2, int progress, boolean fromUser) {
+				//					}
+				//
+				//					@Override
+				//					public void onStartTrackingTouch(SeekBar seekBar2) {
+				//					}
+				//
+				//					@Override
+				//					public void onStopTrackingTouch(SeekBar seekBar2) {
+				//						//Toast.makeText(speedsignfinderActivity.this,String.valueOf(  seekBar2).concat("Stop 2"), Toast.LENGTH_SHORT).show();
+				//
+				//					}
+				//				});
+
+				hashDefineTrue = true;
+
+				return true;
+
+
 //			case R.id.debug:
 //				doDebug = !doDebug;
 //				Toast.makeText(speedsignfinderActivity.this, getString(R.string.debug), Toast.LENGTH_SHORT).show();
@@ -442,9 +510,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				return true;
 
 			case R.id.email:
-				//TODO add intent to send email
-				// This code plays the default beep
-
+				//intent to send email
 				Intent intent = new Intent(Intent.ACTION_SEND);
 				intent.setType("text/html");
 				intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.emailAddress)});
@@ -453,7 +519,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				startActivity(Intent.createChooser(intent, "Send Email"));
 
 
-				//TODO is there a way to see if the email was sent?
+				//There is no way to see if the email was sent?
 				// Clear the content of the internal file by not appending
 				pakStartInternalFile();
 
@@ -470,7 +536,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 				Find        ^(.*)tion=(.*)&heading=(.*)></a>
 
-				Replace     <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;sll=41.866699,-103.650731&amp;sspn=0.000978,0.002064&amp;t=h&amp;ie=UTF8&amp;hq=&amp;spn=0.139225,0.264187&amp;z=13&amp;layer=c&amp;cbll=$2&amp;cbp=12,$3,,0,20&amp;output=svembed"></iframe>
+				Replace     <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;sll=41.866699,-103.650731&amp;sspn=0.000978,0.002064&amp;t=h&amp;ie=UTF8&amp;hq=&amp;spn=0.139225,0.264187&amp;z=13&amp;layer=c&amp;cbll=$2&amp;cbp=12,$3,,0,0&amp;output=svembed"></iframe>
 
 
 
@@ -611,11 +677,11 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 							if(doDebug) {
 								Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
 								int radius = (int) Math.round(vCircle[2]);
-
 								// draw the found circle
 								Core.circle(cropped, pt, radius, new Scalar(0, 255, 0), 5);
 								//    Core.circle(cropped, pt, 3, new Scalar(0,0,255), 2);
 							}
+
 							if(doFancyDisplay) cropped.copyTo(cropped2);
 
 							if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
@@ -632,20 +698,11 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 								// write Lat/Long to file
 
 
-								/*
-								TODO Moving this create and write string. Need to Create this string in the GPS timer and write to the GPSqueue
-								then read the GPSqueue here and write it to the file,
-								effectivaly this writes the GPS coords of the position some large number of Milliseconds ago.
-								this componsates for the delay caused by the data processing.
-								I put this in a queue as apposed to just logging the goe data before processing and then writing after processing.
-								because this allows me to control how far back to in time is specified
-								*/
-
-								foundCircle = true; // this tells GPS timer to write to file
+								foundCircle = true; // this tells GPS timer to write to file.
 
 
 								// see private Runnable timedTask = new Runnable() above
-								handler.postDelayed(timedTask, 2000);
+								handler.postDelayed(timedTask, lockOutDelay);
 
 							}
 
@@ -678,7 +735,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		lastFullArea = fullArea;
 		if(doFancyDisplay) {
 			if(cropped2.cols() > 0)
-			//TODO do I need foundCircle anymore
 			//if (foundCircle)
 			{
 				cropped2.copyTo(mCameraFeed.submat(new Rect(0, 0, cropped2.width(), cropped2.height())));
