@@ -17,8 +17,9 @@
 
     <item
             android:id="@+id/popup"
-            android:title="@string/popup"/>
-
+            android:title="@string/popup"
+            android:icon="@drawable/jog_dial_dimple"
+            android:showAsAction="ifRoom|withText"/>
 
     <item
             android:id="@+id/email"

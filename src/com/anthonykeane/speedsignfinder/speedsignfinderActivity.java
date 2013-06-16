@@ -434,12 +434,14 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				//there are a lot of settings, for dialog, check them all out!
 				dialog.show();
 
+
 				SeekBar seekbar = (SeekBar) dialog.findViewById(R.id.size_seekbar);
-				seekbar.setProgress(100);
+				seekbar.setProgress(S_MIN);
 				//	Toast.makeText(speedsignfinderActivity.this,"hellp PB1", Toast.LENGTH_SHORT).show();
 				//final TextView tv_dialog_size = (TextView) dialog.findViewById(R.id.set_size_help_text);
 
 				seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
 					@Override
 					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 						S_MIN = progress;
@@ -447,12 +449,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 					@Override
 					public void onStartTrackingTouch(SeekBar seekBar) {
+
 					}
 
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
-						Toast.makeText(speedsignfinderActivity.this, "S_MIN = ".concat(String.valueOf(S_MIN)), Toast.LENGTH_SHORT).show();
-
+						timerDelayRemoveDialog(400, dialog); //closes the dialog after 2000mS
 					}
 				});
 
@@ -833,6 +835,31 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 		return myData;
 	}
+
+
+	public void timerDelayRemoveDialog(long time, final Dialog d) {
+		new Handler().postDelayed(new Runnable() {
+			public void run() {
+				hashDefineTrue = false;
+				d.dismiss();
+			}
+		}, time);
+	}
+
+
+//
+//	/** This code is to create a delay after playing a foundCircle sound so that is doesn't play 10's at once.
+//	 This is what is called once the delay expires after the INTENT called in the Hough block */
+//	private Runnable timedTaskTresholdDialog = new Runnable() {
+//
+//		@Override
+//		public void run() {
+//			LockedOut = false;
+////			handler.postDelayed(timedTask, 2000);   //not doing repeating so not needed
+//		}
+//	};
+//
+
 
 }
 

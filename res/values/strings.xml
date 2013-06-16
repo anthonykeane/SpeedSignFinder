@@ -10,7 +10,7 @@
     <string name="erode">Erode</string>
     <string name="dilate">Dilate x2</string>
     <string name="email">Email Data</string>
-    <string name="popup">popup</string>
+    <string name="popup">Adjust Threshold Level</string>
 
 
     <string name="emailAddress">speedsignfinder@anthonykeane.com</string>

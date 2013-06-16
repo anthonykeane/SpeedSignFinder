@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.anthonykeane.speedsignfinder"
           android:versionCode="120"
-          android:versionName="0.0.20.$Rev: 73 $">
+          android:versionName="0.0.20.$Rev: 75 $">
 
 
     <uses-permission android:name="android.permission.ACCESS_GPS"/>
