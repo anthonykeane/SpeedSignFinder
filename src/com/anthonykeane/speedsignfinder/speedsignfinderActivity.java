@@ -114,6 +114,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private static boolean extraErrode = true;
 	private static boolean extraDilates = true;
 	private static boolean alertOnGreenLight = false;
+	private static boolean ImageFrameToggle = false;
 
 	public Mat cropped2;
 	public boolean foundCircle;                 // Used to trigger writing GPS to file.(indirectly)
@@ -583,6 +584,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		Mat erodeElement = getStructuringElement(MORPH_RECT, new Size(2, 2));
 		Mat dilateElement = getStructuringElement(MORPH_RECT, new Size(3, 3));
 
+		ImageFrameToggle = !ImageFrameToggle;
+
 		foundCircle = false;
 //
 //
@@ -600,7 +603,13 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 		cvtColor(mCameraFeed, mThreshold, COLOR_RGB2HSV);
-		Core.inRange(mThreshold, new Scalar(H_MIN, S_MIN, V_MIN), new Scalar(H_MAX, S_MAX, V_MAX), mThreshold);
+
+		//every second pass does
+		if(ImageFrameToggle) {
+			Core.inRange(mThreshold, new Scalar((180 - H_MAX), S_MIN, V_MIN), new Scalar(180, S_MAX, V_MAX), mThreshold);
+		} else {
+			Core.inRange(mThreshold, new Scalar(H_MIN, S_MIN, V_MIN), new Scalar(H_MAX, S_MAX, V_MAX), mThreshold);
+		}
 
 //		    TODO was dropping erode/dilate a bad idea (it saved LOTS of cpu time)
 		erode(mThreshold, mThreshold, erodeElement);
@@ -641,77 +650,78 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			if((area > minAreaofDetectableObject) && (area < maxAreaofDetectableObject)) {
 				//Cut out the image segment where the object (possible circle) is into its own Mat (smaller image)
 				boundRect = setContourRect(contours, k);
-				double aSquare;
 
-				if(boundRect.height > boundRect.width) {
-					aSquare = ((double) boundRect.height / (double) boundRect.width);
-				} else {
-					aSquare = ((double) boundRect.width / (double) boundRect.height);
-				}
+				//If the area of the blob is greater than 20% of the area of the bounding rectangle then is is not a sign as they are hollow.
+				if((int) (area / 100) == (int) (boundRect.area() * 3.1416927 / 400)) {
+					double aSquare;
 
-				if(aSquare < 1.2 && aSquare > 0.8) {
-
-
-					cropped = new Mat(mCameraFeed, boundRect).clone();
-					Mat croppedT = new Mat(mThreshold, boundRect).clone();
-					if(doFancyDisplay)
-						copyMakeBorder(cropped, cropped, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
-					copyMakeBorder(croppedT, croppedT, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
-					if(doDebug) {
-						Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);
-						Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);                        //cropped.copyTo(roi);
+					if(boundRect.height > boundRect.width) {
+						aSquare = ((double) boundRect.height / (double) boundRect.width);
+					} else {
+						aSquare = ((double) boundRect.width / (double) boundRect.height);
 					}
 
-					//put HOUGH in here so that is only gets called if rectangle is the correct size range
-					Mat circles = new Mat();
-					HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, cropped.rows() / 4, cropped.rows() / 2);
+					if(aSquare < 1.2 && aSquare > 0.8) {
 
-					if(circles.cols() > 0) {
-						//TODO do I need to loop through ALL circles as the 1st circle will set foundCircle
-						int x = 0;
-						//for ( ; x < circles.cols(); x++)
-						{
-							double vCircle[] = circles.get(0, x);
 
-							if(vCircle == null)
-								break;
+						cropped = new Mat(mCameraFeed, boundRect).clone();
+						Mat croppedT = new Mat(mThreshold, boundRect).clone();
+						if(doFancyDisplay)
+							copyMakeBorder(cropped, cropped, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
+						copyMakeBorder(croppedT, croppedT, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
+						if(doDebug) {
+							Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);
+							Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);                        //cropped.copyTo(roi);
+						}
 
-							if(doDebug) {
-								Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
-								int radius = (int) Math.round(vCircle[2]);
-								// draw the found circle
-								Core.circle(cropped, pt, radius, new Scalar(0, 255, 0), 5);
-								//    Core.circle(cropped, pt, 3, new Scalar(0,0,255), 2);
-							}
+						//put HOUGH in here so that is only gets called if rectangle is the correct size range
+						Mat circles = new Mat();
+						HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, cropped.rows() / 4, cropped.rows() / 2);
 
-							if(doFancyDisplay) cropped.copyTo(cropped2);
-
-							if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
+						if(circles.cols() > 0) {
+							//TODO do I need to loop through ALL circles as the 1st circle will set foundCircle
+							int x = 0;
+							//for ( ; x < circles.cols(); x++)
 							{
-								LockedOut = true;
-								// This code plays the default beep
-								try {
-									Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-									Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-									r.play();
-								} catch(Exception e) {
-									e.printStackTrace();
+								double vCircle[] = circles.get(0, x);
+
+								if(vCircle == null)
+									break;
+
+								if(doDebug) {
+									Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
+									int radius = (int) Math.round(vCircle[2]);
+									// draw the found circle
+									Core.circle(cropped, pt, radius, new Scalar(0, 255, 0), 5);
+									//    Core.circle(cropped, pt, 3, new Scalar(0,0,255), 2);
 								}
-								// write Lat/Long to file
+
+								if(doFancyDisplay) cropped.copyTo(cropped2);
+
+								if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
+								{
+									LockedOut = true;
+									// This code plays the default beep
+									try {
+										Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+										Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+										r.play();
+									} catch(Exception e) {
+										e.printStackTrace();
+									}
+									// write Lat/Long to file
 
 
-								foundCircle = true; // this tells GPS timer to write to file.
+									foundCircle = true; // this tells GPS timer to write to file.
 
 
-								// see private Runnable timedTask = new Runnable() above
-								handler.postDelayed(timedTask, lockOutDelay);
+									// see private Runnable timedTask = new Runnable() above
+									handler.postDelayed(timedTask, lockOutDelay);
 
+								}
 							}
-
-
 						}
 					}
-
 				}
 			}
 		}
