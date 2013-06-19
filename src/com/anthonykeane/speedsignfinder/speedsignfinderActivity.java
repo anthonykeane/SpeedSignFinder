@@ -77,9 +77,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 	//GPS delay stuff
 	public static final int delayBetweenGPS_Records = 100;  //every 500mS log Geo date in Queue.
-	public ArrayList<String> aPAKqueue = new ArrayList<String>();
-
-
 	//Valid size of detected Object
 	public static final int lockOutDelay = 3000; // 3 seconds
 	public static final int CROPPED_BORDER = 20;
@@ -92,58 +89,52 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public static final int FRAME_WIDTH = 1280;
 	public static final int FRAME_HEIGHT = 720;
 	//TODO Need to merge upp and lower RED : Lower is 0-25 Upper is 155-180
+	//see ImageFrameToggle
 //	public static final int H_MIN =         155;
 //	public static final int H_MAX =         180;
 	public static final int H_MIN = 0;
 	public static final int H_MAX = 15;
-	public static int S_MIN = 100;
+	public static final int S_MIN = 100;
 	public static final int S_MAX = 256;
-	public static final int V_MIN = 100;
 	public static final int V_MAX = 256;
 	public static final int H_NOR = 15;
 	private static final String TAG = "OCVSpeedSignFinder::Activity";
+	public static int V_MIN = 100;
 	private static boolean hashDefineTrue = false;
-//  public static final int FRAME_WIDTH =   320;
+	//  public static final int FRAME_WIDTH =   320;
 //  public static final int FRAME_HEIGHT =  240;
 //	public static final int FRAME_WIDTH =   800;
 //	public static final int FRAME_HEIGHT =  600;
-
-
-	private static boolean doDebug = true;
-	private static boolean doFancyDisplay = true;
-	private static boolean extraErrode = true;
-	private static boolean extraDilates = true;
+	private static final boolean doDebug = true;
+	private static final boolean doFancyDisplay = true;
+	private static final boolean extraErrode = true;
+	private static final boolean extraDilates = true;
 	private static boolean alertOnGreenLight = false;
-	private static boolean ImageFrameToggle = false;
-
+	private static final boolean ImageFrameToggle = false;
+	public ArrayList<String> aPAKqueue = new ArrayList<String>();
 	public Mat cropped2;
 	public boolean foundCircle;                 // Used to trigger writing GPS to file.(indirectly)
 	public boolean LockedOut;                   // Caught a sign so take it easy for a while
-	private boolean hasMenuKey;                 // Needed to build correct android menu
-
 	File myInternalFile;                        // used to R/W internal file.
-
+	private boolean hasMenuKey;                 // Needed to build correct android menu
 	private double lastFullArea = 0;            // used for Green Light detection
-
 	private Handler handler = new Handler();    // used for timers
-
 	private CameraBridgeViewBase mOpenCvCameraView; //used by openCV
 	private Mat mCameraFeed;
 	private Mat mThreshold;
 	private Mat cropped;
-
 	private LocListener gpsListener = new LocListener();    // used by GPS
 	private LocationManager locManager;                     // used by GPS
-
+	private pakSensors pakS = new pakSensors();
 	//	private Size mSize0;
 //	private Size mSizeRgba;
 //	private Size mSizeRgbaInner;
 
 	//	private Scalar mColorsRGB[];
 //	private Scalar mColorsHue[];
-
-
-	/** Loads OpenCV */
+	/**
+	 * Loads OpenCV
+	 */
 	private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
 		@Override
@@ -162,90 +153,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		}
 	};
 
-
-	/** This code is to create a delay after playing a foundCircle sound so that is doesn't play 10's at once.
-	 This is what is called once the delay expires after the INTENT called in the Hough block */
-	private Runnable timedTask = new Runnable() {
-
-		@Override
-		public void run() {
-			LockedOut = false;
-//			handler.postDelayed(timedTask, 2000);   //not doing repeating so not needed
-		}
-	};
-
-
-	/**
-	 This timer is to push the Gro data (lat,long etc) into a Queue every x milliseconds.
-	 such that the geo data can be read back, delayed, when a sign is found,
-	 */
-	private Runnable timedGPSqueue;
-	{
-		timedGPSqueue = new Runnable() {
-			@Override
-			public void run() {
-				//http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%2090&pitch=0&sensor=false&location=-33.7165435,150.961225
-				//toWR.generateNoteOnSD(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon()))));
-				String whatToWrite;
-				/*
-				<a href="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%20200&pitch=0&sensor=false&location=-33.69816467,150.9637255125">IMAGE CLICK</a>
-				http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=50
-				Write new entry
-				*/
-				whatToWrite = String.valueOf(LocListener.getLat());
-				whatToWrite = whatToWrite.concat(",");
-				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getLon()));
-				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle2));
-				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getBearing_45()));
-				boolean GPSqueueIO = aPAKqueue.add(whatToWrite);
-				if(!GPSqueueIO) Log.i(TAG, "timedGPSqueue  aPAKqueue.add(whatToWrite) failed");
-				/*
-				Don't get lost here there is multiple entries in the queue at this point.
-				above writes the lat,long of write now. Below reads the same data but from several
-				milliseconds ago, how long ago is determined my the numbers of entries in the queue
-				times delayBetweenGPS_Record.
-
-				So if delayBetweenGPS_Records = 200mS
-				and we write 6x aPAKqueue.add("dummy") in onCreate()
-				Then the delay is 6x200mS = 1.2 seconds back in time
-				*/
-				whatToWrite = (getString(R.string.wwwMiddle1));
-				// the get(0) is in here
-				whatToWrite = whatToWrite.concat(aPAKqueue.get(0)); // remember this is the lat,long, wwwMiddle2 and  bearing. see lines just above
-				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle3));
-				whatToWrite = whatToWrite.concat(randomUUID().toString());
-				whatToWrite = whatToWrite.concat(" - ");
-				whatToWrite = whatToWrite.concat(String.valueOf(S_MIN));
-				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle4));
-				aPAKqueue.remove(0);
-
-
-				// read oldest object value and remove that object from queue
-				if(foundCircle) {
-					foundCircle = false;
-					pakWritetoInternal(whatToWrite);
-				}
-
-
-				handler.postDelayed(timedGPSqueue, delayBetweenGPS_Records);   //repeating so needed
-			}
-		};
-	}
-
-
-	public static Rect setContourRect(List<MatOfPoint> contours, int k) {
-		Rect boundRect = new Rect();
-		Iterator<MatOfPoint> each = contours.iterator();
-		int j = 0;
-		while(each.hasNext()) {
-			MatOfPoint wrapper = each.next();
-			if(j == k) {
-				return Imgproc.boundingRect(wrapper);
-			}
-			j++;
-		}
-		return boundRect;
-	}
 
 //   // uncommemt in camera_image_view.xml before uncommenting this/
 //	View.OnClickListener myhandler1;
@@ -337,24 +244,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		mOpenCvCameraView.setMaxFrameSize(FRAME_WIDTH, FRAME_HEIGHT);
 		mOpenCvCameraView.enableFpsMeter();
 		LockedOut = false;
-	}
-
-
-	//TODO Use this to select a blob in the traffic light cade it catches an anywhere touch
-	// this is to open the menu for buttonless devices
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// MotionEvent object holds X-Y values
-		if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
-//			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
-//			ActionBar actionBar = getActionBar();
-//			if(actionBar != null) {actionBar.show();}
-			openOptionsMenu();
-
-		}
-
-		return super.onTouchEvent(event);
+		//pakS.init();
 	}
 
 	@Override
@@ -388,6 +278,25 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		// Turn Off the GPS
 		locManager = null;
 	}
+
+
+	//TODO Use this to select a blob in the traffic light code it catches an anywhere touch
+	// this is to open the menu for buttonless devices
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// MotionEvent object holds X-Y values
+		if(event.getAction() == MotionEvent.ACTION_DOWN) {
+//			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
+//			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
+//			ActionBar actionBar = getActionBar();
+//			if(actionBar != null) {actionBar.show();}
+			openOptionsMenu();
+
+		}
+
+		return super.onTouchEvent(event);
+	}
+
 
 	//MENU CODE START
 	@Override
@@ -437,7 +346,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 				SeekBar seekbar = (SeekBar) dialog.findViewById(R.id.size_seekbar);
-				seekbar.setProgress(S_MIN);
+				seekbar.setProgress(V_MIN);
 				//	Toast.makeText(speedsignfinderActivity.this,"hellp PB1", Toast.LENGTH_SHORT).show();
 				//final TextView tv_dialog_size = (TextView) dialog.findViewById(R.id.set_size_help_text);
 
@@ -445,7 +354,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 					@Override
 					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-						S_MIN = progress;
+						V_MIN = progress;
 					}
 
 					@Override
@@ -482,6 +391,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 				hashDefineTrue = true;
 
+				return true;
+
+
+			case R.id.temp:
+
+				Toast.makeText(speedsignfinderActivity.this, String.valueOf(pakS.getLastX()), Toast.LENGTH_SHORT).show();
 				return true;
 
 
@@ -584,7 +499,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		Mat erodeElement = getStructuringElement(MORPH_RECT, new Size(2, 2));
 		Mat dilateElement = getStructuringElement(MORPH_RECT, new Size(3, 3));
 
-		ImageFrameToggle = !ImageFrameToggle;
+		//ImageFrameToggle = !ImageFrameToggle;
 
 		foundCircle = false;
 //
@@ -651,7 +566,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				//Cut out the image segment where the object (possible circle) is into its own Mat (smaller image)
 				boundRect = setContourRect(contours, k);
 
-				//If the area of the blob is greater than 20% of the area of the bounding rectangle then is is not a sign as they are hollow.
+				//If the area of the blob is roughly equal to pi/4 of the area of the bounding rectangle then it then it is a circle
+				//todo  test for Hollow, if not hollow it is not a sign as they are hollow.
 				if((int) (area / 100) == (int) (boundRect.area() * 3.1416927 / 400)) {
 					double aSquare;
 
@@ -661,25 +577,23 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 						aSquare = ((double) boundRect.width / (double) boundRect.height);
 					}
 
-					if(aSquare < 1.2 && aSquare > 0.8) {
-
-
+					if(aSquare < 1.5) {
+						if(doDebug) {
+							Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(0, 255, 0), 5, 8, 0);
+							Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(0, 255, 0), 5, 8, 0);                        //cropped.copyTo(roi);
+						}
 						cropped = new Mat(mCameraFeed, boundRect).clone();
 						Mat croppedT = new Mat(mThreshold, boundRect).clone();
 						if(doFancyDisplay)
 							copyMakeBorder(cropped, cropped, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
 						copyMakeBorder(croppedT, croppedT, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
-						if(doDebug) {
-							Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);
-							Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0);                        //cropped.copyTo(roi);
-						}
 
 						//put HOUGH in here so that is only gets called if rectangle is the correct size range
 						Mat circles = new Mat();
 						HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, cropped.rows() / 4, cropped.rows() / 2);
 
 						if(circles.cols() > 0) {
-							//TODO do I need to loop through ALL circles as the 1st circle will set foundCircle
+							//Don't need to loop through ALL circles as the 1st circle will set foundCircle
 							int x = 0;
 							//for ( ; x < circles.cols(); x++)
 							{
@@ -721,30 +635,40 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 								}
 							}
 						}
+					} else {
+						if(doDebug) {
+							Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(0, 0, 255), 5, 8, 0);
+							Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(0, 0, 255), 5, 8, 0);                        //cropped.copyTo(roi);
+						}
 					}
 				}
 			}
 		}
-		// fullArea is the number of pixels in the Threshold image
-		// this will alert if red reduces.
-		String myConcatedString;
-		//myConcatedString = String.valueOf(lastFullArea).concat(",").concat(String.valueOf(fullArea));
-		myConcatedString = String.valueOf((lastFullArea * 0.9) / (fullArea));
-		Core.putText(mCameraFeed, myConcatedString, new Point(0, 25), 1, 1, new Scalar(128, 0, 0), 1);
 
-		if((lastFullArea * 0.9) > fullArea && alertOnGreenLight) {
-			try {
-				Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-				Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-				r.play();
-			} catch(Exception e) {
-				e.printStackTrace();
+		if(ImageFrameToggle) {
+			// fullArea is the number of pixels in the Threshold image
+			// this will alert if red reduces.
+			String myConcatedString;
+			//myConcatedString = String.valueOf(lastFullArea).concat(",").concat(String.valueOf(fullArea));
+			myConcatedString = String.valueOf((lastFullArea * 0.8) / (fullArea));
+			Core.putText(mCameraFeed, myConcatedString, new Point(0, 85), 2, 3, new Scalar(128, 0, 0), 1);
+
+			if((lastFullArea * 0.8) > fullArea && alertOnGreenLight) {
+				try {
+					Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+					Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+					r.play();
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+				alertOnGreenLight = false;
+				lastFullArea = 0;
+
 			}
-			alertOnGreenLight = false;
-			lastFullArea = 0;
-
+			lastFullArea = fullArea;
 		}
-		lastFullArea = fullArea;
+
+
 		if(doFancyDisplay) {
 			if(cropped2.cols() > 0)
 			//if (foundCircle)
@@ -760,10 +684,10 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		}
 		//reference square
 
-		if(hashDefineTrue) {
-			Core.rectangle(mCameraFeed, new Point(100, 100), new Point(100, 100 + minSizeofDetectableObject), new Scalar(255, 255, 255), 2, 8, 0);
-			Core.rectangle(mCameraFeed, new Point(100, 100), new Point(100, 100 + maxSizeofDetectableObject), new Scalar(255, 255, 255), 2, 8, 0);
-		}
+//		if(doDebug) {
+//			Core.rectangle(mCameraFeed, new Point(400, 400), new Point(400 + minSizeofDetectableObject, 400 + minSizeofDetectableObject), new Scalar(255, 255, 255), 2, 8, 0);
+//			Core.rectangle(mCameraFeed, new Point(300, 300), new Point(300 + maxSizeofDetectableObject, 300 + maxSizeofDetectableObject), new Scalar(255, 255, 255), 2, 8, 0);
+//		}
 
 
 		// pop the threshold image back in the unused right side of the screen image
@@ -772,19 +696,114 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 		//Added a menu to switch between Threshold view and Camera view
-		if(hashDefineTrue)
+		if(hashDefineTrue) {
 			//return null;
+
 			return mThreshold;
 			//return cropped;
-		else
+		} else
 			return mCameraFeed;
 	}
 
+	/**
+	 * This code is to create a delay after playing a foundCircle sound so that is doesn't play 10's at once.
+	 * This is what is called once the delay expires after the INTENT called in the Hough block
+	 */
+	private Runnable timedTask = new Runnable() {
 
-	// Dooh
+		@Override
+		public void run() {
+			LockedOut = false;
+//			handler.postDelayed(timedTask, 2000);   //not doing repeating so not needed
+		}
+	};
+	/**
+	 * This timer is to push the Gro data (lat,long etc) into a Queue every x milliseconds.
+	 * such that the geo data can be read back, delayed, when a sign is found,
+	 */
+	private Runnable timedGPSqueue;
+
+	{
+		timedGPSqueue = new Runnable() {
+			@Override
+			public void run() {
+				//http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%2090&pitch=0&sensor=false&location=-33.7165435,150.961225
+				//toWR.generateNoteOnSD(String.valueOf(String.valueOf(gpsListener.getLat()).concat(",").concat(String.valueOf(gpsListener.getLon()))));
+				String whatToWrite;
+				/*
+				<a href="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&heading=%20200&pitch=0&sensor=false&location=-33.69816467,150.9637255125">IMAGE CLICK</a>
+				http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=50
+				Write new entry
+				*/
+
+
+				whatToWrite = String.valueOf(LocListener.getLat());
+				whatToWrite = whatToWrite.concat(",");
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getLon()));
+				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle2));
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getBearing_45()));
+				boolean GPSqueueIO = aPAKqueue.add(whatToWrite);
+				if(!GPSqueueIO) Log.i(TAG, "timedGPSqueue  aPAKqueue.add(whatToWrite) failed");
+				/*
+				Don't get lost here there is multiple entries in the queue at this point.
+				above writes the lat,long of write now. Below reads the same data but from several
+				milliseconds ago, how long ago is determined my the numbers of entries in the queue
+				times delayBetweenGPS_Record.
+
+				So if delayBetweenGPS_Records = 200mS
+				and we write 6x aPAKqueue.add("dummy") in onCreate()
+				Then the delay is 6x200mS = 1.2 seconds back in time
+				*/
+				whatToWrite = getString(R.string.CrLf);
+				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle1));
+
+				// the get(0) is in here
+				whatToWrite = whatToWrite.concat(aPAKqueue.get(0)); // remember this is the lat,long, wwwMiddle2 and  bearing. see lines just above
+				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle3));
+				whatToWrite = whatToWrite.concat(randomUUID().toString());
+				whatToWrite = whatToWrite.concat(",V_min,");
+				whatToWrite = whatToWrite.concat(String.valueOf(V_MIN));
+				whatToWrite = whatToWrite.concat(",Speed,");
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getSpeed()));
+				whatToWrite = whatToWrite.concat(",Lat,");
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getLat()));
+				whatToWrite = whatToWrite.concat(",Lon");
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getLon()));
+				whatToWrite = whatToWrite.concat(",Alt,");
+				whatToWrite = whatToWrite.concat(String.valueOf(LocListener.getAlt()));
+				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle4));
+
+				aPAKqueue.remove(0);
+
+
+				// read oldest object value and remove that object from queue
+				if(foundCircle) {
+					foundCircle = false;
+					pakWritetoInternal(whatToWrite);
+				}
+
+
+				handler.postDelayed(timedGPSqueue, delayBetweenGPS_Records);   //repeating so needed
+			}
+		};
+	}
+
+	public static Rect setContourRect(List<MatOfPoint> contours, int k) {
+		Rect boundRect = new Rect();
+		Iterator<MatOfPoint> each = contours.iterator();
+		int j = 0;
+		while(each.hasNext()) {
+			MatOfPoint wrapper = each.next();
+			if(j == k) {
+				return Imgproc.boundingRect(wrapper);
+			}
+			j++;
+		}
+		return boundRect;
+	}
+
 
 	private void pakWritetoInternal(String whatToWrite) {
-		whatToWrite = whatToWrite.concat(getString(R.string.wwwTail));
 		FileOutputStream fos;
 		try {
 			// Note APPEND  true                       ----
@@ -802,7 +821,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		try {
 			// Note OVER WRIGTH                         ----
 			fos = new FileOutputStream(myInternalFile);
-			fos.write("Start\n\r".getBytes());
+			fos.write("\n\r".getBytes());
 			fos.close();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -813,8 +832,9 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private String pakReadInternal() {
 		FileInputStream fis;
 
-		String myData = getString(R.string.wwwTail);
-
+		String myData = getString(R.string.wwwHead);
+		myData = myData + '\n';
+		myData = myData + '\r';
 
 		try {
 			fis = new FileInputStream(myInternalFile);
@@ -841,11 +861,11 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 		}
 
-		myData = myData.concat(getString(R.string.wwwHead));
-
+		myData = myData.concat(getString(R.string.wwwTail));
+		myData = myData + '\n';
+		myData = myData + '\r';
 		return myData;
 	}
-
 
 	public void timerDelayRemoveDialog(long time, final Dialog d) {
 		new Handler().postDelayed(new Runnable() {

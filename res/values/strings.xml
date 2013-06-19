@@ -11,7 +11,7 @@
     <string name="dilate">Dilate x2</string>
     <string name="email">Email Data</string>
     <string name="popup">Adjust Threshold Level</string>
-
+    <string name="temp">Temp</string>
 
     <string name="emailAddress">speedsignfinder@anthonykeane.com</string>
     <string name="emailSubject">Speed Sign Finder</string>
@@ -34,13 +34,14 @@
 
     <!--</body></html>-->
     <string name="wwwHead">
-        <![CDATA[<!DOCTYPE html><html><head><title></title></head><body>]]></string>
+        <![CDATA[<!DOCTYPE html><html><head><title></title></head><body>]]> </string>
     <string name="wwwMiddle1">
-        <![CDATA[  <img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=]]></string>
+        <![CDATA[<img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=]]></string>
     <string name="wwwMiddle2"><![CDATA[&heading=]]></string>
     <string name="wwwMiddle3"><![CDATA[0 alt=\"]]></string>
     <string name="wwwMiddle4"><![CDATA[\"></a>]]></string>
     <string name="wwwTail"><![CDATA[</body></html>]]></string>
+    <string name="CrLf">\n\r</string>
 
 
     <!--This is an ALPHA, it WILL crash.-->

@@ -43,4 +43,9 @@
             android:icon="@drawable/ic_menu_info_details"
             android:showAsAction="ifRoom"/>
 
+    <item
+            android:id="@+id/temp"
+            android:title="@string/temp"
+            android:showAsAction="ifRoom"/>
+
 </menu>

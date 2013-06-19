@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.anthonykeane.speedsignfinder"
-          android:versionCode="120"
-          android:versionName="0.0.20.$Rev: 75 $">
+          android:versionCode="125"
+          android:versionName="0.0.25.$Rev: 81 $">
 
 
-    <uses-permission android:name="android.permission.ACCESS_GPS"/>
+<uses-permission android:name="android.permission.ACCESS_GPS"/>2
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->

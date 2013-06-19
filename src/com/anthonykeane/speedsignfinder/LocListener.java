@@ -12,7 +12,6 @@ public class LocListener implements LocationListener {
 	private static double lon = 0.0;
 	private static float bearing = 0;
 
-
 	private static double alt = 0.0;
 	private static float speed = 0;
 	private static float accuracy = 0;
@@ -25,20 +24,21 @@ public class LocListener implements LocationListener {
 	public static double getLon() {
 		return lon;
 	}
-/*
 
-public static double getAlt() {
-return alt;
-}
 
-public static double getSpeed() {
-return speed;
-}
+	public static double getAlt() {
+		return alt;
+	}
 
-public static double getBearing() {
-return bearing;
-}
-*/
+
+	public static double getSpeed() {
+		return speed;
+	}
+
+	public static double getBearing() {
+		return bearing;
+	}
+
 
 	public static double getBearing_45() {
 		//deal with the 360dec thing
