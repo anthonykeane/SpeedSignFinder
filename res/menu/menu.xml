@@ -18,7 +18,7 @@
     <item
             android:id="@+id/popup"
             android:title="@string/popup"
-            android:icon="@drawable/jog_dial_dimple"
+            android:icon="@drawable/edit_threshold"
             android:showAsAction="ifRoom|withText"/>
 
     <item
@@ -30,7 +30,7 @@
             android:id="@+id/lightgreen"
             android:title="@string/lightGreen"
             android:icon="@drawable/traffic_light"
-            android:showAsAction="ifRoom"/>
+            android:showAsAction="ifRoom|withText"/>
     <item
             android:id="@+id/thres"
             android:title="@string/thres"
@@ -41,7 +41,7 @@
             android:id="@+id/showversion"
             android:title="@string/bShowVersion"
             android:icon="@drawable/ic_menu_info_details"
-            android:showAsAction="ifRoom"/>
+            android:showAsAction="ifRoom|withText"/>
 
     <item
             android:id="@+id/temp"

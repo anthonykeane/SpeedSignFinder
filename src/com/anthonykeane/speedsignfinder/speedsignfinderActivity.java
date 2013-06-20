@@ -11,6 +11,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -19,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -75,6 +80,16 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //	// uncommemt in camera_image_view.xml before uncommenting this
 //	Button b1;
 
+	Sensor accelerometer;
+	Sensor gyro;
+	Sensor lux;
+
+	SensorManager sm;
+	float acceleration[];
+	float gyration[];
+	float ambient_light[];
+
+
 	//GPS delay stuff
 	public static final int delayBetweenGPS_Records = 100;  //every 500mS log Geo date in Queue.
 	//Valid size of detected Object
@@ -110,7 +125,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private static final boolean extraErrode = true;
 	private static final boolean extraDilates = true;
 	private static boolean alertOnGreenLight = false;
-	private static final boolean ImageFrameToggle = false;
+	private static boolean ImageFrameToggle = false;
+	private static boolean SensorVisual = false;
 	public ArrayList<String> aPAKqueue = new ArrayList<String>();
 	public Mat cropped2;
 	public boolean foundCircle;                 // Used to trigger writing GPS to file.(indirectly)
@@ -126,6 +142,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private LocListener gpsListener = new LocListener();    // used by GPS
 	private LocationManager locManager;                     // used by GPS
 	private pakSensors pakS = new pakSensors();
+
+	private Rect GreenLightRect = null;
+	private double xScale;
+	private double yScale;
+
+
 	//	private Size mSize0;
 //	private Size mSizeRgba;
 //	private Size mSizeRgbaInner;
@@ -174,6 +196,52 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //
 //	}
 
+
+	SensorEventListener myAccelerometerSensorEventListener = new SensorEventListener() {
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			acceleration = event.values;
+
+		}
+
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+
+		}
+	};
+
+
+	SensorEventListener myGyroSensorEventListener = new SensorEventListener() {
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			gyration = event.values;
+
+		}
+
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+
+		}
+	};
+
+
+	SensorEventListener myLuxSensorEventListener = new SensorEventListener() {
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			ambient_light = event.values;
+
+		}
+
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+
+		}
+	};
+
+
 	/**
 	 * Called when the activity is first created.
 	 */
@@ -186,6 +254,14 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey();
 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		// TODO correct for difference between screensize and displayed size touches don't line up
+
+		Display display = getWindowManager().getDefaultDisplay();
+		android.graphics.Point size;
+		size = new android.graphics.Point();
+		display.getSize(size);
+		xScale = (size.x / (double) FRAME_WIDTH);
+		yScale = (size.y / (double) FRAME_HEIGHT);
 
 
 		// Setup GPS Queue.
@@ -245,6 +321,21 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		mOpenCvCameraView.enableFpsMeter();
 		LockedOut = false;
 		//pakS.init();
+
+
+		//Sensor
+
+		sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+		accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		gyro = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+		lux = sm.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+
+		sm.registerListener(myAccelerometerSensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+		sm.registerListener(myGyroSensorEventListener, gyro, SensorManager.SENSOR_DELAY_NORMAL);
+		sm.registerListener(myLuxSensorEventListener, lux, SensorManager.SENSOR_DELAY_NORMAL);
+
+
 	}
 
 	@Override
@@ -286,11 +377,16 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public boolean onTouchEvent(MotionEvent event) {
 		// MotionEvent object holds X-Y values
 		if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
-//			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
+			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
+			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
+			alertOnGreenLight = true;
+			GreenLightRect = new Rect(new Point(event.getX() - 50, event.getY() - 50), new Point(event.getX() + 50, event.getY() + 50));
+			//Core.rectangle(mCameraFeed,GreenLightRect.tl(),GreenLightRect.br(), new Scalar(0, 255, 0), -1);
+			Core.circle(mCameraFeed, new Point(event.getX() / xScale, event.getY() / yScale), 30, new Scalar(255, 255, 0), -1);
+
 //			ActionBar actionBar = getActionBar();
 //			if(actionBar != null) {actionBar.show();}
-			openOptionsMenu();
+			//openOptionsMenu();
 
 		}
 
@@ -395,8 +491,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 			case R.id.temp:
-
-				Toast.makeText(speedsignfinderActivity.this, String.valueOf(pakS.getLastX()), Toast.LENGTH_SHORT).show();
+				SensorVisual = !SensorVisual;
+				//Toast.makeText(speedsignfinderActivity.this, String.valueOf(pakS.getLastX()), Toast.LENGTH_SHORT).show();
 				return true;
 
 
@@ -425,6 +521,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			case R.id.lightgreen:
 				alertOnGreenLight = true;
 				Toast.makeText(speedsignfinderActivity.this, getString(R.string.lightGreen), Toast.LENGTH_SHORT).show();
+				GreenLightRect = new Rect(new Point(100, 100), new Point(200, 200));
+				Core.rectangle(mCameraFeed, GreenLightRect.tl(), GreenLightRect.br(), new Scalar(0, 255, 0), -1);
 				return true;
 
 			case R.id.email:
@@ -558,7 +656,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			k++;
 			MatOfPoint wrapper = each.next();
 			double area = Imgproc.contourArea(wrapper);
-			fullArea = fullArea + area;
+			///fullArea = fullArea + area;
 			// Check the object size
 			//if (boundRect.width > 30 && boundRect.width < 200 && boundRect.height > 30 && boundRect.height < 200)
 			//if((area > 900) && (area < 40000))
@@ -645,29 +743,19 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			}
 		}
 
-		if(ImageFrameToggle) {
-			// fullArea is the number of pixels in the Threshold image
-			// this will alert if red reduces.
-			String myConcatedString;
-			//myConcatedString = String.valueOf(lastFullArea).concat(",").concat(String.valueOf(fullArea));
-			myConcatedString = String.valueOf((lastFullArea * 0.8) / (fullArea));
-			Core.putText(mCameraFeed, myConcatedString, new Point(0, 85), 2, 3, new Scalar(128, 0, 0), 1);
+		// Sensor Visual
+		if(SensorVisual) {
+			//Core.putText(mCameraFeed, String.valueOf(acceleration[0]), new Point(300, 200), 1, 2, new Scalar(128, 0, 0), 1);
+			Core.circle(mCameraFeed, new Point(300, 300), (int) acceleration[0] * (int) acceleration[0], new Scalar(0, 255, 0), -1);
+			Core.circle(mCameraFeed, new Point(400, 300), (int) acceleration[1] * (int) acceleration[1], new Scalar(255, 0, 0), -1);
+			Core.circle(mCameraFeed, new Point(350, 200), (int) acceleration[2] * (int) acceleration[2], new Scalar(0, 0, 255), -1);
 
-			if((lastFullArea * 0.8) > fullArea && alertOnGreenLight) {
-				try {
-					Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-					Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-					r.play();
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-				alertOnGreenLight = false;
-				lastFullArea = 0;
+			Core.circle(mCameraFeed, new Point(600, 300), (int) gyration[0] * (int) gyration[0] * 10, new Scalar(0, 255, 0), -1);
+			Core.circle(mCameraFeed, new Point(700, 300), (int) gyration[1] * (int) gyration[1] * 10, new Scalar(255, 0, 0), -1);
+			Core.circle(mCameraFeed, new Point(650, 200), (int) gyration[2] * (int) gyration[2] * 10, new Scalar(0, 0, 255), -1);
 
-			}
-			lastFullArea = fullArea;
+			Core.circle(mCameraFeed, new Point(650, 200), (int) ambient_light[0], new Scalar(0, 0, 255), -1);
 		}
-
 
 		if(doFancyDisplay) {
 			if(cropped2.cols() > 0)
@@ -693,6 +781,41 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		// pop the threshold image back in the unused right side of the screen image
 		//TODO this is crashing the app, why
 		//mThreshold.copyTo(mCameraFeed.submat(new Rect (mCameraFeed.width()/2-1,0,mCameraFeed.width()-1,mCameraFeed.height()-1)));
+
+
+		//todo Green Light : this finds the number of white pixels in the selected roi square
+		// no point reading area from toggling frames so only read one
+		if(!ImageFrameToggle && alertOnGreenLight) {
+			if(GreenLightRect != null) {
+
+				int roiCount = 0;
+				try {
+					roiCount = (Core.countNonZero(new Mat(mThreshold, GreenLightRect)));
+				} catch(Exception e) {
+					//Log.i(TAG, "GreenLightRect outside area  failed");
+					//Toast.makeText(speedsignfinderActivity.this,"Area Outside Sensing Range, selecting nearer the center of the screen", Toast.LENGTH_LONG).show();
+					e.printStackTrace();
+				}
+
+				Core.circle(mCameraFeed, new Point(0, (FRAME_HEIGHT / 2)), 50, new Scalar(128, 0, 255), 2);
+				Core.circle(mCameraFeed, new Point(0, FRAME_HEIGHT / 2), (int) ((lastFullArea / roiCount) * 50), new Scalar(128, 0, 255), -1);
+
+				//Core.putText(mCameraFeed, String.valueOf(lastFullArea), new Point(300, 200), 1, 4, new Scalar(128, 0, 0), 1);
+				//Core.putText(mCameraFeed, String.valueOf(roiCount), new Point(300, 100), 1, 4, new Scalar(128, 0, 0), 1);
+				if(lastFullArea >= roiCount) {
+					try {
+						Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+						Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+						r.play();
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+					alertOnGreenLight = false;
+
+				}
+				lastFullArea = (roiCount * 0.8);
+			}
+		}
 
 
 		//Added a menu to switch between Threshold view and Camera view
@@ -821,7 +944,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		try {
 			// Note OVER WRIGTH                         ----
 			fos = new FileOutputStream(myInternalFile);
-			fos.write("\n\r".getBytes());
+//			fos.write("\n\r".getBytes());
 			fos.close();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -833,8 +956,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		FileInputStream fis;
 
 		String myData = getString(R.string.wwwHead);
-		myData = myData + '\n';
-		myData = myData + '\r';
+//		myData = myData + '\n';
+//		myData = myData + '\r';
 
 		try {
 			fis = new FileInputStream(myInternalFile);
@@ -862,8 +985,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		}
 
 		myData = myData.concat(getString(R.string.wwwTail));
-		myData = myData + '\n';
-		myData = myData + '\r';
+//		myData = myData + '\n';
+//		myData = myData + '\r';
 		return myData;
 	}
 
