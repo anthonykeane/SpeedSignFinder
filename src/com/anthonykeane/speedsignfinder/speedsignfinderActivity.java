@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -48,14 +47,10 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -131,7 +126,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public Mat cropped2;
 	public boolean foundCircle;                 // Used to trigger writing GPS to file.(indirectly)
 	public boolean LockedOut;                   // Caught a sign so take it easy for a while
-	File myInternalFile;                        // used to R/W internal file.
+	public String myInternalFile = "ToBeEmailed";// used to R/W internal file.
 	private boolean hasMenuKey;                 // Needed to build correct android menu
 	private double lastFullArea = 0;            // used for Green Light detection
 	private Handler handler = new Handler();    // used for timers
@@ -303,9 +298,10 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 		// Write to File (internal)
-		ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
-		File directory = contextWrapper.getDir(getString(R.string.LatLongFile_txt), Context.MODE_PRIVATE);
-		myInternalFile = new File(directory, getString(R.string.LayLongStorage));
+		//ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+		//File directory = contextWrapper.getDir(getString(R.string.LatLongFile_txt), Context.MODE_APPEND);
+		//myInternalFile = new File(directory, getString(R.string.LayLongStorage));
+
 
 		// Turn on teh GPS.     set up GPS
 		locManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -930,7 +926,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		FileOutputStream fos;
 		try {
 			// Note APPEND  true                       ----
-			fos = new FileOutputStream(myInternalFile, true);
+			fos = openFileOutput(myInternalFile, MODE_APPEND);
 			fos.write(whatToWrite.getBytes());
 			fos.close();
 		} catch(IOException e) {
@@ -943,7 +939,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		FileOutputStream fos;
 		try {
 			// Note OVER WRIGTH                         ----
-			fos = new FileOutputStream(myInternalFile);
+			fos = openFileOutput(myInternalFile, MODE_PRIVATE);
 //			fos.write("\n\r".getBytes());
 			fos.close();
 		} catch(IOException e) {
@@ -956,32 +952,27 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		FileInputStream fis;
 
 		String myData = getString(R.string.wwwHead);
-//		myData = myData + '\n';
-//		myData = myData + '\r';
 
 		try {
-			fis = new FileInputStream(myInternalFile);
+			fis = openFileInput(myInternalFile);
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
 			return "No Data";
 		}
-		DataInputStream in = new DataInputStream(fis);
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		//DataInputStream in = new DataInputStream(fis);
+		//BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		try {
-			while((strLine = br.readLine()) != null) {
-				myData = myData + strLine;
+			StringBuffer fileContent = new StringBuffer("");
+			byte[] buffer = new byte[1024];
+			while(fis.read(buffer) != -1) {
+				fileContent.append(new String(buffer));
 			}
+			myData = myData + fileContent;
+			fis.close();
 		} catch(IOException e) {
 			e.printStackTrace();
 			return "No Data";
-		}
-		try {
-			in.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-			return "No Data";
-
 		}
 
 		myData = myData.concat(getString(R.string.wwwTail));
