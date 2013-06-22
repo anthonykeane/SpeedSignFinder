@@ -1,27 +1,23 @@
 package com.anthonykeane.speedsignfinder;
 
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -48,17 +44,15 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import static java.util.UUID.randomUUID;
 import static org.opencv.imgproc.Imgproc.BORDER_CONSTANT;
@@ -80,6 +74,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //	// uncommemt in camera_image_view.xml before uncommenting this
 //	Button b1;
 
+
+	// Sounds
+	public static final int sound_found_sign = R.raw.found_sign;
+	public static final int sound_wait_for_green = R.raw.wait_for_green;
+
+
 	Sensor accelerometer;
 	Sensor gyro;
 	Sensor lux;
@@ -99,6 +99,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public static final int minSizeofDetectableObject = 30;
 	public static final double maxAreaofDetectableObject = maxSizeofDetectableObject * maxSizeofDetectableObject;
 	public static final double minAreaofDetectableObject = minSizeofDetectableObject * minSizeofDetectableObject;
+	private static final int MY_DATA_CHECK_CODE = 1234;
 	//default capture width and height
 	//oops too big for SII
 	public static final int FRAME_WIDTH = 1280;
@@ -109,7 +110,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //	public static final int H_MAX =         180;
 	public static final int H_MIN = 0;
 	public static final int H_MAX = 15;
-	public static final int S_MIN = 100;
+	public static int S_MIN = 100;
 	public static final int S_MAX = 256;
 	public static final int V_MAX = 256;
 	public static final int H_NOR = 15;
@@ -131,7 +132,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public Mat cropped2;
 	public boolean foundCircle;                 // Used to trigger writing GPS to file.(indirectly)
 	public boolean LockedOut;                   // Caught a sign so take it easy for a while
-	File myInternalFile;                        // used to R/W internal file.
+	public String myInternalFile = "ToBeEmailed";// used to R/W internal file.
 	private boolean hasMenuKey;                 // Needed to build correct android menu
 	private double lastFullArea = 0;            // used for Green Light detection
 	private Handler handler = new Handler();    // used for timers
@@ -141,11 +142,16 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	private Mat cropped;
 	private LocListener gpsListener = new LocListener();    // used by GPS
 	private LocationManager locManager;                     // used by GPS
-	private pakSensors pakS = new pakSensors();
+	private TextToSpeech mTts;
 
 	private Rect GreenLightRect = null;
 	private double xScale;
 	private double yScale;
+
+
+	//sound
+	private static SoundPool soundPool;
+	private static HashMap soundPoolMap;
 
 
 	//	private Size mSize0;
@@ -195,52 +201,90 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //		}
 //
 //	}
+//
+//
+//	SensorEventListener myAccelerometerSensorEventListener = new SensorEventListener() {
+//		@Override
+//		public void onSensorChanged(SensorEvent event) {
+//			if (event.values[0] > event.sensor.getMaximumRange()) return;
+//			if (event.values[1] > event.sensor.getMaximumRange()) return;
+//			if (event.values[2] > event.sensor.getMaximumRange()) return;
+//			acceleration = event.values;
+//
+//		}
+//
+//		@Override
+//		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//
+//		}
+//	};
+//
+//
+//	SensorEventListener myGyroSensorEventListener = new SensorEventListener() {
+//		@Override
+//		public void onSensorChanged(SensorEvent event) {
+//			if (event.values[0] > event.sensor.getMaximumRange()) return;
+//			if (event.values[1] > event.sensor.getMaximumRange()) return;
+//			if (event.values[2] > event.sensor.getMaximumRange()) return;
+//			gyration = event.values;
+//
+//		}
+//
+//		@Override
+//		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//
+//		}
+//	};
+//
+//
+//	SensorEventListener myLuxSensorEventListener = new SensorEventListener() {
+//		@Override
+//		public void onSensorChanged(SensorEvent event) {
+//			if (event.values[0] > event.sensor.getMaximumRange()) return;
+//			if (event.values[1] > event.sensor.getMaximumRange()) return;
+//			if (event.values[2] > event.sensor.getMaximumRange()) return;
+//			ambient_light = event.values;
+//
+//		}
+//
+//		@Override
+//		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//
+//
+//		}
+//	};
 
 
-	SensorEventListener myAccelerometerSensorEventListener = new SensorEventListener() {
-		@Override
-		public void onSensorChanged(SensorEvent event) {
-			acceleration = event.values;
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == MY_DATA_CHECK_CODE) {
+			if(resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+				// success, create the TTS instance
 
+
+				mTts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+					@Override
+					public void onInit(int status) {
+
+
+						mTts.setLanguage(Locale.US);
+						//mTts.setLanguage(Locale.getDefault());
+						mTts.speak(getString(R.string.ttsOkHereWeGo), TextToSpeech.QUEUE_FLUSH, null);
+
+
+					}
+				});
+
+
+			} else {
+				// missing data, install it
+				Intent installIntent = new Intent();
+				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+				startActivity(installIntent);
+			}
 		}
-
-		@Override
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-
-		}
-	};
-
-
-	SensorEventListener myGyroSensorEventListener = new SensorEventListener() {
-		@Override
-		public void onSensorChanged(SensorEvent event) {
-			gyration = event.values;
-
-		}
-
-		@Override
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-
-		}
-	};
-
-
-	SensorEventListener myLuxSensorEventListener = new SensorEventListener() {
-		@Override
-		public void onSensorChanged(SensorEvent event) {
-			ambient_light = event.values;
-
-		}
-
-		@Override
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-
-		}
-	};
-
+	}
 
 	/**
 	 * Called when the activity is first created.
@@ -250,6 +294,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public void onCreate(Bundle savedInstanceState) {
 		Log.i(TAG, "called onCreate");
 		super.onCreate(savedInstanceState);
+
+
+		//Sound
+		Intent checkIntent = new Intent();
+		checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+		startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
 
 		hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey();
 
@@ -303,9 +353,10 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 
 		// Write to File (internal)
-		ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
-		File directory = contextWrapper.getDir(getString(R.string.LatLongFile_txt), Context.MODE_PRIVATE);
-		myInternalFile = new File(directory, getString(R.string.LayLongStorage));
+		//ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+		//File directory = contextWrapper.getDir(getString(R.string.LatLongFile_txt), Context.MODE_APPEND);
+		//myInternalFile = new File(directory, getString(R.string.LayLongStorage));
+
 
 		// Turn on teh GPS.     set up GPS
 		locManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -325,15 +376,15 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 		//Sensor
 
-		sm = (SensorManager) getSystemService(SENSOR_SERVICE);
-		accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		gyro = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-		lux = sm.getDefaultSensor(Sensor.TYPE_LIGHT);
-
-
-		sm.registerListener(myAccelerometerSensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-		sm.registerListener(myGyroSensorEventListener, gyro, SensorManager.SENSOR_DELAY_NORMAL);
-		sm.registerListener(myLuxSensorEventListener, lux, SensorManager.SENSOR_DELAY_NORMAL);
+//		sm = (SensorManager) getSystemService(SENSOR_SERVICE);
+//		accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//		gyro = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+//		lux = sm.getDefaultSensor(Sensor.TYPE_LIGHT);
+//
+//
+//		sm.registerListener(myAccelerometerSensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+//		sm.registerListener(myGyroSensorEventListener, gyro, SensorManager.SENSOR_DELAY_NORMAL);
+//		sm.registerListener(myLuxSensorEventListener, lux, SensorManager.SENSOR_DELAY_NORMAL);
 
 
 	}
@@ -368,6 +419,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		locManager.removeUpdates(gpsListener);
 		// Turn Off the GPS
 		locManager = null;
+		//When you are done using TTS, be a good citizen and tell it "you won't be needing its services anymore"
+		mTts.shutdown();
 	}
 
 
@@ -441,8 +494,9 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				dialog.show();
 
 
-				SeekBar seekbar = (SeekBar) dialog.findViewById(R.id.size_seekbar);
+				SeekBar seekbar = (SeekBar) dialog.findViewById(R.id.seekbarS);
 				seekbar.setProgress(V_MIN);
+
 				//	Toast.makeText(speedsignfinderActivity.this,"hellp PB1", Toast.LENGTH_SHORT).show();
 				//final TextView tv_dialog_size = (TextView) dialog.findViewById(R.id.set_size_help_text);
 
@@ -460,30 +514,32 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
-						timerDelayRemoveDialog(400, dialog); //closes the dialog after 2000mS
+						//timerDelayRemoveDialog(400, dialog); //closes the dialog after 2000mS
 					}
 				});
 
-				//
-				//			SeekBar seekbar2 = (SeekBar) dialog.findViewById(R.id.size_seekbar2);
-				//			//	Toast.makeText(speedsignfinderActivity.this,"hellp PB2", Toast.LENGTH_SHORT).show();
-				//			//	final TextView tv_dialog_size2 = (TextView) dialog.findViewById(R.id.set_size_help_text);
-				//
-				//				seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-				//					@Override
-				//					public void onProgressChanged(SeekBar seekBar2, int progress, boolean fromUser) {
-				//					}
-				//
-				//					@Override
-				//					public void onStartTrackingTouch(SeekBar seekBar2) {
-				//					}
-				//
-				//					@Override
-				//					public void onStopTrackingTouch(SeekBar seekBar2) {
-				//						//Toast.makeText(speedsignfinderActivity.this,String.valueOf(  seekBar2).concat("Stop 2"), Toast.LENGTH_SHORT).show();
-				//
-				//					}
-				//				});
+				SeekBar seekbar2 = (SeekBar) dialog.findViewById(R.id.seekbarV);
+				seekbar2.setProgress(S_MIN);
+				//	Toast.makeText(speedsignfinderActivity.this,"hellp PB2", Toast.LENGTH_SHORT).show();
+				//	final TextView tv_dialog_size2 = (TextView) dialog.findViewById(R.id.set_size_help_text);
+
+				seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+					@Override
+					public void onProgressChanged(SeekBar seekBar2, int progress, boolean fromUser) {
+						S_MIN = progress;
+
+					}
+
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar2) {
+					}
+
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar2) {
+						//Toast.makeText(speedsignfinderActivity.this,String.valueOf(  seekBar2).concat("Stop 2"), Toast.LENGTH_SHORT).show();
+
+					}
+				});
 
 				hashDefineTrue = true;
 
@@ -713,14 +769,19 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 								if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
 								{
 									LockedOut = true;
+
+									//playSound(this,sound_wait_for_green);
+									mTts.speak(getString(R.string.ttsSignFound), TextToSpeech.QUEUE_FLUSH, null);
+
+
 									// This code plays the default beep
-									try {
-										Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-										Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-										r.play();
-									} catch(Exception e) {
-										e.printStackTrace();
-									}
+//									try {
+//										Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//										Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+//										r.play();
+//									} catch(Exception e) {
+//										e.printStackTrace();
+//									}
 									// write Lat/Long to file
 
 
@@ -744,18 +805,18 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		}
 
 		// Sensor Visual
-		if(SensorVisual) {
-			//Core.putText(mCameraFeed, String.valueOf(acceleration[0]), new Point(300, 200), 1, 2, new Scalar(128, 0, 0), 1);
-			Core.circle(mCameraFeed, new Point(300, 300), (int) acceleration[0] * (int) acceleration[0], new Scalar(0, 255, 0), -1);
-			Core.circle(mCameraFeed, new Point(400, 300), (int) acceleration[1] * (int) acceleration[1], new Scalar(255, 0, 0), -1);
-			Core.circle(mCameraFeed, new Point(350, 200), (int) acceleration[2] * (int) acceleration[2], new Scalar(0, 0, 255), -1);
-
-			Core.circle(mCameraFeed, new Point(600, 300), (int) gyration[0] * (int) gyration[0] * 10, new Scalar(0, 255, 0), -1);
-			Core.circle(mCameraFeed, new Point(700, 300), (int) gyration[1] * (int) gyration[1] * 10, new Scalar(255, 0, 0), -1);
-			Core.circle(mCameraFeed, new Point(650, 200), (int) gyration[2] * (int) gyration[2] * 10, new Scalar(0, 0, 255), -1);
-
-			Core.circle(mCameraFeed, new Point(650, 200), (int) ambient_light[0], new Scalar(0, 0, 255), -1);
-		}
+//		if(SensorVisual) {
+//			//Core.putText(mCameraFeed, String.valueOf(acceleration[0]), new Point(300, 200), 1, 2, new Scalar(128, 0, 0), 1);
+//			Core.circle(mCameraFeed, new Point(300, 300), (int) Math.abs(acceleration[0]), new Scalar(0, 255, 0), -1);
+//			Core.circle(mCameraFeed, new Point(400, 300), (int) Math.abs(acceleration[1]), new Scalar(255, 0, 0), -1);
+//			Core.circle(mCameraFeed, new Point(350, 200), (int) Math.abs(acceleration[2]), new Scalar(0, 0, 255), -1);
+//
+//			Core.circle(mCameraFeed, new Point(600, 300), (int) Math.abs(gyration[0])  , new Scalar(0, 255, 0), -1);
+//			Core.circle(mCameraFeed, new Point(700, 300), (int) Math.abs(gyration[1]) , new Scalar(255, 0, 0), -1);
+//			Core.circle(mCameraFeed, new Point(650, 200), (int) Math.abs(gyration[2]) , new Scalar(0, 0, 255), -1);
+//
+//			Core.circle(mCameraFeed, new Point(650, 200), (int) Math.log(ambient_light[0]), new Scalar(0, 0, 255), -1);
+//		}
 
 		if(doFancyDisplay) {
 			if(cropped2.cols() > 0)
@@ -803,17 +864,23 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				//Core.putText(mCameraFeed, String.valueOf(lastFullArea), new Point(300, 200), 1, 4, new Scalar(128, 0, 0), 1);
 				//Core.putText(mCameraFeed, String.valueOf(roiCount), new Point(300, 100), 1, 4, new Scalar(128, 0, 0), 1);
 				if(lastFullArea >= roiCount) {
-					try {
-						Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-						Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-						r.play();
-					} catch(Exception e) {
-						e.printStackTrace();
-					}
+
+					//Sound
+					//playSound(this,sound_wait_for_green);
+					mTts.speak(getString(R.string.ttslightGreen), TextToSpeech.QUEUE_FLUSH, null);
+
+
+//					try {
+//						Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//						Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+//						r.play();
+//					} catch(Exception e) {
+//						e.printStackTrace();
+//					}
 					alertOnGreenLight = false;
 
 				}
-				lastFullArea = (roiCount * 0.8);
+				lastFullArea = (roiCount * 0.5);
 			}
 		}
 
@@ -930,7 +997,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		FileOutputStream fos;
 		try {
 			// Note APPEND  true                       ----
-			fos = new FileOutputStream(myInternalFile, true);
+			fos = openFileOutput(myInternalFile, MODE_APPEND);
 			fos.write(whatToWrite.getBytes());
 			fos.close();
 		} catch(IOException e) {
@@ -943,7 +1010,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		FileOutputStream fos;
 		try {
 			// Note OVER WRIGTH                         ----
-			fos = new FileOutputStream(myInternalFile);
+			fos = openFileOutput(myInternalFile, MODE_PRIVATE);
 //			fos.write("\n\r".getBytes());
 			fos.close();
 		} catch(IOException e) {
@@ -956,32 +1023,27 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		FileInputStream fis;
 
 		String myData = getString(R.string.wwwHead);
-//		myData = myData + '\n';
-//		myData = myData + '\r';
 
 		try {
-			fis = new FileInputStream(myInternalFile);
+			fis = openFileInput(myInternalFile);
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
 			return "No Data";
 		}
-		DataInputStream in = new DataInputStream(fis);
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		//DataInputStream in = new DataInputStream(fis);
+		//BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		try {
-			while((strLine = br.readLine()) != null) {
-				myData = myData + strLine;
+			StringBuffer fileContent = new StringBuffer("");
+			byte[] buffer = new byte[1024];
+			while(fis.read(buffer) != -1) {
+				fileContent.append(new String(buffer));
 			}
+			myData = myData + fileContent;
+			fis.close();
 		} catch(IOException e) {
 			e.printStackTrace();
 			return "No Data";
-		}
-		try {
-			in.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-			return "No Data";
-
 		}
 
 		myData = myData.concat(getString(R.string.wwwTail));
@@ -1012,6 +1074,33 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //		}
 //	};
 //
+
+
+	/**
+	 * Populate the SoundPool
+	 */
+	public static void initSounds(Context context) {
+		soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 100);
+		soundPoolMap = new HashMap(3);
+
+		soundPoolMap.put(sound_found_sign, soundPool.load(context, R.raw.found_sign, 1));
+		soundPoolMap.put(sound_wait_for_green, soundPool.load(context, R.raw.wait_for_green, 2));
+
+	}
+
+	/**
+	 * Play a given sound in the soundPool
+	 */
+	public static void playSound(Context context, int soundID) {
+		if(soundPool == null || soundPoolMap == null) {
+			initSounds(context);
+		}
+		float volume = 1; //....// whatever in the range = 0.0 to 1.0
+
+		// play sound with same right and left volume, with a priority of 1,
+		// zero repeats (i.e play once), and a playback rate of 1f
+		soundPool.play((Integer) soundPoolMap.get(soundID), volume, volume, 1, 0, 1f);
+	}
 
 
 }

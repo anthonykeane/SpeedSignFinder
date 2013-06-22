@@ -25,6 +25,11 @@
     <string name="bShowVersion">Show Version</string>
 
 
+    <string name="ttsOkHereWeGo">Ok, here we go!</string>
+    <string name="ttslightGreen">I think the traffic is about to move!</string>
+    <string name="ttsSignFound">Detected!</string>
+
+
     <!--Build HTML link to StreetView-->
     <!--<!DOCTYPE html><html><head><title></title><img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=200" alt="GUIDGUIDGUIDGUID"></a></head><body>-->
     <!--_________________________________________|__________________________________________________________________________________________________________|           |_|              |_______|  |_____|                |_____|___________|-->
