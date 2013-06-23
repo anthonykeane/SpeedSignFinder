@@ -4,7 +4,7 @@ SpeedSignFinder
 Use your Smartphone to improve mapping data for speed sign location in your area
 
 
-This is in ALPHA. 
+This is in BETA. 
 
 This is an implementation of OpenCV as such requires OpenCV Manager from Google Play! https://play.google.com/store/apps/details?id=org.opencv.engine
 
