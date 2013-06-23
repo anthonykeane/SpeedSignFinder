@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.anthonykeane.speedsignfinder"
-          android:versionCode="128"
-          android:versionName="0.0.28.$Rev: 88 $">
+          android:versionCode="129"
+          android:versionName="0.0.29.$Rev: 91 $">
 
 
     <uses-permission android:name="android.permission.ACCESS_GPS"/>
@@ -50,7 +50,7 @@
         </activity>
 
         <activity
-                android:name="com.anthonykeane.speedsignfinder.NotificationReceiverActivity"
+
                 android:label="@string/app_name"
                 android:configChanges="keyboardHidden|orientation">
             <intent-filter>
