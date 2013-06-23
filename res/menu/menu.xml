@@ -15,16 +15,16 @@
     <!--android:id="@+id/dilate"-->
     <!--android:title="@string/dilate"/>-->
 
-    <item
-            android:id="@+id/popup"
-            android:title="@string/popup"
-            android:icon="@drawable/edit_threshold"
-            android:showAsAction="ifRoom|withText"/>
 
     <item
             android:id="@+id/email"
             android:title="@string/email"
             android:icon="@drawable/ic_menu_compose"
+            android:showAsAction="ifRoom|withText"/>
+    <item
+            android:id="@+id/popup"
+            android:title="@string/popup"
+            android:icon="@drawable/edit_threshold"
             android:showAsAction="ifRoom|withText"/>
     <item
             android:id="@+id/lightgreen"
@@ -36,16 +36,26 @@
             android:title="@string/thres"
             android:icon="@drawable/ic_menu_manage"
             android:showAsAction="ifRoom|withText"/>
-
+    <item
+            android:id="@+id/mute_vol"
+            android:title="@string/mute_vol"
+            android:icon="@drawable/ic_audio_vol"
+            android:showAsAction="ifRoom"/>
     <item
             android:id="@+id/showversion"
             android:title="@string/bShowVersion"
             android:icon="@drawable/ic_menu_info_details"
             android:showAsAction="ifRoom|withText"/>
-
     <item
-            android:id="@+id/temp"
-            android:title="@string/temp"
+            android:id="@+id/misc"
+            android:title="@string/misc"
+            android:icon="@drawable/ic_menu_help"
             android:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/debug"
+            android:title="@string/debug"
+            android:icon="@drawable/debug"
+            android:showAsAction="ifRoom"/>
+
 
 </menu>

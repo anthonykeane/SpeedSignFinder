@@ -3,6 +3,9 @@ package com.anthonykeane.speedsignfinder;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -23,6 +26,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
@@ -110,24 +114,25 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //	public static final int H_MAX =         180;
 	public static final int H_MIN = 0;
 	public static final int H_MAX = 15;
-	public static int S_MIN = 100;
+	public static int S_MIN = 50;
 	public static final int S_MAX = 256;
 	public static final int V_MAX = 256;
 	public static final int H_NOR = 15;
 	private static final String TAG = "OCVSpeedSignFinder::Activity";
-	public static int V_MIN = 100;
+	public static int V_MIN = 50;
 	private static boolean hashDefineTrue = false;
 	//  public static final int FRAME_WIDTH =   320;
 //  public static final int FRAME_HEIGHT =  240;
 //	public static final int FRAME_WIDTH =   800;
 //	public static final int FRAME_HEIGHT =  600;
-	private static final boolean doDebug = true;
+	private static boolean doDebug = false;
 	private static final boolean doFancyDisplay = true;
 	private static final boolean extraErrode = true;
 	private static final boolean extraDilates = true;
 	private static boolean alertOnGreenLight = false;
 	private static boolean ImageFrameToggle = false;
 	private static boolean SensorVisual = false;
+	private static boolean bMute = false;
 	public ArrayList<String> aPAKqueue = new ArrayList<String>();
 	public Mat cropped2;
 	public boolean foundCircle;                 // Used to trigger writing GPS to file.(indirectly)
@@ -270,7 +275,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 						mTts.setLanguage(Locale.US);
 						//mTts.setLanguage(Locale.getDefault());
-						mTts.speak(getString(R.string.ttsOkHereWeGo), TextToSpeech.QUEUE_FLUSH, null);
+						if(!bMute)
+							mTts.speak(getString(R.string.ttsOkHereWeGo), TextToSpeech.QUEUE_FLUSH, null);
 
 
 					}
@@ -285,6 +291,47 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			}
 		}
 	}
+
+	static boolean isSDK17() {
+		return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+	}
+
+
+	//	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	public void createNotification(View view) {
+		// Prepare intent which is triggered if the
+		// notification is selected
+		Intent intent = new Intent(this, NotificationReceiverActivity.class);
+		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+		// Build notification
+		if(isSDK17()) {
+			Notification noti = new Notification.Builder(this)
+					.setContentTitle("Speed Sign Finder")
+					.setContentText("Data ready to send").setSmallIcon(R.drawable.ic_launcher)
+					.setContentIntent(pIntent)
+							//.addAction(R.drawable.debug, "Call", pIntent)
+							//.addAction(R.drawable.debug, "More", pIntent)
+					.addAction(R.drawable.stat_notify_email_generic, "Click here to send data", pIntent).build();
+			NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+			// Hide the notification after its selected
+			noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+			notificationManager.notify(0, noti);
+
+		} else {
+			Notification noti = new Notification.Builder(this)
+					.setContentTitle("Speed Sign Finder")
+					.setContentText("Data ready to send").setSmallIcon(R.drawable.ic_launcher)
+					.setContentIntent(pIntent).build();
+			NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+			// Hide the notification after its selected
+			noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+			notificationManager.notify(0, noti);
+		}
+	}
+
 
 	/**
 	 * Called when the activity is first created.
@@ -301,6 +348,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
 		startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
 
+		//Menu
 		hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey();
 
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -519,6 +567,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				});
 
 				SeekBar seekbar2 = (SeekBar) dialog.findViewById(R.id.seekbarV);
+
 				seekbar2.setProgress(S_MIN);
 				//	Toast.makeText(speedsignfinderActivity.this,"hellp PB2", Toast.LENGTH_SHORT).show();
 				//	final TextView tv_dialog_size2 = (TextView) dialog.findViewById(R.id.set_size_help_text);
@@ -541,22 +590,26 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 					}
 				});
 
-				hashDefineTrue = true;
+				//hashDefineTrue = true;
 
 				return true;
 
 
-			case R.id.temp:
+			case R.id.misc:
 				SensorVisual = !SensorVisual;
+				if(!SensorVisual) item.setIcon(R.drawable.ic_menu_help);
+				else item.setIcon(R.drawable.ic_menu_help_holo_light);
+
 				//Toast.makeText(speedsignfinderActivity.this, String.valueOf(pakS.getLastX()), Toast.LENGTH_SHORT).show();
 				return true;
 
 
-//			case R.id.debug:
-//				doDebug = !doDebug;
-//				Toast.makeText(speedsignfinderActivity.this, getString(R.string.debug), Toast.LENGTH_SHORT).show();
-//				item.setTitle(getString(R.string.debug).concat(" ").concat(String.valueOf(doDebug)));
-//				return true;
+			case R.id.debug:
+				doDebug = !doDebug;
+				Toast.makeText(speedsignfinderActivity.this, getString(R.string.debug), Toast.LENGTH_SHORT).show();
+				item.setTitle(getString(R.string.debug).concat(" ").concat(String.valueOf(doDebug)));
+
+				return true;
 //
 //			case R.id.erode:
 //				extraErrode = !extraErrode;
@@ -581,19 +634,18 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				Core.rectangle(mCameraFeed, GreenLightRect.tl(), GreenLightRect.br(), new Scalar(0, 255, 0), -1);
 				return true;
 
+			case R.id.mute_vol:
+				bMute = !bMute;
+				Toast.makeText(speedsignfinderActivity.this, getString(R.string.mute_vol), Toast.LENGTH_SHORT).show();
+				//item.setTitle(getString(R.string.thres).concat(" ").concat(String.valueOf(hashDefineTrue)));
+				if(!bMute) item.setIcon(R.drawable.ic_audio_vol);
+				else item.setIcon(R.drawable.ic_audio_vol_mute);
+				return true;
+
+
 			case R.id.email:
 				//intent to send email
-				Intent intent = new Intent(Intent.ACTION_SEND);
-				intent.setType("text/html");
-				intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.emailAddress)});
-				intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject).concat(" ").concat(pinfo != null ? pinfo.versionName : null));
-				intent.putExtra(Intent.EXTRA_TEXT, pakReadInternal());
-				startActivity(Intent.createChooser(intent, "Send Email"));
-
-
-				//There is no way to see if the email was sent?
-				// Clear the content of the internal file by not appending
-				pakStartInternalFile();
+				intentToSendEmail();
 
 				return true;
 
@@ -622,6 +674,25 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				return super.onOptionsItemSelected(item);
 		}
 	}    //MENU CODE END
+
+
+	public void intentToSendEmail() {
+		PackageInfo pinfo = null;
+		try {
+			pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+		} catch(PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/html");
+		intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.emailAddress)});
+		intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject).concat(" ").concat(pinfo != null ? pinfo.versionName : null));
+		intent.putExtra(Intent.EXTRA_TEXT, pakReadInternal());
+		startActivity(intent);
+
+		pakStartInternalFile();
+	}
 
 
 	public void onCameraViewStarted(int width, int height) {
@@ -716,90 +787,106 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			// Check the object size
 			//if (boundRect.width > 30 && boundRect.width < 200 && boundRect.height > 30 && boundRect.height < 200)
 			//if((area > 900) && (area < 40000))
-			if((area > minAreaofDetectableObject) && (area < maxAreaofDetectableObject)) {
-				//Cut out the image segment where the object (possible circle) is into its own Mat (smaller image)
-				boundRect = setContourRect(contours, k);
 
-				//If the area of the blob is roughly equal to pi/4 of the area of the bounding rectangle then it then it is a circle
-				//todo  test for Hollow, if not hollow it is not a sign as they are hollow.
-				if((int) (area / 100) == (int) (boundRect.area() * 3.1416927 / 400)) {
-					double aSquare;
+			boundRect = setContourRect(contours, k);
 
-					if(boundRect.height > boundRect.width) {
-						aSquare = ((double) boundRect.height / (double) boundRect.width);
-					} else {
-						aSquare = ((double) boundRect.width / (double) boundRect.height);
-					}
+			if(!LockedOut) {
 
-					if(aSquare < 1.5) {
-						if(doDebug) {
-							Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(0, 255, 0), 5, 8, 0);
-							Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(0, 255, 0), 5, 8, 0);                        //cropped.copyTo(roi);
+
+				Scalar debugColor = new Scalar(0, 0, 255);
+
+
+				if((area > minAreaofDetectableObject) && (area < maxAreaofDetectableObject)) {
+					debugColor = new Scalar(255, 0, 255);
+					//Cut out the image segment where the object (possible circle) is into its own Mat (smaller image)
+
+					//If the area of the blob is roughly equal to pi/4 of the area of the bounding rectangle then it then it is a circle
+					//todo  test for Hollow, if not hollow it is not a sign as they are hollow.
+					if((int) (area / 100) == (int) (boundRect.area() * 3.1416927 / 400)) {
+
+						debugColor = new Scalar(255, 0, 0);
+						double aSquare;
+
+						if(boundRect.height > boundRect.width) {
+							aSquare = ((double) boundRect.height / (double) boundRect.width);
+						} else {
+							aSquare = ((double) boundRect.width / (double) boundRect.height);
 						}
-						cropped = new Mat(mCameraFeed, boundRect).clone();
-						Mat croppedT = new Mat(mThreshold, boundRect).clone();
-						if(doFancyDisplay)
-							copyMakeBorder(cropped, cropped, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
-						copyMakeBorder(croppedT, croppedT, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
 
-						//put HOUGH in here so that is only gets called if rectangle is the correct size range
-						Mat circles = new Mat();
-						HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, cropped.rows() / 4, cropped.rows() / 2);
+						if(aSquare < 1.5) {
 
-						if(circles.cols() > 0) {
-							//Don't need to loop through ALL circles as the 1st circle will set foundCircle
-							int x = 0;
-							//for ( ; x < circles.cols(); x++)
-							{
-								double vCircle[] = circles.get(0, x);
+							debugColor = new Scalar(255, 255, 0);
 
-								if(vCircle == null)
-									break;
+							cropped = new Mat(mCameraFeed, boundRect).clone();
+							Mat croppedT = new Mat(mThreshold, boundRect).clone();
+							if(doFancyDisplay)
+								copyMakeBorder(cropped, cropped, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
+							copyMakeBorder(croppedT, croppedT, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, CROPPED_BORDER, BORDER_CONSTANT, new Scalar(0, 0, 0));
 
-								if(doDebug) {
-									Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
-									int radius = (int) Math.round(vCircle[2]);
-									// draw the found circle
-									Core.circle(cropped, pt, radius, new Scalar(0, 255, 0), 5);
-									//    Core.circle(cropped, pt, 3, new Scalar(0,0,255), 2);
-								}
+							//put HOUGH in here so that is only gets called if rectangle is the correct size range
+							Mat circles = new Mat();
+							HoughCircles(croppedT, circles, CV_HOUGH_GRADIENT, 1, cropped.rows() / 8, 100, H_NOR, cropped.rows() / 4, cropped.rows() / 2);
 
-								if(doFancyDisplay) cropped.copyTo(cropped2);
+							if(circles.cols() > 0) {
+								//Don't need to loop through ALL circles as the 1st circle will set foundCircle
 
-								if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
+								debugColor = new Scalar(0, 255, 0);
+
+								int x = 0;
+								//for ( ; x < circles.cols(); x++)
 								{
-									LockedOut = true;
+									double vCircle[] = circles.get(0, x);
 
-									//playSound(this,sound_wait_for_green);
-									mTts.speak(getString(R.string.ttsSignFound), TextToSpeech.QUEUE_FLUSH, null);
+									if(vCircle == null)
+										break;
+
+									if(doDebug) {
+										Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
+										int radius = (int) Math.round(vCircle[2]);
+										// draw the found circle
+										Core.circle(cropped, pt, radius, new Scalar(0, 255, 0), 5);
+										//    Core.circle(cropped, pt, 3, new Scalar(0,0,255), 2);
+									}
+
+									if(doFancyDisplay) cropped.copyTo(cropped2);
+
+									//		if(!LockedOut) //if the sound has been played in the last 2000mS don't do it again.
+									{
+										LockedOut = true;
+
+										//playSound(this,sound_wait_for_green);
+										if(!bMute)
+											mTts.speak(getString(R.string.ttsSignFound), TextToSpeech.QUEUE_FLUSH, null);
 
 
-									// This code plays the default beep
-//									try {
-//										Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//										Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-//										r.play();
-//									} catch(Exception e) {
-//										e.printStackTrace();
-//									}
-									// write Lat/Long to file
+										// This code plays the default beep
+										//									try {
+										//										Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+										//										Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+										//										r.play();
+										//									} catch(Exception e) {
+										//										e.printStackTrace();
+										//									}
+										// write Lat/Long to file
 
 
-									foundCircle = true; // this tells GPS timer to write to file.
+										foundCircle = true; // this tells GPS timer to write to file.
 
 
-									// see private Runnable timedTask = new Runnable() above
-									handler.postDelayed(timedTask, lockOutDelay);
+										// see private Runnable timedTask = new Runnable() above
+										handler.postDelayed(timedTask, lockOutDelay);
 
+									}
 								}
 							}
 						}
-					} else {
-						if(doDebug) {
-							Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), new Scalar(0, 0, 255), 5, 8, 0);
-							Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), new Scalar(0, 0, 255), 5, 8, 0);                        //cropped.copyTo(roi);
-						}
 					}
+
+				}
+				if(doDebug) {
+					//Core.rectangle(mThreshold, boundRect.tl(), boundRect.br(), debugColor, 5, 8, 0);
+					Core.rectangle(mCameraFeed, boundRect.tl(), boundRect.br(), debugColor, 5, 8, 0);
+
 				}
 			}
 		}
@@ -867,7 +954,8 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 					//Sound
 					//playSound(this,sound_wait_for_green);
-					mTts.speak(getString(R.string.ttslightGreen), TextToSpeech.QUEUE_FLUSH, null);
+					if(!bMute)
+						mTts.speak(getString(R.string.ttslightGreen), TextToSpeech.QUEUE_FLUSH, null);
 
 
 //					try {
@@ -995,6 +1083,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 	private void pakWritetoInternal(String whatToWrite) {
 		FileOutputStream fos;
+		createNotification(this.getCurrentFocus());
 		try {
 			// Note APPEND  true                       ----
 			fos = openFileOutput(myInternalFile, MODE_APPEND);
