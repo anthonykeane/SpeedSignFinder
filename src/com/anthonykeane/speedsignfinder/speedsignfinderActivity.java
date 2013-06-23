@@ -15,7 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
-import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
@@ -120,19 +119,23 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	public static final int H_NOR = 15;
 	private static final String TAG = "OCVSpeedSignFinder::Activity";
 	public static int V_MIN = 50;
-	private static boolean hashDefineTrue = false;
 	//  public static final int FRAME_WIDTH =   320;
 //  public static final int FRAME_HEIGHT =  240;
 //	public static final int FRAME_WIDTH =   800;
 //	public static final int FRAME_HEIGHT =  600;
-	private static boolean doDebug = false;
+
 	private static final boolean doFancyDisplay = true;
 	private static final boolean extraErrode = true;
 	private static final boolean extraDilates = true;
+
+	private static boolean alertOnGreenLightEnabled = false;
 	private static boolean alertOnGreenLight = false;
-	private static boolean ImageFrameToggle = false;
+	private static boolean hashDefineTrue = false;
+	private static boolean doDebug = false;
 	private static boolean SensorVisual = false;
-	private static boolean bMute = false;
+	private static boolean bMute = true;
+
+	private static boolean ImageFrameToggle = false;
 	public ArrayList<String> aPAKqueue = new ArrayList<String>();
 	public Mat cropped2;
 	public boolean foundCircle;                 // Used to trigger writing GPS to file.(indirectly)
@@ -480,10 +483,15 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		if(event.getAction() == MotionEvent.ACTION_DOWN) {
 			String text = "You click at x = " + event.getX() + " and y = " + event.getY();
 			Toast.makeText(speedsignfinderActivity.this, text, Toast.LENGTH_SHORT).show();
-			alertOnGreenLight = true;
-			GreenLightRect = new Rect(new Point(event.getX() - 50, event.getY() - 50), new Point(event.getX() + 50, event.getY() + 50));
-			//Core.rectangle(mCameraFeed,GreenLightRect.tl(),GreenLightRect.br(), new Scalar(0, 255, 0), -1);
-			Core.circle(mCameraFeed, new Point(event.getX() / xScale, event.getY() / yScale), 30, new Scalar(255, 255, 0), -1);
+
+			// If the feature is enabled this turns on green light detection.
+
+			if(alertOnGreenLightEnabled) {
+				alertOnGreenLight = true;
+				GreenLightRect = new Rect(new Point(event.getX() - 50, event.getY() - 50), new Point(event.getX() + 50, event.getY() + 50));
+				//Core.rectangle(mCameraFeed,GreenLightRect.tl(),GreenLightRect.br(), new Scalar(0, 255, 0), -1);
+				Core.circle(mCameraFeed, new Point(event.getX() / xScale, event.getY() / yScale), 30, new Scalar(255, 255, 0), -1);
+			}
 
 //			ActionBar actionBar = getActionBar();
 //			if(actionBar != null) {actionBar.show();}
@@ -526,10 +534,14 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			case R.id.thres:
 				hashDefineTrue = !hashDefineTrue;
 				//Toast.makeText(speedsignfinderActivity.this, getString(R.string.thres), Toast.LENGTH_SHORT).show();
-				item.setTitle(getString(R.string.thres).concat(" ").concat(String.valueOf(hashDefineTrue)));
+				if(!hashDefineTrue) {
+					item.setTitle(getString(R.string.thres) + (getString(R.string.enabled)));
+					item.setIcon(R.drawable.ic_menu_manage);
+				} else {
+					item.setTitle(getString(R.string.thres) + (getString(R.string.disabled)));
+					item.setIcon(R.drawable.ic_menu_manage_disabled);
+				}
 				return true;
-
-
 			case R.id.popup:
 				hashDefineTrue = true;
 
@@ -594,7 +606,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 				return true;
 
-
 			case R.id.misc:
 				SensorVisual = !SensorVisual;
 				if(!SensorVisual) item.setIcon(R.drawable.ic_menu_help);
@@ -606,40 +617,57 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 			case R.id.debug:
 				doDebug = !doDebug;
+				if(!doDebug) {
+					item.setTitle(getString(R.string.debug) + (getString(R.string.enabled)));
+					item.setIcon(R.drawable.debug);
+				} else {
+					item.setTitle(getString(R.string.debug) + (getString(R.string.disabled)));
+					item.setIcon(R.drawable.debug_disabled);
+				}
 				Toast.makeText(speedsignfinderActivity.this, getString(R.string.debug), Toast.LENGTH_SHORT).show();
-				item.setTitle(getString(R.string.debug).concat(" ").concat(String.valueOf(doDebug)));
-
 				return true;
 //
 //			case R.id.erode:
 //				extraErrode = !extraErrode;
 //				Toast.makeText(speedsignfinderActivity.this, getString(R.string.erode), Toast.LENGTH_SHORT).show();
-//				item.setTitle(getString(R.string.erode).concat(" ").concat(String.valueOf(extraErrode)));
+//				item.setTitle(getString(R.string.erode) + (" ").concat(String.valueOf(extraErrode)));
 //				return true;
 //
 //			case R.id.dilate:
 //				extraDilates = !extraDilates;
 //				Toast.makeText(speedsignfinderActivity.this, getString(R.string.dilate), Toast.LENGTH_SHORT).show();
-//				item.setTitle(getString(R.string.dilate).concat(" ").concat(String.valueOf(extraDilates)));
+//				item.setTitle(getString(R.string.dilate) + (" ").concat(String.valueOf(extraDilates)));
 //				return true;
-
 			case R.id.showversion:
 				Toast.makeText(speedsignfinderActivity.this, (pinfo != null ? pinfo.versionName : null), Toast.LENGTH_SHORT).show();
 				return true;
 
 			case R.id.lightgreen:
-				alertOnGreenLight = true;
-				Toast.makeText(speedsignfinderActivity.this, getString(R.string.lightGreen), Toast.LENGTH_SHORT).show();
-				GreenLightRect = new Rect(new Point(100, 100), new Point(200, 200));
-				Core.rectangle(mCameraFeed, GreenLightRect.tl(), GreenLightRect.br(), new Scalar(0, 255, 0), -1);
+				alertOnGreenLightEnabled = !alertOnGreenLightEnabled;
+				if(!alertOnGreenLightEnabled) {
+					item.setTitle(getString(R.string.lightGreen) + (getString(R.string.enabled)));
+					item.setIcon(R.drawable.traffic_light);
+				} else {
+					item.setTitle(getString(R.string.lightGreen) + (getString(R.string.disabled)));
+					item.setIcon(R.drawable.traffic_light_disabled);
+				}
+
+				//Toast.makeText(speedsignfinderActivity.this, getString(R.string.lightGreen), Toast.LENGTH_SHORT).show();
+				//GreenLightRect = new Rect(new Point(100, 100), new Point(200, 200));
+				//Core.rectangle(mCameraFeed, GreenLightRect.tl(), GreenLightRect.br(), new Scalar(0, 255, 0), -1);
 				return true;
 
 			case R.id.mute_vol:
 				bMute = !bMute;
 				Toast.makeText(speedsignfinderActivity.this, getString(R.string.mute_vol), Toast.LENGTH_SHORT).show();
-				//item.setTitle(getString(R.string.thres).concat(" ").concat(String.valueOf(hashDefineTrue)));
-				if(!bMute) item.setIcon(R.drawable.ic_audio_vol);
-				else item.setIcon(R.drawable.ic_audio_vol_mute);
+				//item.setTitle(getString(R.string.thres) + (String.valueOf(hashDefineTrue)));
+				if(!bMute) {
+					item.setTitle(getString(R.string.mute_vol) + (getString(R.string.enabled)));
+					item.setIcon(R.drawable.ic_audio_vol);
+				} else {
+					item.setTitle(getString(R.string.mute_vol) + (getString(R.string.disabled)));
+					item.setIcon(R.drawable.ic_audio_vol_mute);
+				}
 				return true;
 
 
@@ -687,7 +715,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/html");
 		intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.emailAddress)});
-		intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject).concat(" ").concat(pinfo != null ? pinfo.versionName : null));
+		intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject) + (pinfo != null ? pinfo.versionName : null));
 		intent.putExtra(Intent.EXTRA_TEXT, pakReadInternal());
 		startActivity(intent);
 
@@ -945,9 +973,10 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 					e.printStackTrace();
 				}
 
-				Core.circle(mCameraFeed, new Point(0, (FRAME_HEIGHT / 2)), 50, new Scalar(128, 0, 255), 2);
-				Core.circle(mCameraFeed, new Point(0, FRAME_HEIGHT / 2), (int) ((lastFullArea / roiCount) * 50), new Scalar(128, 0, 255), -1);
-
+				if(roiCount != 0) {
+					Core.circle(mCameraFeed, new Point(0, (FRAME_HEIGHT / 2)), 50, new Scalar(128, 0, 255), 2);
+					Core.circle(mCameraFeed, new Point(0, FRAME_HEIGHT / 2), (int) ((lastFullArea / roiCount) * 50), new Scalar(128, 0, 255), -1);
+				}
 				//Core.putText(mCameraFeed, String.valueOf(lastFullArea), new Point(300, 200), 1, 4, new Scalar(128, 0, 0), 1);
 				//Core.putText(mCameraFeed, String.valueOf(roiCount), new Point(300, 100), 1, 4, new Scalar(128, 0, 0), 1);
 				if(lastFullArea >= roiCount) {
@@ -1164,32 +1193,32 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //	};
 //
 
-
-	/**
-	 * Populate the SoundPool
-	 */
-	public static void initSounds(Context context) {
-		soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 100);
-		soundPoolMap = new HashMap(3);
-
-		soundPoolMap.put(sound_found_sign, soundPool.load(context, R.raw.found_sign, 1));
-		soundPoolMap.put(sound_wait_for_green, soundPool.load(context, R.raw.wait_for_green, 2));
-
-	}
-
-	/**
-	 * Play a given sound in the soundPool
-	 */
-	public static void playSound(Context context, int soundID) {
-		if(soundPool == null || soundPoolMap == null) {
-			initSounds(context);
-		}
-		float volume = 1; //....// whatever in the range = 0.0 to 1.0
-
-		// play sound with same right and left volume, with a priority of 1,
-		// zero repeats (i.e play once), and a playback rate of 1f
-		soundPool.play((Integer) soundPoolMap.get(soundID), volume, volume, 1, 0, 1f);
-	}
+//
+//	/**
+//	 * Populate the SoundPool
+//	 */
+//	public static void initSounds(Context context) {
+//		soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 100);
+//		soundPoolMap = new HashMap(3);
+//
+//		soundPoolMap.put(sound_found_sign, soundPool.load(context, R.raw.found_sign, 1));
+//		soundPoolMap.put(sound_wait_for_green, soundPool.load(context, R.raw.wait_for_green, 2));
+//
+//	}
+//
+//	/**
+//	 * Play a given sound in the soundPool
+//	 */
+//	public static void playSound(Context context, int soundID) {
+//		if(soundPool == null || soundPoolMap == null) {
+//			initSounds(context);
+//		}
+//		float volume = 1; //....// whatever in the range = 0.0 to 1.0
+//
+//		// play sound with same right and left volume, with a priority of 1,
+//		// zero repeats (i.e play once), and a playback rate of 1f
+//		soundPool.play((Integer) soundPoolMap.get(soundID), volume, volume, 1, 0, 1f);
+//	}
 
 
 }
