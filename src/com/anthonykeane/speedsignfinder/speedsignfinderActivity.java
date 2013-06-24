@@ -1,15 +1,12 @@
 package com.anthonykeane.speedsignfinder;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
@@ -21,53 +18,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.SeekBar;
 import android.widget.Toast;
-
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.*;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.io.*;
+import java.util.*;
 
 import static java.util.UUID.randomUUID;
-import static org.opencv.imgproc.Imgproc.BORDER_CONSTANT;
-import static org.opencv.imgproc.Imgproc.COLOR_RGB2HSV;
-import static org.opencv.imgproc.Imgproc.CV_HOUGH_GRADIENT;
-import static org.opencv.imgproc.Imgproc.HoughCircles;
-import static org.opencv.imgproc.Imgproc.MORPH_RECT;
-import static org.opencv.imgproc.Imgproc.copyMakeBorder;
-import static org.opencv.imgproc.Imgproc.cvtColor;
-import static org.opencv.imgproc.Imgproc.dilate;
-import static org.opencv.imgproc.Imgproc.erode;
-import static org.opencv.imgproc.Imgproc.getStructuringElement;
+import static org.opencv.imgproc.Imgproc.*;
+
+
 
 //import java.util.Queue;
 
@@ -488,8 +454,17 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 			if(alertOnGreenLightEnabled) {
 				alertOnGreenLight = true;
-				GreenLightRect = new Rect(new Point(event.getX() - 50, event.getY() - 50), new Point(event.getX() + 50, event.getY() + 50));
-				//Core.rectangle(mCameraFeed,GreenLightRect.tl(),GreenLightRect.br(), new Scalar(0, 255, 0), -1);
+                pakPoint touchPoint;
+
+
+
+                touchPoint = new pakPoint((double)(event.getX() / xScale),(double) (event.getY() / yScale));
+
+
+
+
+                GreenLightRect = new Rect(touchPoint.offset(-50, -50) , touchPoint.offset(50,50));
+				Core.rectangle(mCameraFeed,GreenLightRect.tl(),GreenLightRect.br(), new Scalar(0, 255, 0), -1);
 				Core.circle(mCameraFeed, new Point(event.getX() / xScale, event.getY() / yScale), 30, new Scalar(255, 255, 0), -1);
 			}
 
@@ -563,18 +538,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
 					@Override
-					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-						V_MIN = progress;
-					}
-
+					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { V_MIN = progress;	}
 					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-
-					}
-
+					public void onStartTrackingTouch(SeekBar seekBar) {	}
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
-						//timerDelayRemoveDialog(400, dialog); //closes the dialog after 2000mS
+							//timerDelayRemoveDialog(400, dialog); //closes the dialog after 2000mS
 					}
 				});
 
@@ -586,20 +555,11 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 				seekbar2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 					@Override
-					public void onProgressChanged(SeekBar seekBar2, int progress, boolean fromUser) {
-						S_MIN = progress;
-
-					}
-
+					public void onProgressChanged(SeekBar seekBar2, int progress, boolean fromUser) { S_MIN = progress;	}
 					@Override
-					public void onStartTrackingTouch(SeekBar seekBar2) {
-					}
-
+					public void onStartTrackingTouch(SeekBar seekBar2) {}
 					@Override
-					public void onStopTrackingTouch(SeekBar seekBar2) {
-						//Toast.makeText(speedsignfinderActivity.this,String.valueOf(  seekBar2).concat("Stop 2"), Toast.LENGTH_SHORT).show();
-
-					}
+					public void onStopTrackingTouch(SeekBar seekBar2) {	}
 				});
 
 				//hashDefineTrue = true;
@@ -618,12 +578,12 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			case R.id.debug:
 				doDebug = !doDebug;
 				if(!doDebug) {
-					item.setTitle(getString(R.string.debug) + (getString(R.string.enabled)));
-					item.setIcon(R.drawable.debug);
-				} else {
-					item.setTitle(getString(R.string.debug) + (getString(R.string.disabled)));
-					item.setIcon(R.drawable.debug_disabled);
-				}
+                    item.setTitle((getString(R.string.enable)) + getString(R.string.debug));
+                    item.setIcon(R.drawable.debug);
+                } else {
+                    item.setTitle( (getString(R.string.disable)) + getString(R.string.debug));
+                    item.setIcon(R.drawable.debug_disabled);
+                }
 				Toast.makeText(speedsignfinderActivity.this, getString(R.string.debug), Toast.LENGTH_SHORT).show();
 				return true;
 //
@@ -645,34 +605,31 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 			case R.id.lightgreen:
 				alertOnGreenLightEnabled = !alertOnGreenLightEnabled;
 				if(!alertOnGreenLightEnabled) {
-					item.setTitle(getString(R.string.lightGreen) + (getString(R.string.enabled)));
+					item.setTitle((getString(R.string.enable)) + getString(R.string.lightGreen));
 					item.setIcon(R.drawable.traffic_light);
 				} else {
-					item.setTitle(getString(R.string.lightGreen) + (getString(R.string.disabled)));
+					item.setTitle( (getString(R.string.disable)) + getString(R.string.lightGreen));
 					item.setIcon(R.drawable.traffic_light_disabled);
 				}
+			return true;
 
-				//Toast.makeText(speedsignfinderActivity.this, getString(R.string.lightGreen), Toast.LENGTH_SHORT).show();
-				//GreenLightRect = new Rect(new Point(100, 100), new Point(200, 200));
-				//Core.rectangle(mCameraFeed, GreenLightRect.tl(), GreenLightRect.br(), new Scalar(0, 255, 0), -1);
-				return true;
-
-			case R.id.mute_vol:
+			case R.id.unmute_vol:
 				bMute = !bMute;
-				Toast.makeText(speedsignfinderActivity.this, getString(R.string.mute_vol), Toast.LENGTH_SHORT).show();
-				//item.setTitle(getString(R.string.thres) + (String.valueOf(hashDefineTrue)));
 				if(!bMute) {
-					item.setTitle(getString(R.string.mute_vol) + (getString(R.string.enabled)));
+					item.setTitle(getString(R.string.mute_vol));
 					item.setIcon(R.drawable.ic_audio_vol);
 				} else {
-					item.setTitle(getString(R.string.mute_vol) + (getString(R.string.disabled)));
+					item.setTitle(getString(R.string.unmute_vol));
 					item.setIcon(R.drawable.ic_audio_vol_mute);
 				}
 				return true;
 
-
 			case R.id.email:
-				//intent to send email
+
+//                File filesDir = getFilesDir();
+//                File[] files = filesDir.listFiles();
+//
+                //intent to send email
 				intentToSendEmail();
 
 				return true;
@@ -689,12 +646,6 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				Find        ^(.*)tion=(.*)&heading=(.*)></a>
 
 				Replace     <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;sll=41.866699,-103.650731&amp;sspn=0.000978,0.002064&amp;t=h&amp;ie=UTF8&amp;hq=&amp;spn=0.139225,0.264187&amp;z=13&amp;layer=c&amp;cbll=$2&amp;cbp=12,$3,,0,0&amp;output=svembed"></iframe>
-
-
-
-
-
-
 
 
 */
@@ -883,9 +834,9 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 										LockedOut = true;
 
 										//playSound(this,sound_wait_for_green);
-										if(!bMute)
+										if(!bMute){
 											mTts.speak(getString(R.string.ttsSignFound), TextToSpeech.QUEUE_FLUSH, null);
-
+                                        }
 
 										// This code plays the default beep
 										//									try {
@@ -898,7 +849,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 										// write Lat/Long to file
 
 
-										foundCircle = true; // this tells GPS timer to write to file.
+                                        foundCircle = true; // this tells GPS timer to write to file.
 
 
 										// see private Runnable timedTask = new Runnable() above
@@ -983,7 +934,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 
 					//Sound
 					//playSound(this,sound_wait_for_green);
-					if(!bMute)
+					//if(!bMute)
 						mTts.speak(getString(R.string.ttslightGreen), TextToSpeech.QUEUE_FLUSH, null);
 
 
@@ -1042,7 +993,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=50
 				Write new entry
 				*/
-
+                String pakUUID = randomUUID().toString();
 
 				whatToWrite = String.valueOf(LocListener.getLat());
 				whatToWrite = whatToWrite.concat(",");
@@ -1067,7 +1018,7 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				// the get(0) is in here
 				whatToWrite = whatToWrite.concat(aPAKqueue.get(0)); // remember this is the lat,long, wwwMiddle2 and  bearing. see lines just above
 				whatToWrite = whatToWrite.concat(getString(R.string.wwwMiddle3));
-				whatToWrite = whatToWrite.concat(randomUUID().toString());
+				whatToWrite = whatToWrite.concat(pakUUID);
 				whatToWrite = whatToWrite.concat(",V_min,");
 				whatToWrite = whatToWrite.concat(String.valueOf(V_MIN));
 				whatToWrite = whatToWrite.concat(",Speed,");
@@ -1087,10 +1038,24 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 				if(foundCircle) {
 					foundCircle = false;
 					pakWritetoInternal(whatToWrite);
-				}
 
 
-				handler.postDelayed(timedGPSqueue, delayBetweenGPS_Records);   //repeating so needed
+                    //Define housing for bmp
+                    Bitmap bmp = Bitmap.createBitmap(cropped2.cols(), cropped2.rows(), Bitmap.Config.ARGB_8888);
+                    //Copy bits into bitmap.
+                    Utils.matToBitmap(cropped2, bmp);
+
+                    try {
+                        writeFileToInternalStorage(pakUUID,bmp);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+
+                 }
+
+
+                handler.postDelayed(timedGPSqueue, delayBetweenGPS_Records);   //repeating so needed
 			}
 		};
 	}
@@ -1110,19 +1075,21 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 	}
 
 
-	private void pakWritetoInternal(String whatToWrite) {
-		FileOutputStream fos;
-		createNotification(this.getCurrentFocus());
-		try {
-			// Note APPEND  true                       ----
-			fos = openFileOutput(myInternalFile, MODE_APPEND);
-			fos.write(whatToWrite.getBytes());
-			fos.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+    private void pakWritetoInternal(String whatToWrite) {
+        FileOutputStream fos;
 
-	}
+        createNotification(this.getCurrentFocus());
+
+        try {
+         // Note APPEND  true                       ----
+            fos = openFileOutput(myInternalFile, MODE_APPEND);
+            fos.write(whatToWrite.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 	private void pakStartInternalFile() {
 		FileOutputStream fos;
@@ -1219,6 +1186,16 @@ public class speedsignfinderActivity extends Activity implements CvCameraViewLis
 //		// zero repeats (i.e play once), and a playback rate of 1f
 //		soundPool.play((Integer) soundPoolMap.get(soundID), volume, volume, 1, 0, 1f);
 //	}
+
+
+
+    public void writeFileToInternalStorage(String pakUUID, Bitmap outputImage) throws FileNotFoundException {
+        String fileName = pakUUID + ".png";
+
+        final FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE);
+        outputImage.compress(Bitmap.CompressFormat.PNG, 90, fos);
+
+    }
 
 
 }

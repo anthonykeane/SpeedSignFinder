@@ -5,7 +5,9 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,7 +42,14 @@ public class NotificationReceiverActivity extends Activity {
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		notificationManager.cancelAll();
 
-		super.finish();
+		//super.finish();
+
+        ImageView MyImageView = (ImageView)findViewById(R.id.imageView);
+        MyImageView.setMinimumHeight(100);
+        Drawable d = Drawable.createFromPath( "/data/data/com.anthonykeane.speedsignfinder/files/2d24c397-af24-4fb4-bb50-c71f07e967cf.png" );
+        MyImageView.setImageDrawable(d);
+
+
 
 
 	}

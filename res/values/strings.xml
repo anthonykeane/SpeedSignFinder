@@ -13,10 +13,15 @@
     <string name="popup">Adjust Threshold Level</string>
     <string name="misc">Misc</string>
     <string name="mute_vol">Mute</string>
+    <string name="unmute_vol">Unmute</string>
 
     <!--Adding in a SPACE at the beginning or end of text will be stripped unless you do this.-->
     <string name="disabled">\u0020Disabled</string>
     <string name="enabled">&#160;Enabled</string>
+
+    <string name="disable">Disable&#160;</string>
+    <string name="enable">Enable&#160;</string>
+
 
     <string name="emailAddress">speedsignfinder@anthonykeane.com</string>
     <string name="emailSubject">Speed Sign Finder&#160;</string>

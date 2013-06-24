@@ -16,3 +16,4 @@ desktop.ini
 #Ignore repo files
 /.svn/*
 /.git/*
+/*.iml

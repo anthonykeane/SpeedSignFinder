@@ -37,8 +37,8 @@
             android:icon="@drawable/ic_menu_manage"
             android:showAsAction="ifRoom|withText"/>
     <item
-            android:id="@+id/mute_vol"
-            android:title="@string/mute_vol"
+            android:id="@+id/unmute_vol"
+            android:title="@string/unmute_vol"
             android:icon="@drawable/ic_audio_vol"
             android:showAsAction="ifRoom"/>
     <item
