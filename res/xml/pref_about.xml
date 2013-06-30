@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <PreferenceCategory android:title="@string/settings_aboutTitle">
+        <PreferenceScreen
+            android:title="@string/settings_aboutAltruisticEngineers"
+            android:icon="@drawable/location_web_site"
+            android:summary="@string/settings_aboutAltruisticTranslatorsSummary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/settings_aboutAltruisticEngineersUrl"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/settings_aboutAltruisticTranslators"
+            android:icon="@drawable/location_web_site"
+            android:summary="@string/settings_aboutAltruisticTranslatorsSummary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/settings_aboutAltruisticTranslatorsUrl"/>
+        </PreferenceScreen>
+
+
+        <!--<com.anthonykeane.speedsignfinder.aboutPreferences-->
+        <!--android:key="customPref"-->
+        <!--android:defaultValue="32"-->
+        <!--android:title="@string/settings_aboutTitle"-->
+        <!--android:summary="@string/settings_aboutHtml"/>-->
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

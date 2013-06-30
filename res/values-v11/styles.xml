@@ -6,15 +6,15 @@
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     -->
     <style
-            name="AppBaseTheme"
-            parent="android:Theme.Holo">
+        name="AppBaseTheme"
+        parent="android:Theme.Holo">
 
         <!-- API 11 theme customizations can go here. -->
     </style>
 
     <style
-            name="FullscreenTheme"
-            parent="android:Theme.Holo">
+        name="FullscreenTheme"
+        parent="android:Theme.Holo">
         <item name="android:actionBarStyle">
             @style/FullscreenActionBarStyle
         </item>
@@ -33,8 +33,8 @@
     </style>
 
     <style
-            name="FullscreenActionBarStyle"
-            parent="android:Widget.Holo.ActionBar">
+        name="FullscreenActionBarStyle"
+        parent="android:Widget.Holo.ActionBar">
         <item name="android:background">
             @color/black_overlay
         </item>

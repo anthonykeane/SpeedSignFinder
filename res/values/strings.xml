@@ -1,8 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--<string name="welcome_messages">Hello, %1$s! You have %2$d new messages.</string>-->
+    <!--Resources res = getResources();-->
+    <!--String text = String.format(res.getString(R.string.welcome_messages),username, mailCount);-->
+
+
+    <string name="android:versionName">Speed Sign Finder</string>
+
+    <string name="CrLf">\n\r</string>
+
+    <string name="settings_soundKey">bMute</string>
+    <string name="settings_displayKey">doDebug</string>
+    <string name="settings_alertOnGreenLightEnabledKey">alertOnGreenLightEnabled</string>
+    <string name="settings_userEmailKey">userEmail</string>
+    <string name="settings_userPrivacyKey">userPrivacy</string>
+    <string name="settings_debugVerbosityKey">debugVerbosity</string>
+    <string name="settings_VersionKey">settings_VersionKey</string>
+    <string name="settings_ttsSignFoundKey">ttsSignFoundKey</string>
+    <string name="settings_ttsSaluteKey">ttsSaluteKey</string>
+
+
+    <string name="settings_aboutAltruisticEngineersUrl">https://plus.google.com/u/0/communities/105872240007781184868</string>
+    <string name="settings_aboutAltruisticTranslatorsUrl">https://plus.google.com/u/0/communities/105559111385953530486</string>
+
+    <string name="emailAddress">speedsignfinder@anthonykeane.com</string>
+    <string name="emailSubject">Speed Sign Finder&#160;</string>
+
+    <string name="LatLongFile.txt">LatLongFile</string>
+    <string name="LayLongStorage">LayLongStorage</string>
+
+    <string name="bMenu">TouchMe</string>
+    <string name="wwwHead"><![CDATA[<!DOCTYPE html><html><head><title></title></head><body>]]> </string>
+    <string name="wwwMiddle1"><![CDATA[<img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=]]></string>
+    <string name="wwwMiddle2"><![CDATA[&heading=]]></string>
+    <string name="wwwMiddle3"><![CDATA[0 alt=\"]]></string>
+    <string name="wwwMiddle4"><![CDATA[\"></a>]]></string>
+    <string name="wwwTail"><![CDATA[</body></html>]]></string>
+    <string name="settings_aboutHtml"><![CDATA[
+                        <html><head><title>ABOUT</title></head>
+                            <body><br><br><a href="https://plus.google.com/communities/105872240007781184868" >Altruistic Engineers</a><br>
+                                <br>
+                                <a href="https://plus.google.com/u/0/communities/105872240007781184868/stream/fb587b8b-f6f0-463a-8ce0-d3c524bb5431" >--------- Speed Sign Finder</a>
+                                <br><br></body></html>
+                        ]]></string>
+
+    <!--Build HTML link to StreetView-->
+    <!--<!DOCTYPE html><html><head><title></title><img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=200" alt="GUIDGUIDGUIDGUID"></a></head><body>-->
+    <!--_________________________________________|__________________________________________________________________________________________________________|           |_|              |_______|  |_____|                |_____|___________|-->
+    <!--                 ^                                                                      ^                                                                 ^      ^       ^           ^         ^           ^          ^        ^      -->
+    <!--              wwwHead                                                              wwwMiddle1                                                                    ,               wwwMiddle2 wwwMiddle3            wwwMiddle4 wwwTail  -->
+    <!--                                                                                                                                                         Lat            Lon                               GUID                        -->
+
+    <!--</body></html>-->
+
+
+    <string name="settings_Settings_title">Settings</string>
+    <string name="settings_Settings_Summery">Choose your sound and display settings</string>
+
+    <string name="settings_Features_title">Features</string>
+    <string name="settings_Features_Summary">Choose enable or disable features</string>
+
+    <string name="settings_Options_title">Options</string>
+    <string name="settings_Options_Summary">Customise how the application interacts</string>
+
+    <string name="settings_Reference_title">Reference</string>
+    <string name="settings_Reference_Summary">Choose your Reference</string>
+
+    <string name="settings_aboutTitle">About</string>
+    <string name="settings_aboutSummary">Find out more about the developers</string>
+
+    <string name="settings_userPrivacyTitle">Privacy Statment</string>
+    <string name="settings_userPrivacySummary">We respect your right to anonymity</string>
+    <string name="settings_userPrivacyStatment">We appreciate your help, as such we make every effort to ensure your anonymity. We don\'t log any personal information and endeavor to be transparent in our operations. If you have any questions please contact us via the \"About\" option.</string>
+
+
+    <string name="settings_sound">Sound</string>
+
+    <string name="settings_debugVerbosityTitle">Debug Display</string>
+    <string name="settings_debugVerbositySummary">Select how much debug detailed you want to see.</string>
+
+
+    <string name="settings_soundSummary">Do you want to hear when a sign is detected?</string>
+    <string name="settings_display">Display</string>
+    <string name="settings_displaySummary">Do you want to see the debug display</string>
+
+    <string name="settings_aboutAltruisticEngineers">Altruistic Engineers Community</string>
+    <string name="settings_aboutAltruisticEngineersSummary">Community is about using the power of millions of skilled people with a little spare time advancing solutions that can make the world better for it being here.</string>
+    <string name="settings_aboutAltruisticTranslators">Altruistic Translators Community</string>
+    <string name="settings_aboutAltruisticTranslatorsSummary">using the power of millions of skilled people with a little spare time advancing solutions that can make the world better for it being here.</string>
+    <string name="settings_abouturl2">jakjdahsd asdlkhjdd alksjdlkajla dsas dasda aweoifhjofs</string>
+    <string name="settings_abouturl3">jakjdahsd asdlkhjdd alksjdlkajla dsas dasda aweoifhjofs</string>
+    <string name="settings_alertOnGreenLightEnabled">Enable Alert On Green Light</string>
+    <string name="settings_alertOnGreenLightEnabledSummary">Touch a red traffic light and you will be notified when it changes</string>
+    <string name="settings_userEmailTitle">Optional BCC Email address</string>
+    <string name="settings_userEmailSummary">Add your email address to have yourself BCC on all data sent to Server</string>
+    <string name="settings_userVersionTitle">Application Version</string>
+    <string name="settings_userVersionSummary">This is the version number</string>
+    <string name="settings_user_ttsSignFoundTitle">Sign Detected Alert</string>
+    <string name="settings_user_ttsSignFoundSummary">This is what is announced when a sign is detected</string>
+    <string name="settings_user_ttsSaluteTitle">Launch Application Alert</string>
+    <string name="settings_user_ttsSaluteSummary">This is what is announced when the application is launched</string>
+    <string name="settings_FeedbackTitle">Send Anonymous Feedback</string>
+    <string name="settings_FeedbackSummary">This allows you to send feedback through the Google Play Store, none of your personal details are sent.</string>
+    <string name="sendFeedback">Send Feedback</string>
+
+
+
     <string name="app_name">Speed Sign Finder</string>
-
-
     <string name="hello_world">Hello world!</string>
     <string name="fancy">Fancy Display</string>
     <string name="thres">Threshold</string>
@@ -15,79 +119,15 @@
     <string name="mute_vol">Mute</string>
     <string name="unmute_vol">Unmute</string>
 
-    <!--Adding in a SPACE at the beginning or end of text will be stripped unless you do this.-->
     <string name="disabled">\u0020Disabled</string>
     <string name="enabled">&#160;Enabled</string>
-
     <string name="disable">Disable&#160;</string>
     <string name="enable">Enable&#160;</string>
-
-
-    <string name="emailAddress">speedsignfinder@anthonykeane.com</string>
-    <string name="emailSubject">Speed Sign Finder&#160;</string>
-
     <string name="android:versionName">Speed Sign Finder</string>
-
-    <string name="LatLongFile.txt">LatLongFile</string>
-    <string name="LayLongStorage">LayLongStorage</string>
     <string name="lightGreen">Detection</string>
-    <string name="bMenu">TouchMe</string>
     <string name="bShowVersion">Show Version</string>
-
-
-    <string name="ttsOkHereWeGo">Ok, here we go!</string>
+    <string name="ttsSalute">Ok, here we go!</string>
     <string name="ttslightGreen">I think the traffic is about to move!</string>
     <string name="ttsSignFound">Detected!</string>
-
-
-    <!--Build HTML link to StreetView-->
-    <!--<!DOCTYPE html><html><head><title></title><img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=-33.69816467,150.9637255125&heading=200" alt="GUIDGUIDGUIDGUID"></a></head><body>-->
-    <!--_________________________________________|__________________________________________________________________________________________________________|           |_|              |_______|  |_____|                |_____|___________|-->
-    <!--                 ^                                                                      ^                                                                 ^      ^       ^           ^         ^           ^          ^        ^      -->
-    <!--              wwwHead                                                              wwwMiddle1                                                                    ,               wwwMiddle2 wwwMiddle3            wwwMiddle4 wwwTail  -->
-    <!--                                                                                                                                                         Lat            Lon                               GUID                        -->
-
-    <!--</body></html>-->
-    <string name="wwwHead">
-        <![CDATA[<!DOCTYPE html><html><head><title></title></head><body>]]> </string>
-    <string name="wwwMiddle1">
-        <![CDATA[<img src="http://maps.googleapis.com/maps/api/streetview?size=480x320&fov=90&pitch=0&sensor=false&location=]]></string>
-    <string name="wwwMiddle2"><![CDATA[&heading=]]></string>
-    <string name="wwwMiddle3"><![CDATA[0 alt=\"]]></string>
-    <string name="wwwMiddle4"><![CDATA[\"></a>]]></string>
-    <string name="wwwTail"><![CDATA[</body></html>]]></string>
-    <string name="CrLf">\n\r</string>
-
-
-    <!--This is an ALPHA, it WILL crash.-->
-
-
-    <!--*Background*:-->
-    <!--Most public (government) agencies are under resourced and the task of continuously maintaining spacial (map) data is given low priority. It is very expensive to send an employee out to survey the world, so it just isn't done. That is a good thing as the money (your tax dollars) is spent on better causes, fixing roads, building bridges etc.-->
-
-    <!--Unfortunately this means that you, a member of the public LOSE OUT, as without good data, decisions as to where to put the bridge or which road to fix, are basically just guesstimates.-->
-
-    <!--There is a win/win option. As you and I are already driving out and about with our sophisticated survey equipment, our smart phone, we can do the data capture as a side-effect of our normal day.-->
-
-    <!--*The App: what is does*:-->
-    <!--This app scans the road ahead as you drive (too/from work for example), once it detects a speed sign it logs its location, that's it,-->
-
-    <!--You then have the *choice* to email the data as text so that it can be aggregated in a Google Fusion Table and made available to the community.-->
-
-    <!--ONLY LATITUDE, LONGITUDE AND  BEARING ARE SENT IN THE EMAIL (as you hit send you can examine the content before you send it.-->
-
-    <!--This is an implementation of OpenCV,-->
-
-    <!--For Best Results:-->
-    <!--Mount the smartphone on your vehicle dash aim the camera to the passenger side and down so as to avoid the sky washing out the image. Try to get as many clear frames of the speed signs on the roadside.-->
-
-
-    <!--Use your Smartphone to improve mapping data for speed sign location in your area-->
-
-
-    <!--*New in 0.0.6*-->
-    <!--Added a detector for traffic light changing from Red to Green,-->
-    <!--Menu > Green Light to enable when parked at a traffic light and the phone will alert when the light changes. (Don't use this feature if your region prohibits touching your phone while driving)-->
-
 
 </resources>

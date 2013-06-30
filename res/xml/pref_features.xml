@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory android:title="@string/settings_Features_title">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/settings_alertOnGreenLightEnabledKey"
+            android:title="@string/settings_alertOnGreenLightEnabled"
+            android:summary="@string/settings_alertOnGreenLightEnabledSummary"/>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

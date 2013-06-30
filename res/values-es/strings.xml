@@ -1,0 +1,75 @@
+<resources>
+    <string name="settings_Settings_title">"Configuración"</string>
+    <string name="settings_Features_title">"Caracteristicas"</string>
+    <string name="settings_Options_title">"Opciones"</string>
+    <string name="settings_Reference_title">"Referencias"</string>
+    <string name="settings_sound">"Sonido"</string>
+    <string name="settings_soundSummary">"¿Quieres saber cuando se detecta una señal?"</string>
+    <string name="settings_display">"Mostrar"</string>
+    <string name="settings_displaySummary">"¿Quieres ver la pantalla de depuración "</string>
+    <string name="settings_aboutTitle">"Acerca de"</string>
+    <string name="settings_aboutSummary">"Una breve descripción del buscador Muestra de la velocidad"</string>
+    <string name="settings_aboutAltruisticEngineers">"Ingenieros Altruista Comunidad"</string>
+    <string name="settings_aboutAltruisticEngineersSummary">"Comunidad es sobre el uso del poder de millones de personas
+        cualificadas con un poco de tiempo libre, adelantando soluciones que pueden hacer que el mundo sea mejor para él
+        estar aquí."
+    </string>
+    <string name="settings_aboutAltruisticTranslators">"Traductores Altruista Comunidad"</string>
+    <string name="settings_aboutAltruisticTranslatorsSummary">" utilizando el poder de millones de personas cualificadas
+        con un poco de tiempo libre, adelantando soluciones que pueden hacer que el mundo sea mejor para él estar aquí."
+    </string>
+
+
+    <string name="settings_aboutHtml">"&lt;! [CDATA [html head &lt;title&gt; ACERCA &lt;/ title&gt; &lt;/ head&gt; &lt;body&gt;
+        &lt;br&gt; &lt;a href = \"https://plus.google.com/communities/105872240007781184868 \"&gt; Altruista Ingenieros
+        &lt;/ a&gt; &lt;br&gt; &lt;a &gt; --------- Velocidad Entrar Buscador &lt;/ a&gt; &lt;br&gt; &lt;/ body&gt; &lt;/
+        html&gt;
+        "
+    </string>
+
+
+    <string name="settings_alertOnGreenLightEnabled">"Activar Alerta En Luz Verde"</string>
+    <string name="settings_alertOnGreenLightEnabledSummary">"Toque un semáforo en rojo y se le notificará cuando
+        cambia"
+    </string>
+    <string name="settings_userEmailTitle">"Dirección de correo electrónico BCC Opcional"</string>
+    <string name="settings_userEmailSummary">"Inserte su dirección de correo electrónico para que usted mismo BCC en
+        todos los datos enviados al servidor"
+    </string>
+    <string name="settings_userPrivacyTitle">"Statment Privacidad"</string>
+    <string name="settings_userPrivacySummary">"Apreciamos su ayuda, como tal hacemos todo lo posible para asegurar su
+        anonimato. No registramos ninguna información personal y tratamos de ser transparentes en nuestras operaciones.
+        Si usted tiene alguna pregunta por favor póngase en contacto con nosotros a través de la opción \"Acerca de\"."
+    </string>
+    <string name="app_name">"Acelerar Buscador Entrar"</string>
+    <string name="fancy">"Display Fancy"</string>
+    <string name="thres">"Umbra"</string>
+    <string name="debug">"Depurar"</string>
+    <string name="erode">"Erosionar"</string>
+    <string name="dilate">"Dilatar x2"</string>
+    <string name="email">"Datos de correo electrónico"</string>
+    <string name="popup">"Ajuste el nivel de umbral"</string>
+    <string name="misc">"Miscelánea"</string>
+    <string name="mute_vol">"Mute"</string>
+    <string name="unmute_vol">"Activar el sonido"</string>
+    <string name="sendFeedback">"Enviar Comentarios"</string>
+    <!--Adding in a SPACE at the beginning or end of text will be stripped unless you do this.-->
+    <string name="disabled">"&#160;Discapacitado"</string>
+    <string name="enabled">" Habilitado"</string>
+
+    <string name="disable">"Inhabilitar "</string>
+    <string name="enable">"Activado "</string>
+
+
+    <string name="emailSubject">"Acelerar Buscador Entrar "</string>
+
+    <string name="android:versionName">"Acelerar Buscador Entrar"</string>
+
+    <string name="lightGreen">"Detección"</string>
+    <string name="bShowVersion">"Versión para"</string>
+
+
+    <string name="ttsSalute">"Bien, aquí vamos."</string>
+    <string name="ttslightGreen">"Creo que el tráfico está a punto de moverse!"</string>
+    <string name="ttsSignFound">"detectada"</string>
+</resources>

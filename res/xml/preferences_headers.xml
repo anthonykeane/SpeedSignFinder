@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header
+        android:fragment="com.anthonykeane.speedsignfinder.PreferenceFragmentSettings"
+        android:title="@string/settings_Settings_title"
+        android:summary="@string/settings_Settings_Summery"/>
+    <header
+        android:fragment="com.anthonykeane.speedsignfinder.PreferenceFragmentFeatures"
+        android:title="@string/settings_Features_title"
+        android:summary="@string/settings_Features_Summary"/>
+    <header
+        android:fragment="com.anthonykeane.speedsignfinder.PreferenceFragmentOptions"
+        android:title="@string/settings_Options_title"
+        android:summary="@string/settings_Options_Summary"/>
+    <header
+        android:fragment="com.anthonykeane.speedsignfinder.PreferenceFragmentAbout"
+        android:title="@string/settings_aboutTitle"
+        android:summary="@string/settings_aboutSummary"/>
+    <header
+        android:fragment="com.anthonykeane.speedsignfinder.PreferenceFragmentPrivacy"
+        android:title="@string/settings_userPrivacyTitle"
+        android:summary="@string/settings_userPrivacySummary"/>
+
+
+
+</preference-headers>
+

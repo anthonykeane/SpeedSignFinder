@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<PreferenceCategory-->
+    <!--android:title="@string/settings_aboutTitle">-->
+    <!--<PreferenceScreen-->
+
+
+    <!--android:title="@string/settings_FeedbackTitle"-->
+    <!--android:summary="@string/settings_FeedbackSummary">-->
+    <!--<intent android:action="SendFeedBackActivity"/>-->
+
+
+    <!--</PreferenceScreen>-->
+    <!--</PreferenceCategory>-->
+
+
+    <PreferenceCategory android:title="@string/settings_Settings_title">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/settings_soundKey"
+            android:title="@string/settings_sound"
+            android:summary="@string/settings_soundSummary"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/settings_displayKey"
+            android:title="@string/settings_display"
+            android:summary="@string/settings_displaySummary"/>
+
+        <!--<ListPreference-->
+            <!--android:dependency="@string/settings_displayKey"-->
+            <!--android:dialogTitle="@string/settings_debugVerbosityTitle"-->
+            <!--android:title="@string/settings_debugVerbosityTitle"-->
+            <!--android:summary="@string/settings_debugVerbositySummary"-->
+            <!--android:key="@string/settings_debugVerbosityKey"-->
+            <!--android:defaultValue="0"-->
+            <!--android:entries="@array/debugVerbosity"-->
+            <!--android:entryValues="@array/debugVerbosityValue"-->
+            <!--/>-->
+
+      </PreferenceCategory>
+
+
+
+
+
+    <PreferenceCategory android:title="@string/settings_Features_title">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/settings_alertOnGreenLightEnabledKey"
+            android:title="@string/settings_alertOnGreenLightEnabled"
+            android:summary="@string/settings_alertOnGreenLightEnabledSummary"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_Options_title">
+        <EditTextPreference
+            android:key="@string/settings_userEmailKey"
+            android:title="@string/settings_userEmailTitle"
+            android:summary="@string/settings_userEmailSummary"
+            android:dialogIcon="@drawable/sym_action_email"
+            android:dialogTitle="@string/settings_userEmailTitle"
+            android:inputType="textEmailAddress"
+            android:dialogMessage="@string/settings_userEmailSummary"
+            android:defaultValue=""/>
+
+        <EditTextPreference
+            android:key="@string/settings_ttsSignFoundKey"
+            android:title="@string/settings_user_ttsSignFoundTitle"
+            android:summary="@string/settings_user_ttsSignFoundSummary"
+            android:dialogTitle="@string/settings_user_ttsSignFoundTitle"
+            android:inputType="text"
+            android:dialogMessage="@string/settings_user_ttsSignFoundSummary"
+            android:defaultValue="@string/ttsSignFound"/>
+
+        <EditTextPreference
+            android:key="@string/settings_ttsSaluteKey"
+            android:summary="@string/settings_user_ttsSaluteSummary"
+            android:title="@string/settings_user_ttsSaluteTitle"
+            android:dialogTitle="@string/settings_user_ttsSaluteTitle"
+            android:dialogMessage="@string/settings_user_ttsSaluteSummary"
+            android:inputType="text"
+            android:defaultValue="@string/ttsSalute"/>
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/settings_aboutTitle">
+        <PreferenceScreen
+            android:title="@string/settings_aboutAltruisticEngineers"
+            android:icon="@drawable/location_web_site"
+            android:summary="@string/settings_aboutAltruisticTranslatorsSummary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/settings_aboutAltruisticEngineersUrl"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/settings_aboutAltruisticTranslators"
+            android:icon="@drawable/location_web_site"
+            android:summary="@string/settings_aboutAltruisticTranslatorsSummary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/settings_aboutAltruisticTranslatorsUrl"/>
+        </PreferenceScreen>
+
+
+        <!--<com.anthonykeane.speedsignfinder.aboutPreferences-->
+        <!--android:key="customPref"-->
+        <!--android:defaultValue="32"-->
+        <!--android:title="@string/settings_aboutTitle"-->
+        <!--android:summary="@string/settings_aboutHtml"/>-->
+
+    </PreferenceCategory>
+
+
+    <PreferenceScreen
+        android:title="@string/settings_userPrivacyTitle"
+        android:summary="@string/settings_userPrivacySummary"/>
+
+    <!--<PreferenceScreen android:title="Advanced Options">-->
+
+    <!--<CheckBoxPreference-->
+    <!--android:key="Advanced_Option"-->
+    <!--android:title="Advanced Option"-->
+    <!--android:defaultValue="true"-->
+    <!--android:summary="SUMMARY_Advanced_Option"/>-->
+
+    <!--</PreferenceScreen>-->
+
+
+    <EditTextPreference
+        android:key="@string/settings_VersionKey"
+        android:title="@string/settings_userVersionTitle"
+        android:summary="@string/settings_userVersionSummary"
+        android:dialogTitle="@string/settings_userVersionTitle"
+        android:inputType="text"
+        android:dialogMessage="@string/settings_userVersionSummary"
+        android:editable="false"
+        android:defaultValue=""/>
+
+
+    <!--<PreferenceCategory android:title="@string/sendFeedback">-->
+        <!--<PreferenceScreen-->
+            <!--android:title="@string/settings_FeedbackTitle"-->
+            <!--android:summary="@string/settings_FeedbackSummary">-->
+            <!--<intent android:action="SendFeedBackActivity"/>-->
+
+
+        <!--</PreferenceScreen>-->
+    <!--</PreferenceCategory>-->
+
+
+</PreferenceScreen>
+
+

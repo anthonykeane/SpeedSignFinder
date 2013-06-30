@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/settings_Options_title">
+        <EditTextPreference
+            android:key="@string/settings_userEmailKey"
+            android:title="@string/settings_userEmailTitle"
+            android:summary="@string/settings_userEmailSummary"
+            android:dialogIcon="@drawable/sym_action_email"
+            android:dialogTitle="@string/settings_userEmailTitle"
+            android:inputType="textEmailAddress"
+            android:dialogMessage="@string/settings_userEmailSummary"
+            android:defaultValue=""/>
+
+        <EditTextPreference
+            android:key="@string/settings_ttsSignFoundKey"
+            android:title="@string/settings_user_ttsSignFoundTitle"
+            android:summary="@string/settings_user_ttsSignFoundSummary"
+            android:dialogTitle="@string/settings_user_ttsSignFoundTitle"
+            android:inputType="text"
+            android:dialogMessage="@string/settings_user_ttsSignFoundSummary"
+            android:defaultValue="@string/ttsSignFound"/>
+
+        <EditTextPreference
+            android:key="@string/settings_ttsSaluteKey"
+            android:summary="@string/settings_user_ttsSaluteSummary"
+            android:title="@string/settings_user_ttsSaluteTitle"
+            android:dialogTitle="@string/settings_user_ttsSaluteTitle"
+            android:dialogMessage="@string/settings_user_ttsSaluteSummary"
+            android:inputType="text"
+            android:defaultValue="@string/ttsSalute"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

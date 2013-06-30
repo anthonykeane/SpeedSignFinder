@@ -15,47 +15,54 @@
     <!--android:id="@+id/dilate"-->
     <!--android:title="@string/dilate"/>-->
 
-
     <item
-            android:id="@+id/email"
-            android:title="@string/email"
-            android:icon="@drawable/ic_menu_compose"
-            android:showAsAction="ifRoom|withText"/>
+        android:id="@+id/settings"
+        android:title="@string/settings_Settings_title"
+        android:icon="@drawable/ic_sysbar_quicksettings"
+        android:showAsAction="ifRoom"/>
     <item
-            android:id="@+id/popup"
-            android:title="@string/popup"
-            android:icon="@drawable/edit_threshold"
-            android:showAsAction="ifRoom|withText"/>
+        android:id="@+id/email"
+        android:title="@string/email"
+        android:icon="@drawable/ic_menu_compose"
+        android:showAsAction="ifRoom|withText"/>
     <item
-            android:id="@+id/lightgreen"
-            android:title="@string/lightGreen"
-            android:icon="@drawable/traffic_light"
-            android:showAsAction="ifRoom|withText"/>
+        android:id="@+id/popup"
+        android:title="@string/popup"
+        android:icon="@drawable/edit_threshold"
+        android:showAsAction="ifRoom|withText"/>
+    <!--<item-->
+    <!--android:id="@+id/lightgreen"-->
+    <!--android:title="@string/lightGreen"-->
+    <!--android:icon="@drawable/traffic_light"-->
+    <!--android:showAsAction="ifRoom|withText" />-->
+    <!--<item-->
+    <!--android:id="@+id/thres"-->
+    <!--android:title="@string/thres"-->
+    <!--android:icon="@drawable/ic_menu_manage"-->
+    <!--android:showAsAction="ifRoom|withText"/>-->
+    <!--<item-->
+    <!--android:id="@+id/unmute_vol"-->
+    <!--android:title="@string/unmute_vol"-->
+    <!--android:icon="@drawable/ic_audio_vol"-->
+    <!--android:showAsAction="ifRoom" />-->
+    <!--<item-->
+    <!--android:id="@+id/showversion"-->
+    <!--android:title="@string/bShowVersion"-->
+    <!--android:icon="@drawable/ic_menu_info_details"-->
+    <!--android:showAsAction="ifRoom|withText" />-->
+    <!--<item-->
+    <!--android:id="@+id/misc"-->
+    <!--android:title="@string/misc"-->
+    <!--android:icon="@drawable/ic_menu_help"-->
+    <!--android:showAsAction="ifRoom"/>-->
+    <!--<item-->
+    <!--android:id="@+id/debug"-->
+    <!--android:title="@string/debug"-->
+    <!--android:icon="@drawable/debug"-->
+    <!--android:showAsAction="ifRoom" />-->
     <item
-            android:id="@+id/thres"
-            android:title="@string/thres"
-            android:icon="@drawable/ic_menu_manage"
-            android:showAsAction="ifRoom|withText"/>
-    <item
-            android:id="@+id/unmute_vol"
-            android:title="@string/unmute_vol"
-            android:icon="@drawable/ic_audio_vol"
-            android:showAsAction="ifRoom"/>
-    <item
-            android:id="@+id/showversion"
-            android:title="@string/bShowVersion"
-            android:icon="@drawable/ic_menu_info_details"
-            android:showAsAction="ifRoom|withText"/>
-    <item
-            android:id="@+id/misc"
-            android:title="@string/misc"
-            android:icon="@drawable/ic_menu_help"
-            android:showAsAction="ifRoom"/>
-    <item
-            android:id="@+id/debug"
-            android:title="@string/debug"
-            android:icon="@drawable/debug"
-            android:showAsAction="ifRoom"/>
-
+        android:id="@+id/sendFeedback"
+        android:title="@string/sendFeedback"
+        android:showAsAction="ifRoom"/>
 
 </menu>

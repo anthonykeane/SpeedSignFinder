@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/settings_Settings_title">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/settings_soundKey"
+            android:title="@string/settings_sound"
+            android:summary="@string/settings_soundSummary"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/settings_displayKey"
+            android:title="@string/settings_display"
+            android:summary="@string/settings_displaySummary"/>
+
+        <!--<ListPreference-->
+        <!--android:dependency="@string/settings_displayKey"-->
+        <!--android:dialogTitle="@string/settings_debugVerbosityTitle"-->
+        <!--android:title="@string/settings_debugVerbosityTitle"-->
+        <!--android:summary="@string/settings_debugVerbositySummary"-->
+        <!--android:key="@string/settings_debugVerbosityKey"-->
+        <!--android:defaultValue="0"-->
+        <!--android:entries="@array/debugVerbosity"-->
+        <!--android:entryValues="@array/debugVerbosityValue"-->
+        <!--/>-->
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>
