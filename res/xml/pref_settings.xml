@@ -6,24 +6,49 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/settings_soundKey"
-            android:title="@string/settings_sound"
+            android:title="@string/settings_soundTitle"
             android:summary="@string/settings_soundSummary"/>
+        <EditTextPreference
+            android:dependency="@string/settings_soundKey"
+            android:key="@string/settings_ttsSignFoundKey"
+            android:title="@string/settings_user_ttsSignFoundTitle"
+            android:summary="@string/settings_user_ttsSignFoundSummary"
+            android:dialogTitle="@string/settings_user_ttsSignFoundTitle"
+            android:inputType="text"
+            android:dialogMessage="@string/settings_user_ttsSignFoundSummary"
+            android:defaultValue="@string/ttsSignFound"/>
+
+        <EditTextPreference
+            android:dependency="@string/settings_soundKey"
+            android:key="@string/settings_ttsSaluteKey"
+            android:summary="@string/settings_user_ttsSaluteSummary"
+            android:title="@string/settings_user_ttsSaluteTitle"
+            android:dialogTitle="@string/settings_user_ttsSaluteTitle"
+            android:dialogMessage="@string/settings_user_ttsSaluteSummary"
+            android:inputType="text"
+            android:defaultValue="@string/ttsSalute"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/settings_displayKey"
-            android:title="@string/settings_display"
+            android:title="@string/settings_displayTitle"
             android:summary="@string/settings_displaySummary"/>
 
-        <!--<ListPreference-->
-        <!--android:dependency="@string/settings_displayKey"-->
-        <!--android:dialogTitle="@string/settings_debugVerbosityTitle"-->
-        <!--android:title="@string/settings_debugVerbosityTitle"-->
-        <!--android:summary="@string/settings_debugVerbositySummary"-->
-        <!--android:key="@string/settings_debugVerbosityKey"-->
-        <!--android:defaultValue="0"-->
-        <!--android:entries="@array/debugVerbosity"-->
-        <!--android:entryValues="@array/debugVerbosityValue"-->
-        <!--/>-->
+        <ListPreference
+            android:dependency="@string/settings_displayKey"
+            android:dialogTitle="@string/settings_debugVerbosityTitle"
+            android:title="@string/settings_debugVerbosityTitle"
+            android:summary="@string/settings_debugVerbositySummary"
+            android:key="@string/settings_debugVerbosityKey"
+            android:defaultValue="@color/debug_TooBigTooSmall"
+            android:entries="@array/debugVerbosity"
+            android:entryValues="@array/debugVerbosityValue"
+            />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/settings_bExperimentalKey"
+            android:title="@string/settings_bExperimentalTitle"
+            android:summary="@string/settings_bExperimentalSummary"/>
 
     </PreferenceCategory>
 

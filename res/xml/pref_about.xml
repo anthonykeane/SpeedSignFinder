@@ -6,7 +6,7 @@
 
     <PreferenceCategory android:title="@string/settings_aboutTitle">
         <PreferenceScreen
-            android:title="@string/settings_aboutAltruisticEngineers"
+            android:title="@string/settings_aboutAltruisticEngineersTitle"
             android:icon="@drawable/location_web_site"
             android:summary="@string/settings_aboutAltruisticTranslatorsSummary">
             <intent
@@ -15,13 +15,25 @@
         </PreferenceScreen>
 
         <PreferenceScreen
-            android:title="@string/settings_aboutAltruisticTranslators"
+            android:title="@string/settings_aboutAltruisticTranslatorsTitle"
             android:icon="@drawable/location_web_site"
             android:summary="@string/settings_aboutAltruisticTranslatorsSummary">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="@string/settings_aboutAltruisticTranslatorsUrl"/>
         </PreferenceScreen>
+
+
+
+        <EditTextPreference
+            android:key="@string/settings_VersionKey"
+            android:title="@string/settings_userVersionTitle"
+            android:summary="@string/settings_userVersionSummary"
+            android:dialogTitle="@string/settings_userVersionTitle"
+            android:inputType="text"
+            android:dialogMessage="@string/settings_userVersionSummary"
+            android:editable="false"
+            android:defaultValue=""/>
 
 
         <!--<com.anthonykeane.speedsignfinder.aboutPreferences-->

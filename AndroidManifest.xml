@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.anthonykeane.speedsignfinder"
-          android:versionCode="133"
-          android:versionName="0.0.33.$Rev: 106 $">
-
+          android:versionCode="140"
+          android:versionName="0.1.0">
+                                    <!--.$Rev: 122 $-->
 
     <uses-permission android:name="android.permission.ACCESS_GPS"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -26,7 +26,7 @@
     <!--android:largeScreens="true"-->
     <!--android:anyDensity="true"/>-->
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="15"
         android:targetSdkVersion="17"/>
 
     <application
@@ -71,8 +71,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-        <activity android:name=".PreferencesActivity"/>
-        <activity android:name=".PreferencesActivityScenario3"></activity>
+        <activity android:name=".PreferencesActivitySingle"/>
+        <activity android:name=".PreferencesActivity"></activity>
 
 
     </application>

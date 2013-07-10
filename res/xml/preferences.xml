@@ -20,12 +20,12 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/settings_soundKey"
-            android:title="@string/settings_sound"
+            android:title="@string/settings_soundTitle"
             android:summary="@string/settings_soundSummary"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/settings_displayKey"
-            android:title="@string/settings_display"
+            android:title="@string/settings_displayTitle"
             android:summary="@string/settings_displaySummary"/>
 
         <!--<ListPreference-->
@@ -49,7 +49,7 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/settings_alertOnGreenLightEnabledKey"
-            android:title="@string/settings_alertOnGreenLightEnabled"
+            android:title="@string/settings_alertOnGreenLightEnabledTitle"
             android:summary="@string/settings_alertOnGreenLightEnabledSummary"/>
     </PreferenceCategory>
 
@@ -86,7 +86,7 @@
 
     <PreferenceCategory android:title="@string/settings_aboutTitle">
         <PreferenceScreen
-            android:title="@string/settings_aboutAltruisticEngineers"
+            android:title="@string/settings_aboutAltruisticEngineersTitle"
             android:icon="@drawable/location_web_site"
             android:summary="@string/settings_aboutAltruisticTranslatorsSummary">
             <intent
@@ -95,7 +95,7 @@
         </PreferenceScreen>
 
         <PreferenceScreen
-            android:title="@string/settings_aboutAltruisticTranslators"
+            android:title="@string/settings_aboutAltruisticTranslatorsTitle"
             android:icon="@drawable/location_web_site"
             android:summary="@string/settings_aboutAltruisticTranslatorsSummary">
             <intent

@@ -11,15 +11,6 @@
             android:summary="SUMMARY_Main_Option"/>
 
 
-        <ListPreference
-            android:title="List Preference"
-            android:summary="This preference allows to select an item in an array"
-            android:dependency="Main_Option"
-            android:key="listPref"
-            android:defaultValue="1"
-            android:entries="@array/colors"
-            android:entryValues="@array/colors_values"/>
-
 
     </PreferenceCategory>
 

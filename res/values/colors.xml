@@ -4,19 +4,11 @@
     <color name="Transparent_overlay">#00000000</color>
 
 
-    <color name="debug_TooBigTooSmall">@color/holo_blue_dark</color>
-    <color name="debug_NotSquare">@color/holo_blue_light</color>
-    <color name="debug_WHITE">#FFFF</color>
-    <color name="debug_NotCircular">@color/holo_blue_bright</color>
-    <color name="debug_IsCircular">#FFCCCC00</color>
-
-
-
-
-
-
-
-
+    <color name="debug_TooBigTooSmall">@color/holo_green_light</color>
+    <color name="debug_WrongRatio">@color/holo_orange_light</color>
+    <color name="debug_NotSquare">@color/holo_green_dark</color>
+    <color name="debug_isHollow">@color/holo_blue_dark</color>
+    <color name="debug_IsCircular">@color/holo_purple</color>
 
 
 

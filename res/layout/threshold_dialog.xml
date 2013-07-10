@@ -41,7 +41,7 @@
             android:id="@+id/editTextV"
             android:layout_row="1"
             android:layout_column="1"
-            android:text="V"/>
+            android:text="H"/>
 
         <TextView
             android:layout_width="wrap_content"

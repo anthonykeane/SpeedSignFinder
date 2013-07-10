@@ -17,26 +17,26 @@
 
     <string name="settings_userPrivacyTitle">Privacy Statment</string>
     <string name="settings_userPrivacySummary">We respect your right to anonymity</string>
-    <string name="settings_userPrivacyStatment">We appreciate your help, as such we make every effort to ensure your anonymity. We don\'t log any personal information and endeavor to be transparent in our operations. If you have any questions please contact us via the \"About\" option.</string>
+    <string name="settings_userPrivacyStatment">We appreciate your help, as such we make every effort to ensure your anonymity. We don\'t log any personal information and endeavor to be transparent in our operations. If you have any questions please contact us via the \"Send Feedback\" Menu option.(it is anonymous)</string>
 
 
-    <string name="settings_sound">Sound</string>
+    <string name="settings_soundTitle">Sound</string>
 
     <string name="settings_debugVerbosityTitle">Debug Display</string>
     <string name="settings_debugVerbositySummary">Select how much debug detailed you want to see.</string>
 
 
-    <string name="settings_soundSummary">Do you want to hear when a sign is detected?</string>
-    <string name="settings_display">Display</string>
+    <string name="settings_soundSummary">Do you want to hear when a sign is detected? \n(does not turn off sound on Green Light Detection)</string>
+    <string name="settings_displayTitle">Display</string>
     <string name="settings_displaySummary">Do you want to see the debug display</string>
 
-    <string name="settings_aboutAltruisticEngineers">Altruistic Engineers Community</string>
+    <string name="settings_aboutAltruisticEngineersTitle">Altruistic Engineers Community</string>
     <string name="settings_aboutAltruisticEngineersSummary">Community is about using the power of millions of skilled people with a little spare time advancing solutions that can make the world better for it being here.</string>
-    <string name="settings_aboutAltruisticTranslators">Altruistic Translators Community</string>
+    <string name="settings_aboutAltruisticTranslatorsTitle">Altruistic Translators Community</string>
     <string name="settings_aboutAltruisticTranslatorsSummary">using the power of millions of skilled people with a little spare time advancing solutions that can make the world better for it being here.</string>
     <string name="settings_abouturl2">jakjdahsd asdlkhjdd alksjdlkajla dsas dasda aweoifhjofs</string>
     <string name="settings_abouturl3">jakjdahsd asdlkhjdd alksjdlkajla dsas dasda aweoifhjofs</string>
-    <string name="settings_alertOnGreenLightEnabled">Enable Alert On Green Light</string>
+    <string name="settings_alertOnGreenLightEnabledTitle">Enable Alert On Green Light</string>
     <string name="settings_alertOnGreenLightEnabledSummary">Touch a red traffic light and you will be notified when it changes</string>
     <string name="settings_userEmailTitle">Optional BCC Email address</string>
     <string name="settings_userEmailSummary">Add your email address to have yourself BCC on all data sent to Server</string>
@@ -45,7 +45,7 @@
     <string name="settings_user_ttsSignFoundTitle">Sign Detected Alert</string>
     <string name="settings_user_ttsSignFoundSummary">This is what is announced when a sign is detected</string>
     <string name="settings_user_ttsSaluteTitle">Launch Application Alert</string>
-    <string name="settings_user_ttsSaluteSummary">This is what is announced when the application is launched</string>
+    <string name="settings_user_ttsSaluteSummary">This is what is announced when the application is launched\nLeave blank to disable.</string>
     <string name="settings_FeedbackTitle">Send Anonymous Feedback</string>
     <string name="settings_FeedbackSummary">This allows you to send feedback through the Google Play Store, none of your personal details are sent.</string>
     <string name="sendFeedback">Send Feedback</string>

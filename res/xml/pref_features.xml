@@ -7,7 +7,7 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/settings_alertOnGreenLightEnabledKey"
-            android:title="@string/settings_alertOnGreenLightEnabled"
+            android:title="@string/settings_alertOnGreenLightEnabledTitle"
             android:summary="@string/settings_alertOnGreenLightEnabledSummary"/>
     </PreferenceCategory>
 

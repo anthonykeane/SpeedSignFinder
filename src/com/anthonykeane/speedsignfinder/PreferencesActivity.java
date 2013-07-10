@@ -1,30 +1,21 @@
 package com.anthonykeane.speedsignfinder;
 
-import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
+import java.util.List;
+
 /**
- * Created by Keanea on 26/06/13.
+ * Created by Keanea on 25/06/13.
  */
 public class PreferencesActivity extends PreferenceActivity {
 
+    /**
+     * Populate the activity with the top-level headers.
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onBuildHeaders(List<Header> target) {
 
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
-
-//
-//        findPreference(sFeedbackKey).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//            public final boolean onPreferenceClick(Preference paramAnonymousPreference) {
-//                sendFeedback();
-//                finish();
-//                return true;
-//            }
-//        });
-
+        loadHeadersFromResource(R.xml.preferences_headers, target);
 
     }
-
-
 }

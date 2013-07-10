@@ -19,7 +19,7 @@
     <!--android:visibility="visible"/>-->
 
 
-    <org.opencv.android.JavaCameraView
+    <com.anthonykeane.speedsignfinder.pakJavaCameraView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/camera_image_view"

@@ -12,23 +12,6 @@
             android:dialogMessage="@string/settings_userEmailSummary"
             android:defaultValue=""/>
 
-        <EditTextPreference
-            android:key="@string/settings_ttsSignFoundKey"
-            android:title="@string/settings_user_ttsSignFoundTitle"
-            android:summary="@string/settings_user_ttsSignFoundSummary"
-            android:dialogTitle="@string/settings_user_ttsSignFoundTitle"
-            android:inputType="text"
-            android:dialogMessage="@string/settings_user_ttsSignFoundSummary"
-            android:defaultValue="@string/ttsSignFound"/>
-
-        <EditTextPreference
-            android:key="@string/settings_ttsSaluteKey"
-            android:summary="@string/settings_user_ttsSaluteSummary"
-            android:title="@string/settings_user_ttsSaluteTitle"
-            android:dialogTitle="@string/settings_user_ttsSaluteTitle"
-            android:dialogMessage="@string/settings_user_ttsSaluteSummary"
-            android:inputType="text"
-            android:defaultValue="@string/ttsSalute"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

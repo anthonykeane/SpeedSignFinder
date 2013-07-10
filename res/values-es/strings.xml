@@ -3,18 +3,18 @@
     <string name="settings_Features_title">"Caracteristicas"</string>
     <string name="settings_Options_title">"Opciones"</string>
     <string name="settings_Reference_title">"Referencias"</string>
-    <string name="settings_sound">"Sonido"</string>
+    <string name="settings_soundTitle">"Sonido"</string>
     <string name="settings_soundSummary">"¿Quieres saber cuando se detecta una señal?"</string>
-    <string name="settings_display">"Mostrar"</string>
+    <string name="settings_displayTitle">"Mostrar"</string>
     <string name="settings_displaySummary">"¿Quieres ver la pantalla de depuración "</string>
     <string name="settings_aboutTitle">"Acerca de"</string>
     <string name="settings_aboutSummary">"Una breve descripción del buscador Muestra de la velocidad"</string>
-    <string name="settings_aboutAltruisticEngineers">"Ingenieros Altruista Comunidad"</string>
+    <string name="settings_aboutAltruisticEngineersTitle">"Ingenieros Altruista Comunidad"</string>
     <string name="settings_aboutAltruisticEngineersSummary">"Comunidad es sobre el uso del poder de millones de personas
         cualificadas con un poco de tiempo libre, adelantando soluciones que pueden hacer que el mundo sea mejor para él
         estar aquí."
     </string>
-    <string name="settings_aboutAltruisticTranslators">"Traductores Altruista Comunidad"</string>
+    <string name="settings_aboutAltruisticTranslatorsTitle">"Traductores Altruista Comunidad"</string>
     <string name="settings_aboutAltruisticTranslatorsSummary">" utilizando el poder de millones de personas cualificadas
         con un poco de tiempo libre, adelantando soluciones que pueden hacer que el mundo sea mejor para él estar aquí."
     </string>
@@ -28,7 +28,7 @@
     </string>
 
 
-    <string name="settings_alertOnGreenLightEnabled">"Activar Alerta En Luz Verde"</string>
+    <string name="settings_alertOnGreenLightEnabledTitle">"Activar Alerta En Luz Verde"</string>
     <string name="settings_alertOnGreenLightEnabledSummary">"Toque un semáforo en rojo y se le notificará cuando
         cambia"
     </string>

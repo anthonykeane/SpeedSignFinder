@@ -18,17 +18,6 @@
     <!--</PreferenceScreen>-->
 
 
-    <EditTextPreference
-        android:key="@string/settings_VersionKey"
-        android:title="@string/settings_userVersionTitle"
-        android:summary="@string/settings_userVersionSummary"
-        android:dialogTitle="@string/settings_userVersionTitle"
-        android:inputType="text"
-        android:dialogMessage="@string/settings_userVersionSummary"
-        android:editable="false"
-        android:defaultValue=""/>
-
-
     <!--<PreferenceCategory android:title="@string/sendFeedback">-->
     <!--<PreferenceScreen-->
     <!--android:title="@string/settings_FeedbackTitle"-->
