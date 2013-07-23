@@ -161,18 +161,24 @@ public class pakJavaCameraView extends CameraBridgeViewBase implements PreviewCa
                         if (ListOfModes != null && ListOfModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY))
                         { params.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY); }
 
-
+                        // its eather iso-values OR iso-mode-values
                         ListOfModes = split(params.get("iso-values"));
+                        if (ListOfModes == null ) ListOfModes = split(params.get("iso-mode-values"));
                         if (ListOfModes != null )
                         {
                             Collections.sort(ListOfModes,String.CASE_INSENSITIVE_ORDER);
-                            if( ListOfModes.contains("ISO_HJR"))
+                            params.set("iso",ListOfModes.get(ListOfModes.size()-1));
+                        }
+
+
+
+                        ListOfModes = split(params.get("denoise-values"));
+                        if (ListOfModes != null )
+                        {
+                            Collections.sort(ListOfModes,String.CASE_INSENSITIVE_ORDER);
+                            if( ListOfModes.contains("denoise-on"))
                             {
-                                params.set("iso","ISO_HJR");
-                            }
-                            else
-                            {
-                                params.set("iso",ListOfModes.get(ListOfModes.size()-1));
+                                params.set("denoise","denoise-on");
                             }
                         }
 
@@ -184,15 +190,7 @@ public class pakJavaCameraView extends CameraBridgeViewBase implements PreviewCa
                                 public int compare(String o1, String o2) {
                                     return (Integer.parseInt(o1)<Integer.parseInt(o2) ? -1 : (Integer.parseInt(o1)==Integer.parseInt(o2) ? 0 : 1)); }
                             });
-
-                            if( ListOfModes.contains("5"))
-                            {
-                                params.set("preview-frame-rate","15");
-                            }
-                            else
-                            {
-                                params.set("preview-frame-rate",ListOfModes.get(0));
-                            }
+                            params.set("preview-frame-rate",ListOfModes.get(0));
                         }
 
 

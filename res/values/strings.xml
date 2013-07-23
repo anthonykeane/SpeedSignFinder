@@ -7,7 +7,11 @@
 
 
 	<string name="whatsnew">
-        # $Rev: 123 $\n
+        # $Rev: 127 $\n
+        # Rev: 127 \n
+        Maximised ISO for all devices in Experimental\n
+        Turned camera "denoise-on" in Experimental\n
+        #Rev: 125 \n
         - Set screen res to native for hardware.
         #Rev: 122\n
         -Upgraded to OpenCV 2.4.6 Lib
